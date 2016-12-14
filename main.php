@@ -1,52 +1,46 @@
-<?php
-include 'clases/bd.class.php';
-ini_set('error_reporting', E_ALL ^ E_NOTICE);
-ini_set('display_errors', 'on');
-?>
 
 <html>
     <head>
         <title>Bienvenido a Librarino</title>
+        <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="resources/style.css"/>
         <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.css"/>
-
-
-
     </head>
-    <body>
+    <body>        
+        <?php include 'header.php'?>
+        <div class="contenido">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div align="center">
+                        <div class="row">
+                            <?php
+                            $bd = new bd();
+                            $datos = $bd->consulta("select * from Biblioteca");
+                            $cont = 0;
 
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1" style=" padding-top: 20px">
+                            foreach ($datos as $biblioteca) {
 
-                <?php
-                $bd = new bd();
-                $datos = $bd->consulta("select * from Biblioteca");
-
-
-                foreach ($datos as $biblioteca) {
-                    echo '<a href="#"><img id="imagen' . $biblioteca['Id'] . '" class="imagenMain" src="' . $biblioteca['DirectorioImagen'] . '"></a>';
-                    echo '<h1 id="texto' . $biblioteca['Id'] . '" class="textoImagen">|| ' . $biblioteca['Nombre'] . '</h1>';
-                }
-                ?>
+                                if ($cont % 2 === 0) {
+                                    echo '</div><div class="row">';
+                                }
+                                echo '<div class="col-md-6">';
+                                echo '<div id="imagen">';
+                                echo '<a href="'.$biblioteca['vista'].'"><img class="imagenMain" src="' .$biblioteca['DirectorioImagen'] . '"></a>';
+                                echo '<div><h3 class="textoImagen">|| ' .  utf8_encode($biblioteca['Nombre']) . '</h3></div>';
+                                echo '</div>';
+                                echo '</div>';
+                                $cont++;
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <footer>
-            <div align="center">
-                <h4 style="padding-top: 25px"><?php echo utf8_decode('Librarino&copy; es el Trabajo de Fin de Grado de Felipe Ruiz Pinto en la E.T.S de Ingeniería Informática de la Universidad de Málaga')?></h>
-            </div>
-        </footer>
+        </div>        
+        <?php include 'footer.php'?>        
         <script type="text/javascript" src="resources/jquery.js"></script>
         <script type="text/javascript" src="resources/bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript">
-
-
-<?php
-foreach ($datos as $biblioteca) {
-    echo '$("#imagen' . $biblioteca['Id'] . '").hover(function (){ 
-                                $("#texto' . $biblioteca['Id'] . '").toggle(500);             
-                            });';
-}
-?>
 
         </script>
     </body>
