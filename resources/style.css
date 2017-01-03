@@ -118,7 +118,8 @@ nav{
 
 .itemMenu:hover{
     background-color: sandybrown;
-    text-decoration:none
+    text-decoration:none;
+    border-radius: 10px;
 }
 
 .col-md-4{
@@ -151,6 +152,6 @@ a:link{
 
 tr.espacioFila > td
 {
-  padding-bottom: 6%;
+  padding-bottom: 15%;
 }
 

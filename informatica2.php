@@ -14,11 +14,11 @@
                 <li role="presentation"  class="active"><a href="informatica2.php"><h4>Planta 2</h4></a></li>
             </ul>
             <div class="row">
-                <div class="col-md-10 col-md-offset-4">
+                <div class="col-md-10 col-md-offset-5">
                     
                     <?php
                     // Zona 1                    
-                    echo '<div class="zona1"><div class="col-md-1"><table class="tablaMesas"><tr>';
+                    echo '<div class="row"><div class="col-md-2"><table class="tablaMesas"><tr>';
                     $bd = new bd();
                     $mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 1 and Planta = 2");
                     
@@ -29,7 +29,7 @@
 
                         // Obtengo los asientos de la mesa
                         $asientos = $bd->consulta("select * from Asiento where Mesa_id = '" . $idMesa . "'");
-                        echo '<table style="width:77px" class="tablaAsientos"><tr>';
+                        echo '<table style="width:45px" class="tablaAsientos"><tr>';
                         foreach ($asientos as $asiento) {
 
                             $idAsiento = $asiento['Id'];
@@ -47,10 +47,10 @@
                         }
                         echo '</tr></table></td>';                        
                     }
-                    echo '</tr></table></div><br><br><br>';
+                    echo '</tr></table><br><br><br>';
                     
                     // Zona 2                    
-                    echo '<div><table class="tablaMesas"><tr>';
+                    echo '<table class="tablaMesas"><tr>';
                     $bd = new bd();
                     $mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 2 and Planta = 2");
                     $contMesas = 0;
@@ -70,7 +70,7 @@
 
                         // Obtengo los asientos de la mesa
                         $asientos = $bd->consulta("select * from Asiento where Mesa_id = '" . $idMesa . "'");
-                        echo '<table style="width:77px" id="'.$idMesa.'" class="tablaAsientos"><tr>';
+                        echo '<table style="width:45px" id="'.$idMesa.'" class="tablaAsientos"><tr>';
                         
                         foreach ($asientos as $asiento) {
 
@@ -92,10 +92,10 @@
                         
                         echo '</tr></table></td>';                        
                     }
-                    echo '</tr></table></div>';
+                    echo '</tr></table>';
                     
                     // Zona 3                    
-                    echo '<div><table class="tablaMesas"><tr>';
+                    echo '<table class="tablaMesas"><tr>';
                     $bd = new bd();
                     $mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 3 and Planta = 2");
                     $contMesas = 0;
@@ -112,7 +112,50 @@
 
                         // Obtengo los asientos de la mesa
                         $asientos = $bd->consulta("select * from Asiento where Mesa_id = '" . $idMesa . "'");
-                        echo '<table style="width:77px" id="'.$idMesa.'" class="tablaAsientos"><tr>';
+                        echo '<table style="width:45px" id="'.$idMesa.'" class="tablaAsientos"><tr>';
+                        
+                        foreach ($asientos as $asiento) {
+
+                            $idAsiento = $asiento['Id'];
+                            $estado = (int) $asiento['Estado'];
+
+                            if ($estado === 1) { // Asiento libre
+                                $icono = 'resources/imgs/libre.png';
+                            } else if ($estado === 0) { // Asiento ocupado
+                                $icono = 'resources/imgs/ocupado.png';
+                            } else if ($estado === 2) { // Asiento reservado
+                                $icono = 'resources/imgs/reservado.png';
+                            }
+                            
+                            if ($contAux % $asientosPorFila === 0 && $contAux !== 0) {
+                                echo '</tr><tr>';
+                            }
+                            
+                            echo '<td><img width="100%" id="' . $idAsiento . '" src="' . $icono . '"></td>';
+                            $contAux++;
+                        }
+                        
+                        $contMesas++;                        
+                        echo '</tr></table></td>';                        
+                    }
+                    echo '</tr></table></div>';
+                    
+                    // Zona 4                    
+                    echo '<div class="col-md-1"><table class="tablaMesas"><tr>';
+                    $bd = new bd();
+                    $mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 4 and Planta = 2");
+                    
+                    foreach ($mesas as $mesa) {
+                        echo '<td>';
+                        $numAsientos = $mesa['numAsientos'];
+                        $asientosPorFila = $numAsientos / 2;
+                        $idMesa = $mesa['id'];
+                        
+                        echo '</tr><tr>';
+                        
+                        // Obtengo los asientos de la mesa
+                        $asientos = $bd->consulta("select * from Asiento where Mesa_id = '" . $idMesa . "'");
+                        echo '<table style="width:27px" id="'.$idMesa.'" class="tablaAsientos"><tr>';
                         
                         foreach ($asientos as $asiento) {
 
@@ -143,8 +186,7 @@
                 </div>
             </div>
         </div>
-
-                    <?php include 'footer.php' ?>        
+        <?php include 'footer.php' ?>        
         <script type="text/javascript" src="resources/jquery.js"></script>
         <script type="text/javascript" src="resources/bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript">

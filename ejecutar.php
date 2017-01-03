@@ -7,12 +7,12 @@
  */
 include 'clases/bd.class.php';
 $bd = new bd();
-for ($i = 1; $i <= 6; $i++) { // bucle mesas
+/*for ($i = 1; $i <= 24; $i++) { // bucle mesas
     
     // Creamos la mesa    
-    $bd->insertar('Mesa', 'id, numAsientos, zona, Planta, Biblioteca_Id', '\''.$i.'Z3B1P2\', 4, 3, 2, 1');   
+    $bd->insertar('Mesa', 'id, numAsientos, zona, Planta, Biblioteca_Id', '\''.$i.'Z4B1P2\', 2, 4, 2, 1');   
     
-    for ($j = 1; $j <= 4; $j++) {// bucle asientos
-        $bd->insertar('Asiento', 'Id, Estado, Mesa_id', '\'M'.$i.'Z3B1P2A'.$j.'\', 1, \''.$i.'Z3B1P2\'');  
+    for ($j = 1; $j <= 2; $j++) {// bucle asientos
+        $bd->insertar('Asiento', 'Id, Estado, Mesa_id', '\'M'.$i.'Z4B1P2A'.$j.'\', 1, \''.$i.'Z4B1P2\'');  
     }
-}
+}*/
