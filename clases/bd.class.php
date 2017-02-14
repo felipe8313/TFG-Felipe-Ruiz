@@ -42,7 +42,17 @@ class bd {
             $data[] = $row;
         }
 
-        return $data;
+        if (count($data) > 0){
+            return $data;
+        }else{
+            return false;
+        }   
+        
     }
+    
+    public function update($consulta) {
 
+        mysql_query($consulta); 
+        
+    }
 }

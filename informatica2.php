@@ -1,4 +1,21 @@
+<?php
+session_start();
+include 'clases/bd.class.php';
 
+if (!isset($_SESSION['passCorrect'])){
+    header('Location: paginaPass.php');
+}
+
+$bd = new bd();
+
+// Obtengo el nombre de la biblioteca
+$datos = $bd->consulta('select Nombre from Biblioteca where Id = 1');
+$nombreBiblio = $datos[0]['Nombre'];
+
+// Obtengo el número de asientos libres de esta planta
+$datos = $bd->consulta('select count(*) as num from Asiento join Mesa m on (m.id = Mesa_id) where Estado = 1 and Biblioteca_Id = 1 and Planta = 2');
+$numAsientosLibres = $datos[0]['num'];
+?>
 <html>
     <head>
         <title>Bienvenido a Librarino</title>
@@ -8,188 +25,85 @@
     </head>
     <body>        
         <?php include 'header.php' ?>
+
         <div class="contenido">
             <ul class="nav nav-pills nav-justified">
                 <li role="presentation"><a href="informatica1.php"><h4>Planta 1</h4></a></li>
-                <li role="presentation"  class="active"><a href="informatica2.php"><h4>Planta 2</h4></a></li>
+                <li role="presentation" class="active"><a href="informatica2.php"><h4>Planta 2</h4></a></li>
             </ul>
+            <div align="center">
+                <h1><?php echo utf8_encode($nombreBiblio) ?></h1>
+            </div>
             <div class="row">
-                <div class="col-md-10 col-md-offset-5">
-                    
-                    <?php
-                    // Zona 1                    
-                    echo '<div class="row"><div class="col-md-2"><table class="tablaMesas"><tr>';
-                    $bd = new bd();
-                    $mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 1 and Planta = 2");
-                    
-                    foreach ($mesas as $mesa) {
-                        
-                        echo '<td>';                        
-                        $idMesa = $mesa['id'];
-
-                        // Obtengo los asientos de la mesa
-                        $asientos = $bd->consulta("select * from Asiento where Mesa_id = '" . $idMesa . "'");
-                        echo '<table style="width:45px" class="tablaAsientos"><tr>';
-                        foreach ($asientos as $asiento) {
-
-                            $idAsiento = $asiento['Id'];
-                            $estado = (int) $asiento['Estado'];
-
-                            if ($estado === 1) { // Asiento libre
-                                $icono = 'resources/imgs/libre.png';
-                            } else if ($estado === 0) { // Asiento ocupado
-                                $icono = 'resources/imgs/ocupado.png';
-                            } else if ($estado === 2) { // Asiento reservado
-                                $icono = 'resources/imgs/reservado.png';
-                            }
-                            
-                            echo '<td><img width="100%" id="' . $idAsiento . '" src="' . $icono . '"></td>';
-                        }
-                        echo '</tr></table></td>';                        
-                    }
-                    echo '</tr></table><br><br><br>';
-                    
-                    // Zona 2                    
-                    echo '<table class="tablaMesas"><tr>';
-                    $bd = new bd();
-                    $mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 2 and Planta = 2");
-                    $contMesas = 0;
-                    $contFilas = 0;
-                    
-                    foreach ($mesas as $mesa) {
-                        
-                        if ($contMesas % 3 == 0 &&  $contFilas % 2 == 0 && $contMesas !== 0){
-                            echo '</tr><tr class="espacioFila">';
-                            $contFilas++;
-                        }else if ($contMesas % 3 == 0 && $contMesas !== 0){
-                            echo '</tr><tr>';
-                            $contFilas++;
-                        }
-                        echo '<td>';                        
-                        $idMesa = $mesa['id'];
-
-                        // Obtengo los asientos de la mesa
-                        $asientos = $bd->consulta("select * from Asiento where Mesa_id = '" . $idMesa . "'");
-                        echo '<table style="width:45px" id="'.$idMesa.'" class="tablaAsientos"><tr>';
-                        
-                        foreach ($asientos as $asiento) {
-
-                            $idAsiento = $asiento['Id'];
-                            $estado = (int) $asiento['Estado'];
-
-                            if ($estado === 1) { // Asiento libre
-                                $icono = 'resources/imgs/libre.png';
-                            } else if ($estado === 0) { // Asiento ocupado
-                                $icono = 'resources/imgs/ocupado.png';
-                            } else if ($estado === 2) { // Asiento reservado
-                                $icono = 'resources/imgs/reservado.png';
-                            }
-                            
-                            echo '<td><img width="100%" id="' . $idAsiento . '" src="' . $icono . '"></td>';
-                        }
-                        
-                        $contMesas++;
-                        
-                        echo '</tr></table></td>';                        
-                    }
-                    echo '</tr></table>';
-                    
-                    // Zona 3                    
-                    echo '<table class="tablaMesas"><tr>';
-                    $bd = new bd();
-                    $mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 3 and Planta = 2");
-                    $contMesas = 0;
-                    
-                    foreach ($mesas as $mesa) {
-                        
-                        if ($contMesas % 3 == 0 && $contMesas !== 0){
-                            echo '</tr><tr class="espacioFila">';
-                        }
-                        echo '<td>';
-                        $numAsientos = $mesa['numAsientos'];
-                        $asientosPorFila = $numAsientos / 2;
-                        $idMesa = $mesa['id'];
-
-                        // Obtengo los asientos de la mesa
-                        $asientos = $bd->consulta("select * from Asiento where Mesa_id = '" . $idMesa . "'");
-                        echo '<table style="width:45px" id="'.$idMesa.'" class="tablaAsientos"><tr>';
-                        
-                        foreach ($asientos as $asiento) {
-
-                            $idAsiento = $asiento['Id'];
-                            $estado = (int) $asiento['Estado'];
-
-                            if ($estado === 1) { // Asiento libre
-                                $icono = 'resources/imgs/libre.png';
-                            } else if ($estado === 0) { // Asiento ocupado
-                                $icono = 'resources/imgs/ocupado.png';
-                            } else if ($estado === 2) { // Asiento reservado
-                                $icono = 'resources/imgs/reservado.png';
-                            }
-                            
-                            if ($contAux % $asientosPorFila === 0 && $contAux !== 0) {
-                                echo '</tr><tr>';
-                            }
-                            
-                            echo '<td><img width="100%" id="' . $idAsiento . '" src="' . $icono . '"></td>';
-                            $contAux++;
-                        }
-                        
-                        $contMesas++;                        
-                        echo '</tr></table></td>';                        
-                    }
-                    echo '</tr></table></div>';
-                    
-                    // Zona 4                    
-                    echo '<div class="col-md-1"><table class="tablaMesas"><tr>';
-                    $bd = new bd();
-                    $mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 4 and Planta = 2");
-                    
-                    foreach ($mesas as $mesa) {
-                        echo '<td>';
-                        $numAsientos = $mesa['numAsientos'];
-                        $asientosPorFila = $numAsientos / 2;
-                        $idMesa = $mesa['id'];
-                        
-                        echo '</tr><tr>';
-                        
-                        // Obtengo los asientos de la mesa
-                        $asientos = $bd->consulta("select * from Asiento where Mesa_id = '" . $idMesa . "'");
-                        echo '<table style="width:27px" id="'.$idMesa.'" class="tablaAsientos"><tr>';
-                        
-                        foreach ($asientos as $asiento) {
-
-                            $idAsiento = $asiento['Id'];
-                            $estado = (int) $asiento['Estado'];
-
-                            if ($estado === 1) { // Asiento libre
-                                $icono = 'resources/imgs/libre.png';
-                            } else if ($estado === 0) { // Asiento ocupado
-                                $icono = 'resources/imgs/ocupado.png';
-                            } else if ($estado === 2) { // Asiento reservado
-                                $icono = 'resources/imgs/reservado.png';
-                            }
-                            
-                            if ($contAux % $asientosPorFila === 0 && $contAux !== 0) {
-                                echo '</tr><tr>';
-                            }
-                            
-                            echo '<td><img width="100%" id="' . $idAsiento . '" src="' . $icono . '"></td>';
-                            $contAux++;
-                        }
-                        
-                        $contMesas++;                        
-                        echo '</tr></table></td>';                        
-                    }
-                    echo '</tr></table></div></div>';
-                    ?>
+                <div class="col-md-3 margen">
+                    <!-- Panel para mostrar el número de asientos libres-->
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div align="center">
+                                <h2>Número de asientos libres</h2>
+                                <h1 style="color: green"><?php echo $numAsientosLibres ?></h1>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="col-md-5 margen">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div style="margin-left: 30% !important">
+                                <div id="mapa">
+                                <?php
+                                    include 'mapas/mapaInformaticaP2.php';
+                                ?>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+                <?php                            
+                    include 'modulos/panelReserva.php';
+                ?>
             </div>
         </div>
         <?php include 'footer.php' ?>        
         <script type="text/javascript" src="resources/jquery.js"></script>
         <script type="text/javascript" src="resources/bootstrap/js/bootstrap.js"></script>
+        <script type="text/javascript" src="resources/js/funcionesJs.js"></script>
         <script type="text/javascript">
+            
+            $(document).ready(function() {                   
+                setInterval(recargaMapa, 3000);
+            });
+            
+            function recargaMapa() {
+                $("#mapa").load('mapas/mapaInformaticaP2.php', {}, function () {
+
+
+                    $(".asiento").click(
+                            function () {
+
+                                // Obtendo el id del asiento
+                                var id = $(this).attr('id');
+
+                                // Indico en la variable del formulario el asiento que se ha clicado
+                                $("#asientoReservado").val(id);
+
+                                // Obtengo el estado del asiento
+                                var estado = $(this).data('estado');
+
+                                // Segun el estado muestro una información u otra en el modal
+                                if (estado === 1) { // asiento libre
+                                    $("#contenidoModalReserva").html('<h4>¿Desea reservar este asiento?</h4><br><button type="submit" class="btn btn-primary">Reservar</button>');
+                                } else { // asiento reservado/ocupado
+                                    $("#contenidoModalReserva").html('<h4>Este asiento está reservado u ocupado</h4>');
+                                }
+
+                                // Muestro el modal
+                                $("#modalReserva").modal("show");
+
+                    });
+
+                });
+            }
 
         </script>
     </body>

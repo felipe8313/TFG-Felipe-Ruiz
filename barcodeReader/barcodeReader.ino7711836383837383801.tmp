@@ -1,5 +1,8 @@
 #include <hidboot.h>
 #include <usbhub.h>
+#include <Wire.h>
+#include <Ciao.h>
+
 
 // Satisfy the IDE, which needs to see the include statment in the ino too.
 #ifdef dobogusinclude
@@ -12,11 +15,14 @@ USB     Usb;
 HIDBoot<USB_HID_PROTOCOL_KEYBOARD>    HidKeyboard(&Usb);
 String barcode;
 char barcodeDigit;
-int estadoSitio = 0; // 0 ocupado, 1 libre
+String estadoSitio;
 int cont = 0;
 int pinRojo = 4;
 int pinAzul = 2;
 int pinVerde = 3;
+unsigned long previousMillis = 0;
+unsigned long interval = 3000;
+
 
 
 class KbdRptParser : public KeyboardReportParser
@@ -42,48 +48,65 @@ void KbdRptParser::OnKeyPressed(uint8_t key){
   cont++;
  
   if (char(key)== 19) {    //verify the las digit of the scanner
+  
       barcode.remove(cont-1);  //Remove the last digit
       Serial.println(barcode); //Printing the complete code
       barcode="";                       // Reset the counter
       cont = 0;
       
-      if (estadoSitio == 1){
-        estadoSitio = 0;
-        Serial.println("SITIO OCUPADO");
-        color('r');
-      }else{
-        estadoSitio = 1;
-        Serial.println("SITIO LIBRE");
-        color('v');
-      }
+      compruebaSitio("/librarinoApp/ardController.php");
       
+           
       
   }
   
 };
 
-
-void color(char color){ //La funcion recibe un parametro que se guarda en variable color
+void color(String estado){ //La funcion recibe un parametro que se guarda en variable color
   
-  switch(color){ //Se compara variable color con dato guardado
-      case 'r': analogWrite(pinRojo,255); 
+  switch(estado.toInt()){ //Se compara variable color con dato guardado
+      // rojo - ocupado
+      case 0: analogWrite(pinRojo,255); 
                 analogWrite(pinAzul,0); 
                 analogWrite(pinVerde,0);
       break;
-      case 'v': analogWrite(pinRojo,0); 
+      
+      // verde - libre
+      case 1: analogWrite(pinRojo,0); 
                 analogWrite(pinAzul,0); 
                 analogWrite(pinVerde,255);
+      break;
+      
+      // naranja - reservado
+      case 2: analogWrite(pinRojo,245); 
+                analogWrite(pinAzul,33); 
+                analogWrite(pinVerde,064);
       break;
     }
 }
 
 
+void compruebaSitio(String url){
+
+    CiaoData data = Ciao.write("rest", "librarino.ticsur.es",  "/librarinoApp/ardCompAsiento.php");
+    if (!data.isEmpty()){
+      estadoSitio = data.get(2);
+      color(estadoSitio);
+      Serial.println( "Response: " + estadoSitio);
+    }else{ 
+      Serial.println ("Write Error");
+    } 
+
+}
+
 KbdRptParser Prs;
 
 void setup()
 {
+  
   Serial.begin( 115200 );
-  Serial.println("Start");
+  Serial.println("Start ");
+  Ciao.begin();
 
   if (Usb.Init() == -1)
     Serial.println("OSC did not start.");
@@ -91,13 +114,25 @@ void setup()
   delay( 200 );
 
   HidKeyboard.SetReportParser(0, &Prs);
+  
 }
 
 void loop()
 {
-  Usb.Task();  
+  
+  
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis > interval) {
+    previousMillis = currentMillis;
+    compruebaSitio("/librarinoApp/ardController.php");    
+  }else{
+    Usb.Task();
+  }
   
 }
+
+
+
 
 
 

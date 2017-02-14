@@ -1,4 +1,13 @@
+<?php
+include 'clases/bd.class.php';
+ini_set('error_reporting', E_ALL ^ E_NOTICE);
+ini_set('display_errors', 'on');
+session_start();
 
+if (!isset($_SESSION['passCorrect'])){
+    header('Location: paginaPass.php');
+}
+?>
 <html>
     <head>
         <title>Bienvenido a Librarino</title>
