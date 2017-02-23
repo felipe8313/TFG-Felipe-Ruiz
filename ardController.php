@@ -12,8 +12,6 @@ include 'clases/bd.class.php';
 
 $idDispositivo = $_GET['id'];
 $usuario = $_GET['usuario'];
-//$idDispositivo = 'M1Z4B1A1';
-//$usuario = '0619182220';
 
 $bd = new bd();
 
@@ -47,10 +45,18 @@ if ($usuario === "") {
             echo 'El sitio está ocupado';
         }
     } else if ($estado === 1) { // Asiento libre
-//
+     
         // Ocupo el asiento
         $bd->update("update Asiento set Estado = 0, Usuario_ocupacion = '" . $usuario . "', HoraOcupacion = now(), Usuario_reserva = NULL, HoraReserva = NULL where Id = '" . $idDispositivo . "'");
         echo "Respuesta:0";
+        
+        // Creo un trabajo programado para liberar al cabo de 3 horas
+        $job = "CREATE EVENT liberarAsientoOcupado".$idDispositivo."
+                ON SCHEDULE AT date_add(now(), INTERVAL 30 second)
+                do call liberarAsientoOcupado('".$idDispositivo."', '".$usuario."');"; 
+        $bd->consulta($job);
+                
+        
     } else if ($estado === 2) { // Asiento reservado
         $usuarioReserva = $datos[0]['Usuario_reserva'];
 
