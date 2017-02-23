@@ -46,9 +46,9 @@ foreach ($mesas as $mesa) {
 }
 $mapa .= '</table></div></div>';
 
-// Zona 4                    
-$mapa .= '<div class="zona4"><div class="col-md-3"><table class="tablaMesas">';
-$mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 4 and Planta = 1");
+// Zona 2              
+$mapa .= '<div class="zona2"><div class="col-md-3"><table class="tablaMesas">';
+$mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 2 and Planta = 1 order by id asc");
 
 
 foreach ($mesas as $mesa) {
@@ -92,9 +92,10 @@ foreach ($mesas as $mesa) {
 }
 $mapa .= '</table></div></div>';
 
-// Zona 2                        
-$mapa .= '<div class="zona2"><div class="col-md-3"><table class="tablaMesas">';
-$mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 2 and Planta = 1");
+
+// Zona 3                  
+$mapa .= '<div class="zona3"><div class="col-md-3"><table class="tablaMesas">';
+$mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 3 and Planta = 1");
 
 foreach ($mesas as $mesa) {
     $mapa .= '<tr><td>';
@@ -132,9 +133,9 @@ foreach ($mesas as $mesa) {
 }
 $mapa .= '</table></div></div>';
 
-// Zona 3
-$mapa .= '<div class="zona3"><div class="col-md-3"><table class="tablaMesas">';
-$mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 3 and Planta = 1");
+// Zona 4
+$mapa .= '<div class="zona4"><div class="col-md-3"><table class="tablaMesas">';
+$mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 4 and Planta = 1");
 
 
 foreach ($mesas as $mesa) {
