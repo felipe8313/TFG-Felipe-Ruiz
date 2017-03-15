@@ -1,0 +1,177 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15-mar-2017, 18:00:08
+    Author     : Felipe
+*/
+
+.imgitem{
+    width: 15%; 
+    float: left;
+    cursor: pointer;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.itemList{
+    padding-top: 5% !important;
+    padding-top: 5% !important;
+}
+
+.header2{ 
+    background-color: whitesmoke !important;
+    padding: 15px;
+    width: 89%;
+    margin-left: 11%;
+    padding-top: 4%;
+    border-bottom: outset;
+
+}
+
+.botonesHeader2{
+    float: right;
+    margin-top: 9px;
+}
+
+body, html {
+    margin: 0px;
+    height: 100%;
+    margin: 0;
+    font-weight: 100;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+}
+
+.content{
+    width: 87%;
+    left: 12%;
+    top: 8%;
+    position: relative;
+}
+
+.nav-side-menu {    
+    position: fixed;
+    background: rgba(76,76,76,1);
+    background: -moz-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 15%, rgba(102,102,102,1) 24%, rgba(71,71,71,1) 36%, rgba(44,44,44,1) 47%, rgba(0,0,0,1) 57%, rgba(17,17,17,1) 70%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 88%, rgba(19,19,19,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(76,76,76,1)), color-stop(15%, rgba(89,89,89,1)), color-stop(24%, rgba(102,102,102,1)), color-stop(36%, rgba(71,71,71,1)), color-stop(47%, rgba(44,44,44,1)), color-stop(57%, rgba(0,0,0,1)), color-stop(70%, rgba(17,17,17,1)), color-stop(76%, rgba(43,43,43,1)), color-stop(88%, rgba(28,28,28,1)), color-stop(100%, rgba(19,19,19,1)));
+    background: -webkit-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 15%, rgba(102,102,102,1) 24%, rgba(71,71,71,1) 36%, rgba(44,44,44,1) 47%, rgba(0,0,0,1) 57%, rgba(17,17,17,1) 70%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 88%, rgba(19,19,19,1) 100%);
+    background: -o-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 15%, rgba(102,102,102,1) 24%, rgba(71,71,71,1) 36%, rgba(44,44,44,1) 47%, rgba(0,0,0,1) 57%, rgba(17,17,17,1) 70%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 88%, rgba(19,19,19,1) 100%);
+    background: -ms-linear-gradient(top, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 15%, rgba(102,102,102,1) 24%, rgba(71,71,71,1) 36%, rgba(44,44,44,1) 47%, rgba(0,0,0,1) 57%, rgba(17,17,17,1) 70%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 88%, rgba(19,19,19,1) 100%);
+    background: linear-gradient(to bottom, rgba(76,76,76,1) 0%, rgba(89,89,89,1) 15%, rgba(102,102,102,1) 24%, rgba(71,71,71,1) 36%, rgba(44,44,44,1) 47%, rgba(0,0,0,1) 57%, rgba(17,17,17,1) 70%, rgba(43,43,43,1) 76%, rgba(28,28,28,1) 88%, rgba(19,19,19,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313', GradientType=0 );
+    color: white;
+    font-size: 16px;
+    width: 11%;
+    height: 100%;
+    border-right: outset;
+
+
+}
+
+#sidebar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.nav-side-menu ul li {
+    margin: 0;
+}
+
+.nav-side-menu ul li:hover a {
+    background: #3973ac;
+}
+.main-content {
+    width: 97.5%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-side-menu ul,
+.nav-side-menu li {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    line-height: 35px;
+    cursor: pointer;
+}
+
+.nav-side-menu ul .active,
+.nav-side-menu li .active {   
+    background-color: #4f5b69;
+}
+.nav-side-menu ul .sub-menu li.active,
+.nav-side-menu li .sub-menu li.active {
+    color: #96E6FF;
+}
+.nav-side-menu ul .sub-menu li.active a,
+.nav-side-menu li .sub-menu li.active a {
+    color: #96E6FF;
+}
+.nav-side-menu ul .sub-menu li,
+.nav-side-menu li .sub-menu li {
+    background-color: black;
+    border: none;
+    line-height: 28px;
+    border-bottom: 1px solid black;
+    margin-left: 0px;
+    width: 100%;
+}
+
+
+.nav-side-menu ul .sub-menu li:before,
+.nav-side-menu li .sub-menu li:before {
+    font-family: FontAwesome;
+    content: "\f105";
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 10px;
+    vertical-align: middle;
+
+
+}
+.nav-side-menu li {
+    padding-left: 0px;
+    border-bottom: 1px solid;
+}
+
+
+.nav-side-menu li a {
+    text-decoration: none;
+    color: white;
+}
+.nav-side-menu li a i {
+    padding-left: 10px;
+    width: 20px;
+    padding-right: 20px;
+}
+.nav-side-menu li:hover {
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    transition: all 1s ease;
+}
+
+.arrow .menos{
+    float: left;
+}
+
+.menu-list li:last-child{
+    border-bottom: 1px solid;
+}
+
+
+.subitem:hover{
+    background-color: #2098d1 !important;
+}
+
+.itemList:hover{
+    background: sandybrown !important;
+}
+
+.selectedItem{
+    background: #00979C !important;
+}

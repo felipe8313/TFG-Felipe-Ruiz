@@ -1,6 +1,9 @@
 <header class="cabecera">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-1">
+            <img class="logoHeader" width="55%" src="resources/imgs/logo.png"/>
+        </div>
+        <div class="col-md-7">            
             <h1 class="titulo">LIBRARINO</h1>
             <h4 class="subtitulo">Tu biblioteca inteligente</h4>
         </div>
@@ -20,7 +23,7 @@
                     
                 }
                 ?>
-                <a class="itemMenu" href="enconstruccion.php">Ayuda</a>                
+                <a class="itemMenu" href="ayuda.php">Ayuda</a>                
                 <a class="itemMenu" href="main.php">Inicio</a>
             </nav>
             <?php
@@ -40,6 +43,7 @@
             </div>
             <form method="POST" action="controladores/loginController.php">
                 <input type="hidden" name="accion" value="login">
+                <input type="hidden" name="modo" value="app"/>
                 <div class="modal-body">
                     <label for="user">Usuario</label>
                     <input id="user" type="text" name="user" class="form-control"><br>
@@ -53,5 +57,47 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<!-- modal para cambiar la contraseña -->
+<div id="modalCambiarPass" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cambiar contraseña</h4>
+            </div>
+            <form method="POST" action="controladores/usuarioController.php">
+                <div class="modal-body">           
+                    <input name="accion" type="hidden" value="cambiaContrasenia">
+                    <label for="pass">Nueva contraseña</label>
+                    <input name="pass" id="nuevaPass" onkeyup="compruebaPass()" class="form-control" type="text"><br>
+                    <label for="repass">Repita contraseña</label>
+                    <input name="repass" id="nuevaRepass" onkeyup="compruebaPass()" class="form-control" type="text">
+                    <div id="mensajePass"><b style="color:red">Las contraseñas no coinciden</b></div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" id="boton" class="btn btn-primary" value="Guardar">                         
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
+
+<script type="text/javascript">    
+    function compruebaPass(){
+        
+        var pass = $("#nuevaPass").val();
+        var repass = $("#nuevaRepass").val();
+        if (pass === repass && pass !== '' && repass !== ''){
+            $("#mensajePass").html('<b style="color:green">Las contraseñas coinciden</b>');
+            $('#boton').attr("disabled", false);
+        }else{
+            $("#mensajePass").html('<b style="color:red">Las contraseñas no coinciden</b>');
+            $('#boton').attr("disabled", true);
+        }    
+    }    
+</script>
 
 

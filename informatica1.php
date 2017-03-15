@@ -21,15 +21,16 @@ $numAsientosLibres = $datos[0]['num'];
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="resources/style.css"/>
         <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.css"/>
+        <link rel="shortcut icon" href="resources/imgs/logo.png">
     </head>
     <body>        
         <?php include 'header.php' ?>
-
+        <ul class="nav nav-pills nav-justified">
+            <li role="presentation" class="active"><a href="informatica1.php"><h4>Planta 1</h4></a></li>
+            <li role="presentation"><a href="informatica2.php"><h4>Planta 2</h4></a></li>
+        </ul>
         <div class="contenido">
-            <ul class="nav nav-pills nav-justified">
-                <li role="presentation" class="active"><a href="informatica1.php"><h4>Planta 1</h4></a></li>
-                <li role="presentation"><a href="informatica2.php"><h4>Planta 2</h4></a></li>
-            </ul>
+            
             <div align="center">
                 <h1><?php echo utf8_encode($nombreBiblio) ?></h1>
             </div>
@@ -64,7 +65,7 @@ $numAsientosLibres = $datos[0]['num'];
             $(document).ready(function () {
                 recargaMapa();
                 setInterval(recargaMapa, 3000);
-                
+
             });
 
             function recargaMapa() {
@@ -93,8 +94,8 @@ $numAsientosLibres = $datos[0]['num'];
                                 // Muestro el modal
                                 $("#modalReserva").modal("show");
 
-                    });
-                    
+                            });
+
                     // Añado el parpadeo al asiento ocupado o reservado
                     $("#<?php echo $asientoOcupado ?>").addClass("parpadea");
                     $("#<?php echo $asientoReservado ?>").addClass("parpadea");

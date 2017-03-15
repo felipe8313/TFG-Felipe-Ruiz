@@ -1,0 +1,87 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 14-mar-2017, 18:21:50
+    Author     : Felipe
+*/
+@import url(http://fonts.googleapis.com/css?family=Tenor+Sans);
+
+.bodyLogin{
+    background-color: #00979C;
+}
+
+
+html {
+  font-family: "Tenor Sans", sans-serif;
+}
+
+.container {
+  width: 500px;
+  height: 400px;
+}
+
+.login {
+    margin-top: 10%;
+    width: 45%;
+    margin-left: 25%;
+    
+}
+
+
+.input-txt {
+  width: 100%;
+  padding: 20px 10px;
+  background: #00979C;
+  border: none;
+  font-size: 1em;
+  color: white;
+  border-bottom: 1px dotted white;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-transition: background-color 0.5s ease-in-out;
+  -o-transition: background-color 0.5s ease-in-out;
+  -webkit-transition: background-color 0.5s ease-in-out;
+  transition: background-color 0.5s ease-in-out;
+}
+.input-txt:-moz-placeholder {
+  color: white;
+}
+.input-txt:-ms-input-placeholder {
+  color: white;
+}
+.input-txt::-webkit-input-placeholder {
+  color: white;
+}
+.input-txt:focus {
+  background-color: sandybrown;
+}
+
+.login-footer {
+  margin: 10px 0;
+  overflow: hidden;
+  float: left;
+  width: 100%;
+}
+
+.btn {
+  padding: 14px 35px !important;
+  border: none;
+  background: sandybrown;
+  color: white;
+  border-radius: 25px;
+}
+
+.cabecera{    
+    padding-bottom: 0.5% !important;
+    border-bottom: outset;
+}
+
+.tituloPanel{
+    color: white;
+    font-weight: bold;
+}
+

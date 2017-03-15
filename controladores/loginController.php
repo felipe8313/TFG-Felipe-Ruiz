@@ -18,6 +18,7 @@ if ($accion === 'login'){
     
     $user = $_POST['user'];
     $pass = $_POST['pass'];
+    $modo = $_POST['modo'];
     
     $datos = $bd->consulta("select Nombre, NIU, Rol, Bloqueado from Usuario where (DNI = '".$user."' or NIU = '".$user."') and contrasenia = '".crypt($pass,$user)."'");
     
@@ -34,7 +35,12 @@ if ($accion === 'login'){
         $_SESSION['error'] = '*Usuario o contraseñas incorrectos';
     }
     
-    header('Location: '.$_SERVER['HTTP_REFERER']);
+    // Login por la parte de admon
+    if ($modo === 'admin'){
+        header('Location: ../admin/inicio.php');
+    }else{ // login por la app
+        header('Location: '.$_SERVER['HTTP_REFERER']);
+    }
     
 }else{ // logout
     
