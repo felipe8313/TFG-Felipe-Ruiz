@@ -10,13 +10,13 @@ and open the template in the editor.
         <title>Usuarios</title>
         <link rel="stylesheet" type="text/css" href="resources/menu_style.css"/>
         <link rel="stylesheet" type="text/css" href="resources/admin_style.css"/>
-        <link rel="stylesheet" type="text/css" href="resources/datatables/dataTables.min.css"/>
+        <link rel="stylesheet" type="text/css" href="resources/datatables/dataTables.min.css"/> 
         <link rel="stylesheet" type="text/css" href="../resources/bootstrap/css/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="../resources/style.css"/>
         <link rel="shortcut icon" href="../resources/imgs/logo.png">
     </head>
     <body>
-        <?php 
+        <?php
         include_once 'header.php';
         include_once 'menuLateral.php';
         ?>
@@ -36,7 +36,7 @@ and open the template in the editor.
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                 </tbody>
             </table>
         </div>
@@ -44,10 +44,15 @@ and open the template in the editor.
     <script type="text/javascript" src="../resources/jquery.js"></script>
     <script type="text/javascript" src="../resources/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="resources/datatables/dataTables.min.js"></script>
+    <script type="text/javascript" src="resources/datatables/dataTables.bootstrap.min.js"></script>
     <script>
-        $(document).ready(function(){            
+        $(document).ready(function () {
             $("#usuarios").addClass("selectedItem");
-            $('#tablaUsuarios').dataTable();
+            $('#tablaUsuarios').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
+                }
+            });
         })
     </script>
 </html>
