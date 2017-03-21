@@ -4,11 +4,12 @@ include '../clases/bd.class.php';
 $bd = new bd();
 
 $mapa = '';
+$asientoOcupado = '';
+$asientoReservado = '';
 
 // Zona 1                    
 $mapa .= '<div class="zona1"><div class="col-md-3"><table class="tablaMesas">';
 $mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 1 and Planta = 1");
-
 
 foreach ($mesas as $mesa) {
     $mapa .= '<tr><td>';

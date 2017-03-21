@@ -21,20 +21,6 @@ and open the template in the editor.
     padding-top: 5% !important;
 }
 
-.header2{ 
-    background-color: whitesmoke !important;
-    padding: 15px;
-    width: 89%;
-    margin-left: 11%;
-    padding-top: 4%;
-    border-bottom: outset;
-
-}
-
-.botonesHeader2{
-    float: right;
-    margin-top: 9px;
-}
 
 body, html {
     margin: 0px;
@@ -47,7 +33,7 @@ body, html {
 .content{
     width: 87%;
     left: 12%;
-    top: 8%;
+    top: 2%;
     position: relative;
 }
 

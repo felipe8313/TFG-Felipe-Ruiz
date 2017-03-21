@@ -9,8 +9,35 @@ and open the template in the editor.
 */
 @import url(http://fonts.googleapis.com/css?family=Tenor+Sans);
 
+.aviso{
+    font-style: italic;
+    font-size: 10px !important;
+    color: red;
+}
+
 .bodyLogin{
     background-color: #00979C;
+}
+
+.logoHeaderAdmin{
+    margin-top: 12%;
+    margin-left: 25%;
+}
+
+.btn{
+    font-size: 11px !important;
+    border-radius: 100px !important;
+    padding: 10px !important;
+}
+
+.botonesCabecera{
+    float: right;
+    margin-bottom: 20px;
+    margin-right: 15px;
+}
+
+body{
+    font-size: 11px !important;
 }
 
 
@@ -19,14 +46,13 @@ html {
 }
 
 .container {
-  width: 500px;
+  width: 500px; 
   height: 400px;
 }
 
 .login {
-    margin-top: 10%;
     width: 45%;
-    margin-left: 25%;
+    margin-left: 27%;
     
 }
 
@@ -67,7 +93,7 @@ html {
   width: 100%;
 }
 
-.btn {
+.botonLogin {
   padding: 14px 35px !important;
   border: none;
   background: sandybrown;

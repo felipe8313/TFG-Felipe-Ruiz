@@ -5,9 +5,9 @@ if (!defined('DB_SERVER_NAME'))
 if (!defined('DB_NAME'))
     define('DB_NAME', 'librarinodb');
 if (!defined('DB_USER'))
-    define('DB_USER', 'felipe');
+    define('DB_USER', 'root');
 if (!defined('DB_PASS'))
-    define('DB_PASS', 'Felipe*2016');
+    define('DB_PASS', '');
 
 class bd {
 

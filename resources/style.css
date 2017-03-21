@@ -12,6 +12,7 @@ and open the template in the editor.
 body{
     margin: 0px;
     font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif !important;
+    font-size: 12px; 
 }
 
 .imagenMain{
@@ -87,16 +88,12 @@ h4{
     bottom:60px;
     color:#fff;
     background-color:#000;
-    padding:4px 10px;
+    padding:20px 10px;
     opacity:0.75;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 
 
-}
-
-.textoImagen{
-    font-size: 20px !important;
 }
 
 nav{
@@ -243,6 +240,6 @@ tr.espacioFila > td
 }
 
 .logoHeader{
-    margin-top: 4%;
+    margin-top: 22%;
     margin-left: 32%;
 }

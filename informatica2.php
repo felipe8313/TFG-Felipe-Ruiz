@@ -2,10 +2,8 @@
 session_start();
 include 'clases/bd.class.php';
 
-if (!isset($_SESSION['passCorrect'])) {
-    header('Location: paginaPass.php');
-}
-
+$asientoOcupado = '';
+$asientoReservado = '';
 $bd = new bd();
 
 // Obtengo el nombre de la biblioteca
@@ -32,7 +30,7 @@ $numAsientosLibres = $datos[0]['num'];
         </ul>
         <div class="contenido">
             <div align="center">
-                <h1><?php echo utf8_encode($nombreBiblio) ?></h1>
+                <h3><?php echo utf8_encode($nombreBiblio) ?></h3>
             </div>
             <div class="row">
                 <div class="col-md-3 margen">
@@ -49,7 +47,7 @@ $numAsientosLibres = $datos[0]['num'];
                 <div class="col-md-5 margen">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <div style="margin-left: 30% !important">
+                            <div style="margin-left: 25% !important">
                                 <div id="mapa"></div> 
                             </div>
                         </div>
@@ -67,6 +65,7 @@ $numAsientosLibres = $datos[0]['num'];
         <script type="text/javascript">
 
             $(document).ready(function () {
+                recargaMapa();
                 setInterval(recargaMapa, 3000);
             });
 

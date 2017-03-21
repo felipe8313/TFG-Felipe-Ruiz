@@ -6,9 +6,11 @@ $bd = new bd();
 $mapa = '';
 
 // Zona 1                    
-$mapa .= '<div class="row"><div class="col-md-5"><table class="tablaMesas"><tr>';
+$mapa .= '<div class="row"><div class="col-md-6"><table class="tablaMesas"><tr>';
 $bd = new bd();
 $mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 1 and Planta = 2");
+
+$contAux = 0;
 
 foreach ($mesas as $mesa) {
 
@@ -129,7 +131,7 @@ foreach ($mesas as $mesa) {
 $mapa .= '</tr></table></div></div>';
 
 // Zona 4                    
-$mapa .= '<div class="col-md-5"><table class="tablaMesas"><tr>';
+$mapa .= '<div class="col-md-6"><table class="tablaMesas"><tr>';
 $bd = new bd();
 $mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = 1 and zona = 4 and Planta = 2");
 

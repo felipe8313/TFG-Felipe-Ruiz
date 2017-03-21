@@ -8,9 +8,6 @@ and open the template in the editor.
 session_start();
 include 'clases/bd.class.php';
 
-if (!isset($_SESSION['passCorrect'])) {
-    header('Location: paginaPass.php');
-}
 ?>
 <html>
     <head>
@@ -33,7 +30,7 @@ if (!isset($_SESSION['passCorrect'])) {
                     <input type="text" name="user" placeholder="Usuario" required="required" class="input-txt" />
                     <input type="password" name="pass" placeholder="Contraseña" required="required" class="input-txt" />
                     <div class="login-footer">
-                        <div align="center"><button type="submit" class="btn">Entrar  </button></div>
+                        <div align="center"><button type="submit" class="botonLogin">Entrar  </button></div>
                     </div>
                 </form>
             </div>
