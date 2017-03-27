@@ -20,6 +20,64 @@ and open the template in the editor.
         session_start();
         include_once 'header.php';
         include_once 'menuLateral.php';
+        include_once '../clases/bd.class.php';
+        error_reporting(0);
+        
+        // Cargo en la tabla los usuarios que coinciden con el filtro
+        if (isset($_GET['nombre'])){
+            $nombre = strtoupper($_GET['nombre']);            
+        }else{
+            $nombre = '';
+        }
+        
+        if (isset($_GET['niuDni'])){
+            $niuDni = strtoupper($_GET['niuDni']);
+        }else{
+            $niuDni = '';
+        }     
+        
+        if ($nombre !== '' || $niuDni !== ''){
+            $bd = new bd();
+            $consulta = "select * from Usuario where (ucase(nombre) like '%".$nombre."%' or ucase(apellidos) like '%".$nombre."%')  and (ucase(DNI) like '%".$niuDni."%' or ucase(NIU) like '%".$niuDni."%')";
+            $datos = $bd->consulta($consulta);
+            $cuerpoTabla = '';
+
+            foreach ($datos as $usuario) {
+                $cuerpoTabla .= '<tr>';
+                $cuerpoTabla .= '<td>'.$usuario['NIU'].'</td>';
+                $cuerpoTabla .= '<td>'.$usuario['DNI'].'</td>';
+                $cuerpoTabla .= '<td>'.$usuario['Nombre'].'</td>';
+                $cuerpoTabla .= '<td>'.$usuario['Apellidos'].'</td>';
+
+                if ($usuario['Rol'] === '1'){ // alumno
+                    $rol = 'Usuario';
+                }else if ($usuario['Rol'] === '2'){ // bibliotecario
+                    $rol = 'Bibliotecario';
+                }else if($usuario['Rol'] === '3'){ // administrador
+                    $rol = 'Administrador';
+                }else{
+                    $rol = '';
+                }
+
+                $cuerpoTabla .= '<td>'.$rol.'</td>';
+
+                if ($usuario['Bloqueado'] === '1'){
+                    $bloq = 'SI';
+                }else if ($usuario['Bloqueado'] === '0'){
+                    $bloq = 'NO';
+                }else{
+                    $bloq = '';
+                }
+
+                $cuerpoTabla .= '<td>'.$bloq.'</td>';
+                $cuerpoTabla .= '<td>'.$usuario['TipoUsuario'].'</td>'; 
+                $cuerpoTabla .= '<td>'.$usuario['Titulación'].'</td>';
+                $cuerpoTabla .= '<td>'.$usuario['Email'].'</td>';  
+                $cuerpoTabla .= '<td><button type="button" class="btn btn-default" onclick="cargarUsuario(\''.$usuario['DNI'].'\')"><span class="glyphicon glyphicon-pencil"></span></button></td>'; 
+                $cuerpoTabla .= '</tr>';            
+            }
+        
+        }            
         ?>
         <div class="content">
             <div class="botonesCabecera">
@@ -27,24 +85,48 @@ and open the template in the editor.
                     <span class="glyphicon glyphicon-plus"></span>&ensp; Nuevo usuario
                 </button>
             </div>
-            <table id="tablaUsuarios" class="table table-striped table-bordered table-hovered">
-                <thead>
-                    <tr>
-                        <td>Usuario</td>
-                        <td>Contraseña</td>
-                        <td>Nombre</td>
-                        <td>Apellidos</td>
-                        <td>DNI</td>
-                        <td>NIU</td>
-                        <td>Rol</td>
-                        <td>Tipo usuario</td>
-                        <td>Titulación</td>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Filtro</div>
+                        <div class="panel-body">
+                            <form method="GET" action="usuarios.php">
+                                <div class="col-md-5">
+                                    <label>Nombre y/o apellidos</label>
+                                    <input value="<?php echo $nombre?>" type="text" class="form-control" name="nombre">  
+                                </div>
+                                <div class="col-md-5">
+                                    <label>NIU o DNI</label>
+                                    <input value="<?php echo $niuDni?>" type="text" class="form-control" name="niuDni">  
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&ensp; Buscar</button><br><br>
+                                    <button type="button" onclick="limpiar()" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span>&ensp; Limpiar</button>
+                                </div>                                
+                            </form>                        
+                        </div>
+                    </div>
+                </div>
+                <table id="tablaUsuarios" class="table table-striped table-bordered table-hovered">
+                    <thead>
+                        <tr>
+                            <td>NIU</td>
+                            <td>DNI</td>                            
+                            <td>Nombre</td>
+                            <td>Apellidos</td>
+                            <td>Rol</td>
+                            <td>Bloqueado</td>
+                            <td>Tipo usuario</td>
+                            <td>Titulación</td>
+                            <td>Email</td>
+                            <th>Modi.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php echo $cuerpoTabla?>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Modal para crear un usuario -->
@@ -69,10 +151,10 @@ and open the template in the editor.
                                 <input required="true" type="text" name="apellidos" class="form-control"><br>
                                 <label>Email*</label>
                                 <input required="true" type="email" name="email" class="form-control"><br>
-                                
+
                             </div>
                             <div class="col-md-6">                               
-                                
+
                                 <!-- Solo el administrador podrá definir roles -->
                                 <?php if ($_SESSION['Rol'] === 2) { ?>
                                     <label>Rol*</label>
@@ -96,7 +178,7 @@ and open the template in the editor.
                                     <option value="PAS">Pas</option>
                                     <option value="ALUMNO">Alumno</option>
                                 </select><br>
-                                <label>Imagen*</label>
+                                <label>Foto*</label>
                                 <input multiple="true" type="file" name="fichero" accept="image/*"><br>
                             </div>
                         </div>
@@ -123,5 +205,13 @@ and open the template in the editor.
                             }
                         });
                     })
+                    
+                    function limpiar(){
+                        window.location.href = "usuarios.php";
+                    }
+                    
+                    function cargarUsuario(dni){
+                        window.location.href = "verUsuario.php?dni=" + dni;
+                    }
     </script>
 </html>

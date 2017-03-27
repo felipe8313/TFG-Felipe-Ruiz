@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-function enviarCorreo($email, $usuario, $contrasenia, $nombre, $asunto) {
+function enviarCorreo($email, $cuerpo, $asunto) {
 
     include_once '../../resources/phpmailer/smtp.php';
     include_once '../../resources/phpmailer/phpmailer.php';
@@ -35,8 +35,7 @@ function enviarCorreo($email, $usuario, $contrasenia, $nombre, $asunto) {
     $mail->Subject = $asunto;
     $mail->isHTML(true);
 
-    $mail->Body = '<html><body><h4>Hola ' . $nombre . ', aquí tienes los datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
-            . ' ' . $contrasenia. '</body></html>';
+    $mail->Body = $cuerpo;
     $mail->addReplyTo('felipe.r.p.1994@gmail.com', 'Librarino');
 
     $mail->addAddress($email);

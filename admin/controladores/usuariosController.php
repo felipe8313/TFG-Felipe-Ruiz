@@ -30,7 +30,7 @@ if (isset($_POST['accion'])){
         if (isset($_POST['rol'])){
             $rol = $_POST['rol'];
         }else{
-            $rol = 0;
+            $rol = 1;
         }
         
         // Genero la contraseña aleatoriamente y la codifico. La codifico utilizando el NIU o el DNI
@@ -58,22 +58,116 @@ if (isset($_POST['accion'])){
         $nombreArchivo = basename($_FILES['fichero']['name']);
         $extension = end(explode(".", $nombreArchivo));
         
-        $directorio .= '/'.$dni.'.'.$extension;
+        $nombreFinal = $dni.'.'.$extension;
+        $directorio .= '/'.$nombreFinal;
+        
         
         // Muevo el archivo a su directorio definitivo
         move_uploaded_file($_FILES['fichero']['tmp_name'], utf8_decode($directorio));
         
         // Inserto al usuario en la base de datos
         $tabla = 'usuario';
-        $columnas = 'NIU, DNI, Nombre, Apellidos, Rol, Bloqueado, Contrasenia, TipoUsuario, Email';
-        $valores = "'".$niu."', '".$dni."', '".$nombre."', '".$apellidos."', ".$rol.", ".$bloqueado.", '".$passCodificada."','".$tipo."','".$email."'";
+        $columnas = 'NIU, DNI, Nombre, Apellidos, Rol, Bloqueado, Contrasenia, TipoUsuario, Email, Imagen';
+        $valores = "'".$niu."', '".$dni."', '".$nombre."', '".$apellidos."', ".$rol.", ".$bloqueado.", '".$passCodificada."','".$tipo."','".$email."', '".$nombreFinal."'";
         
         $bd->insertar($tabla, $columnas, $valores);
                 
         // Envío un correo al usuario informando de sus claves
-        enviarCorreo($email, $usuario, $pass, $nombre, 'Alta en Librarino');
+        $cuerpo = '<html><body><h4>Hola ' . $nombre . ', aquí tienes los datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
+            . ' ' . $pass. '</body></html>';       
+        
+        enviarCorreo($email, $cuerpo, 'Alta en Librarino');
         
         header('Location: '.$_SERVER['HTTP_REFERER']);
+        
+    }else if ($accion === 'modificarUsuario'){
+        
+        
+        // Obtengo los datos
+        $dni = $_POST['dniActual'];
+        $niu = $_POST['niu'];
+        $dniNuevo = $_POST['dni'];
+        $nombre = $_POST['nombre'];
+        $apellidos = $_POST['apellidos'];
+        $email = $_POST['email'];
+        
+        $bloqueado = $_POST['bloqueado'];
+        $tipo = $_POST['tipo'];
+        
+        // El rol por defecto será el de alumno
+        if (isset($_POST['rol'])){
+            $rol = $_POST['rol'];
+        }else{
+            $rol = 1;
+        }
+                
+        // Subo al sistema la imagen del alumno
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/librarinoApp/admin/resources/imagenesUsuarios';
+        
+        // Creo el directorio si no existe
+        try {
+            mkdir(utf8_decode($directorio), 0777, true);
+        } catch (Exception $e) {
+            // Si el directorio existe lanzará una excepción, por lo que no hacemos nada
+        }
+        
+        // Obtengo la extensión del fichero subido
+        $nombreArchivo = basename($_FILES['fichero']['name']);
+        $extension = end(explode(".", $nombreArchivo));
+        
+        $nombreFinal = $dni.'.'.$extension;
+        $directorio .= '/'.$nombreFinal;
+        
+        
+        // Muevo el archivo a su directorio definitivo
+        move_uploaded_file($_FILES['fichero']['tmp_name'], utf8_decode($directorio));
+        
+        // Actualizo los datos del usuario        
+        if ($nombreArchivo !== ''){
+            $updateImagen = ", Imagen = '".$nombreFinal."'";
+        }else{
+            $updateImagen = '';
+        }
+
+        $update = "update Usuario set NIU = '".$niu."', DNI = '".$dniNuevo."', Nombre = '".$nombre."', Apellidos = '".$apellidos."', "
+                . "Rol = ".$rol.", Bloqueado = ".$bloqueado.", TipoUsuario = '".$tipo."', Email = '".$email."'".$updateImagen." where DNI = '".$dni."'";
+        
+        $bd->update($update);
+        
+        header('Location: '.$_SERVER['HTTP_REFERER']);      
+        
+        
+    }else if ($accion === 'nuevaContrasenia'){
+        
+        $dni = $_POST['dni'];
+        
+        // Obtengo el NIU del usuario (si lo tiene)
+        $datos = $bd->consulta("select Nombre, NIU, Email from usuario where DNI = '".$dni."'");
+        $niu = $datos[0]['NIU'];
+        $nombre = $datos[0]['Nombre'];
+        $email = $datos[0]['Email'];
+        
+        // Genero la contraseña aleatoriamente y la codifico. La codifico utilizando el NIU o el DNI
+        $pass = generaPass();
+        
+        if ($niu !== ''){
+            $usuario = $niu;
+            $passCodificada = crypt($pass, $niu);            
+        }else{
+            $usuario = $dni;
+            $passCodificada = crypt($pass, $dni);
+        }
+        
+        // Una vez generada la nueva contraseña la almaceno
+        $update = "update Usuario set Contrasenia = '".$passCodificada."' where DNI = '".$dni."'";
+        $bd->update($update);
+        
+        // Mando esta información por email al usuario
+        $cuerpo = '<html><body><h4>Hola ' . $nombre . ', se han modificado tus datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
+            . ' ' . $pass. '</body></html>';  
+        
+        
+        enviarCorreo($email, $cuerpo, 'Nueva contraseña');
         
     }
     

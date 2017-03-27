@@ -36,6 +36,11 @@ and open the template in the editor.
     margin-right: 15px;
 }
 
+.imagenUsuario{
+    float: right;
+    border-radius: 20px;
+}
+
 body{
     font-size: 11px !important;
 }
@@ -104,6 +109,9 @@ html {
 .cabecera{    
     padding-bottom: 0.5% !important;
     border-bottom: outset;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
 }
 
 .tituloPanel{

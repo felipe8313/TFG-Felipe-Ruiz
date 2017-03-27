@@ -33,8 +33,9 @@ body, html {
 .content{
     width: 87%;
     left: 12%;
-    top: 2%;
+    top: 13%;
     position: relative;
+    z-index: 0;
 }
 
 .nav-side-menu {    
@@ -52,8 +53,8 @@ body, html {
     width: 11%;
     height: 100%;
     border-right: outset;
-
-
+    top: 11.5%;
+    z-index: 1;
 }
 
 #sidebar ul {
