@@ -204,7 +204,7 @@ and open the template in the editor.
                                 "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
                             }
                         });
-                    })
+                    });
                     
                     function limpiar(){
                         window.location.href = "usuarios.php";

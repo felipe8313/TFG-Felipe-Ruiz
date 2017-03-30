@@ -24,7 +24,7 @@
                 }
                 ?>
                 <a class="itemMenu" href="ayuda.php">Ayuda</a>                
-                <a class="itemMenu" href="main.php">Inicio</a>
+                <a class="itemMenu" href="index.php">Inicio</a>
             </nav>
             <?php
             ?>

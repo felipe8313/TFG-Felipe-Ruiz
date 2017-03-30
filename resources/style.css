@@ -9,6 +9,9 @@ and open the template in the editor.
 */
 @import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah');
 
+.mapa{
+    width: 30%;
+}
 body{
     margin: 0px;
     font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif !important;

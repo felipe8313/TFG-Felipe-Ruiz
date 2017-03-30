@@ -9,6 +9,13 @@ and open the template in the editor.
 */
 @import url(http://fonts.googleapis.com/css?family=Tenor+Sans);
 
+.numAsientos{
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+    border: 1px solid black;
+}
+
 .aviso{
     font-style: italic;
     font-size: 10px !important;
@@ -112,6 +119,7 @@ html {
     position: fixed;
     width: 100%;
     z-index: 1;
+    top: 0%;
 }
 
 .tituloPanel{

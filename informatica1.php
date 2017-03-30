@@ -29,30 +29,28 @@ $numAsientosLibres = $datos[0]['num'];
             <li role="presentation"><a href="informatica2.php"><h4>Planta 2</h4></a></li>
         </ul>
         <div class="contenido">
-            
             <div align="center">
                 <h3><?php echo utf8_encode($nombreBiblio) ?></h3>
             </div>
             <div class="row">
-                <div class="col-md-3 margen">
-                    <!-- Panel para mostrar el número de asientos libres-->
+                <div class="col-md-12">
+
+
+                    <?php
+                    include 'modulos/panelReserva.php';
+                    ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <div align="center">
-                                <h2>Número de asientos libres</h2>
-                                <h1 style="color: green"><?php echo $numAsientosLibres ?></h1>
-                            </div>
+                            <center>
+                                <div id="mapa"></div>
+                            </center>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-5 margen">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div id="mapa"></div>                            
-                        </div>
-                    </div>
-                </div>
-                <div id="paneles"><?php include 'modulos/panelReserva.php'; ?></div> 
+                </div>                
             </div>
         </div>
         <?php include 'footer.php' ?>        
@@ -68,7 +66,12 @@ $numAsientosLibres = $datos[0]['num'];
             });
 
             function recargaMapa() {
-                $("#mapa").load('mapas/mapaInformaticaP1.php', {}, function () {
+                $("#mapa").load('mapas/mapa.php', {biblio: 1, planta: 1}, function () {
+
+                    // Elimino el borde de las tablas
+                    $(".table").addClass("mapa");
+                    $(".table").removeClass("table-bordered");
+                    $(".table").removeClass("table");
 
                     $(".asiento").click(
                             function () {
