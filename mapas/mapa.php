@@ -69,10 +69,9 @@ foreach ($mesas as $mesa) {
         
         $resultadoScript .= '$("#x' . $x . 'y' . $y . '").html("' . $mesaHtml . '");';
         $resultadoScript .= '$("#' . $idMesa. '").css(\'transform\', \'rotate('.$gradosRotacion.'deg)\');';
-        //$resultadoScript .= '$("#x' . $x . 'y' . $y . '").css(\'transform\', \'rotate('.$gradosRotacion.'deg)\');';
         
     }else{
-        $resultadoScript .= '$("#x' . $x . 'y' . $y . '").html("<center><p data-y=\"'.$y.'\" data-x=\"'.$x.'\" class=\"numAsientos\">' . $numAsientos . '</p></center>");';
+        $resultadoScript .= '$("#x' . $x . 'y' . $y . '").html("<center><p data-rot=\"'.$gradosRotacion.'\" data-asientos=\"'.$numAsientos.'\" data-id=\"'.$idMesa.'\" class=\"numAsientos\">' . $numAsientos . '</p></center>");';
     }
 
     

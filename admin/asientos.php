@@ -68,6 +68,50 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="modalModiMesa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Modificar mesa</h4>
+                    </div>
+                    <input type="hidden" id="mesaId" value="">
+                    <div class="modal-body">
+                        <label>Número de asientos</label>
+                        <input class="form-control" type="number" min="1" id="modiNumAsientos" value="">
+                        <br>
+                        <label>Rotación (0 - 180 grados)</label>
+                        <input class="form-control" type="number" max="180" min="0" id="modiGradosRot" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="modificarMesa()" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span>&ensp;Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="modalCreaMesa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Crear mesa</h4>
+                    </div>
+                    <input type="hidden" id="creaX" value="">
+                    <input type="hidden" id="creaY" value="">
+                    <div class="modal-body">
+                        <label>Número de asientos</label>
+                        <input class="form-control" type="number" min="1" id="creaNumAsientos" value="">
+                        <br>
+                        <label>Rotación (0 - 180 grados)</label>
+                        <input class="form-control" type="number" max="180" min="0" id="creaGradosRot" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="crearMesa()" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span>&ensp;Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
     <script type="text/javascript" src="../resources/jquery.js"></script>
     <script type="text/javascript" src="../resources/bootstrap/js/bootstrap.js"></script>
@@ -76,6 +120,16 @@ and open the template in the editor.
                             $(document).ready(function () {
                                 $("#asientos").addClass("selectedItem");
                             });
+                            
+                            function getBiblioActual(){
+                                
+                                // Obtengo la biblioteca actual
+                                var infoBiblio = $("#biblioteca").val();
+                                var res = infoBiblio.split("/");
+                                var biblio = res[0];
+                                
+                                return biblio;
+                            }
 
                             function cargaSelectPlantas(info) {
                                 var i;
@@ -94,49 +148,99 @@ and open the template in the editor.
                             }
 
                             function cargaPlanta(planta) {
-
-                                // Obtengo la biblioteca actual
-                                var infoBiblio = $("#biblioteca").val();
-                                var res = infoBiblio.split("/");
-                                var biblio = res[0];
+                                
+                                var biblio = getBiblioActual();
 
                                 $("#mapa").load('controladores/asientosController.php', {accion: 'cargarMapa', biblio: biblio, planta: planta},
                                 function () {
                                     $(".numAsientos").css("cursor", "move");
                                     $(".numAsientos").draggable();
+                                    $(".numAsientos").dblclick(function () {
+                                        var asientos = $(this).data("asientos");
+                                        var gradosRot = $(this).data("rot");
+                                        var id = $(this).data("id");
+                                        
+                                        $("#mesaId").val(id);
+                                        $("#modiPlanta").val(planta);
+                                        $("#modiBiblio").val(biblio);
+                                        $("#modiNumAsientos").val(asientos);
+                                        $("#modiGradosRot").val(gradosRot);
+                                        $("#modalModiMesa").modal('show');
+                                    });
+                                    
+                                    $(".suelta").dblclick(function(){
+                                        
+                                        var celda = $(this);
+                                        $("#creaX").val(celda.data("x"));
+                                        $("#creaY").val(celda.data("y"));
+                                        $("#modalCreaMesa").modal('show');
+                                        
+                                    });
 
                                     $(".suelta").droppable({
                                         drop: function (event, ui) {
-                                            /*if (!ui.draggable.data("soltado")){ 
-                                             ui.draggable.data("soltado", true); 
-                                             var elem = $(this); 
-                                             elem.data("numsoltar", elem.data("numsoltar") + 1) 
-                                             elem.html("Llevo " + elem.data("numsoltar") + " elementos soltados"); 
-                                             }*/
-        
+
                                             var celda = $(this);
                                             var celdaX = celda.data("x");
                                             var celdaY = celda.data("y");
+                                            var mesaId = ui.draggable.data("id");
 
-                                            var mesaX = ui.draggable.data("x");
-                                            var mesaY = ui.draggable.data("y");
-                                            //alert("Mesa --> x: " + mesaX + "; y: " + mesaY + " - Celda --> x: " + celdaX + "; y: " + celdaY);
-                                            
                                             // Actualizo la nueva localización mediante ajax
                                             $.ajax({
                                                 type: 'POST',
                                                 url: 'controladores/asientosController.php',
-                                                data: {accion: 'actualizaPosicion', mesaX: mesaX, mesaY: mesaY, celdaX: celdaX, celdaY:celdaY},
-                                                success: function(){
-                                                    var plantaActual = $("#planta").val();
-                                                    cargaPlanta(plantaActual);                                                    
+                                                data: {accion: 'actualizaPosicion', mesaId: mesaId, celdaX: celdaX, celdaY: celdaY},
+                                                success: function () {
+                                                    cargaPlanta(planta);
                                                 }
                                             });
-                                            
+
                                         }
                                     });
                                 });
                             }
+                            
+                            function modificarMesa(){
+                                
+                                var id = $("#mesaId").val();
+                                var asientos = $("#modiNumAsientos").val();
+                                var gradosRot = $("#modiGradosRot").val();
+                                var planta = $("#planta").val();
+                                
+                                $.ajax({
+                                    type: "POST",
+                                    data: {accion: 'modiMesa', asientos: asientos, id: id, gradosRot: gradosRot},
+                                    url: 'controladores/asientosController.php',
+                                    success: function(){
+                                        $("#modalModiMesa").modal('hide');
+                                        cargaPlanta(planta);
+                                    }
+                                });                              
+                                
+                            }
+                            
+                            function crearMesa(){
+                                
+                                var asientos = $("#creaNumAsientos").val();
+                                var gradosRot = $("#creaGradosRot").val();
+                                var planta = $("#planta").val();
+                                var biblio = getBiblioActual();
+                                var x = $("#creaX").val();
+                                var y = $("#creaY").val();
+                                
+                                $.ajax({
+                                    type: "POST",
+                                    data: {accion: 'crearMesa', asientos: asientos, gradosRot: gradosRot, planta: planta, biblio: biblio, x: x, y: y},
+                                    url: 'controladores/asientosController.php',
+                                    success: function(response){
+                                        console.log (response.consulta);
+                                        $("#modalCreaMesa").modal('hide');
+                                        cargaPlanta(planta);
+                                    }
+                                });  
+                            }
+                            
+                            
 
 
 

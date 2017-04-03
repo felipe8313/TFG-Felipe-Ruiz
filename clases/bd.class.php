@@ -24,14 +24,15 @@ class bd {
     public function insertar($tabla, $columnas, $valores) {
 
         $sql = "insert into " . $tabla . " (" . $columnas . ") values (" . $valores . ")";
-        echo $sql.'<br>';
-        $res = mysql_query($sql);
+        mysql_query($sql);
+        
+        return $sql;
     }
 
     public function eliminar($tabla, $where) {
 
         $sql = "delete from " . $tabla . " where " . $where;
-        $res = mysql_query($consulta);
+        mysql_query($sql);
     }
 
     public function consulta($consulta) {
