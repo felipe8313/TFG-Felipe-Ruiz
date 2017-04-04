@@ -85,8 +85,8 @@
                         if (!isset($_SESSION['InicioSesion'])) {
                             echo '<h4>Para reservar un asiento debe iniciar sesión</h4>';
                         } else {
-                            if (isset($asientoReservado)) {
-                                echo '<h4>Solo puede reservar un asiento</h4>';
+                            if (isset($asientoReservado) && $asientoReservado !=='') {
+                                echo '<h4>holaa'.$asientoReservado.'Solo puede reservar un asiento</h4>';
                             } else {
                                 echo '<div id="contenidoModalReserva"></div>';
                             }

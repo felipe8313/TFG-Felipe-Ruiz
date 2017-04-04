@@ -158,7 +158,7 @@ and open the template in the editor.
                                     $(".numAsientos").dblclick(function () {
                                         var asientos = $(this).data("asientos");
                                         var gradosRot = $(this).data("rot");
-                                        var id = $(this).data("id");
+                                        var id = $(this).data("id"); 
                                         
                                         $("#mesaId").val(id);
                                         $("#modiPlanta").val(planta);
