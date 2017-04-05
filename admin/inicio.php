@@ -23,7 +23,6 @@ and open the template in the editor.
             <center>
                 <h2>Bienvenid@ al panel de administración</h2>
                 <h4>Desde aquí puede gestionar todo el sistema Librarino</h4>
-                <?php echo $_SERVER['DOCUMENT_ROOT'].'/librarinoApp/admin/resources/imagenesUsuarios'?>
             </center>
         </div>
     </body>

@@ -82,9 +82,18 @@ and open the template in the editor.
                         <br>
                         <label>Rotación (0 - 180 grados)</label>
                         <input class="form-control" type="number" max="180" min="0" id="modiGradosRot" value="">
+                        <br>
+                        <label>Activa</label>
+                        <select required="true" class="form-control" id="modiAct" name="modiAct" >
+                            <option value="1">Activada</option>
+                            <option value="0">Desactivada</option>
+                        </select>
                     </div>
                     <div class="modal-footer">
-                        <button onclick="modificarMesa()" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span>&ensp;Guardar</button>
+                        <center>
+                            <button onclick="modificarMesa()" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span>&ensp;Guardar</button>
+                            <button onclick="eliminarMesa()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span>&ensp;Eliminar</button>
+                        </center>
                     </div>
                 </div>
             </div>
@@ -105,6 +114,11 @@ and open the template in the editor.
                         <br>
                         <label>Rotación (0 - 180 grados)</label>
                         <input class="form-control" type="number" max="180" min="0" id="creaGradosRot" value="">
+                        <br>
+                        <select required="true" class="form-control" id="creaAct" name="creaAct" >
+                            <option selected="selected" value="1">Activada</option>
+                            <option value="0">Desactivada</option>
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button onclick="crearMesa()" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span>&ensp;Guardar</button>
@@ -155,16 +169,21 @@ and open the template in the editor.
                                 function () {
                                     $(".numAsientos").css("cursor", "move");
                                     $(".numAsientos").draggable();
-                                    $(".numAsientos").dblclick(function () {
-                                        var asientos = $(this).data("asientos");
-                                        var gradosRot = $(this).data("rot");
-                                        var id = $(this).data("id"); 
+                                    $(".numAsientos").click(function () {
                                         
+                                        var mesa = $(this);
+                                        var asientos = mesa.data("asientos");
+                                        var gradosRot = mesa.data("rot");
+                                        var id = mesa.data("id"); 
+                                        var activa = mesa.data("activa");
+                                        
+                                        // Cargo los datos de la mesa
                                         $("#mesaId").val(id);
                                         $("#modiPlanta").val(planta);
                                         $("#modiBiblio").val(biblio);
                                         $("#modiNumAsientos").val(asientos);
                                         $("#modiGradosRot").val(gradosRot);
+                                        $("#modiAct").val(activa);
                                         $("#modalModiMesa").modal('show');
                                     });
                                     
@@ -206,10 +225,29 @@ and open the template in the editor.
                                 var asientos = $("#modiNumAsientos").val();
                                 var gradosRot = $("#modiGradosRot").val();
                                 var planta = $("#planta").val();
+                                var activa = $("#modiAct").val();
                                 
                                 $.ajax({
                                     type: "POST",
-                                    data: {accion: 'modiMesa', asientos: asientos, id: id, gradosRot: gradosRot},
+                                    data: {accion: 'modiMesa', asientos: asientos, id: id, gradosRot: gradosRot, activa: activa},
+                                    url: 'controladores/asientosController.php',
+                                    success: function(){
+                                        $("#modalModiMesa").modal('hide');
+                                        cargaPlanta(planta);
+                                    }
+                                });                              
+                                
+                            }
+                            
+                            function eliminarMesa(){
+                                
+                                var id = $("#mesaId").val();
+                                var asientos = $("#modiNumAsientos").val();
+                                var planta = $("#planta").val();
+                                
+                                $.ajax({
+                                    type: "POST",
+                                    data: {accion: 'eliminarMesa', id: id, asientos: asientos},
                                     url: 'controladores/asientosController.php',
                                     success: function(){
                                         $("#modalModiMesa").modal('hide');
@@ -225,15 +263,15 @@ and open the template in the editor.
                                 var gradosRot = $("#creaGradosRot").val();
                                 var planta = $("#planta").val();
                                 var biblio = getBiblioActual();
+                                var activa = $("#creaAct").val();
                                 var x = $("#creaX").val();
                                 var y = $("#creaY").val();
                                 
                                 $.ajax({
                                     type: "POST",
-                                    data: {accion: 'crearMesa', asientos: asientos, gradosRot: gradosRot, planta: planta, biblio: biblio, x: x, y: y},
+                                    data: {accion: 'crearMesa', asientos: asientos, gradosRot: gradosRot, planta: planta, biblio: biblio, x: x, y: y, activa: activa},
                                     url: 'controladores/asientosController.php',
-                                    success: function(response){
-                                        console.log (response.consulta);
+                                    success: function(){
                                         $("#modalCreaMesa").modal('hide');
                                         cargaPlanta(planta);
                                     }

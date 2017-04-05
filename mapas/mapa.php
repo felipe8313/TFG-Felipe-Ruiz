@@ -38,12 +38,21 @@ foreach ($mesas as $mesa) {
     $x = $mesa['x'];
     $y = $mesa['y'];
     $gradosRotacion = $mesa['gradosRotacion'];
+    $activa = $mesa['Activa'];
+    
+    if ($activa === '0'){
+        $claseMesaAct = 'mesaAct';
+        $claseAsientoAct = '';
+    }else{
+        $claseMesaAct = '';
+        $claseAsientoAct = 'hvr-grow asiento';
+    }
 
     if ($modo !== 'modificar'){
         // Obtengo los asientos de la mesa
         $asientos = $bd->consulta("select * from Asiento where Mesa_id = '" . $idMesa . "'");
         $contAux = 0;
-        $mesaHtml = '<table id=\"'.$idMesa.'\" style=\"width:'.(11 * $numAsientos).'px\" class=\"tablaAsientos\"><tr>';
+        $mesaHtml = '<table id=\"'.$idMesa.'\" style=\"width:'.(11 * $numAsientos).'px\" class=\"tablaAsientos '.$claseMesaAct.'\"><tr>';
         foreach ($asientos as $asiento) {
 
             $idAsiento = $asiento['Id'];
@@ -62,7 +71,7 @@ foreach ($mesas as $mesa) {
                 $mesaHtml .= '</tr><tr>';
             }
 
-            $mesaHtml .= '<td><img data-estado=\"' . $estado . '\" class=\"hvr-grow asiento\" width=\"100%\" id=\"' . $idAsiento . '\" src=\"' . $icono . '\"></td>';
+            $mesaHtml .= '<td><img data-estado=\"' . $estado . '\" class=\"'.$claseAsientoAct.'\" width=\"100%\" id=\"' . $idAsiento . '\" src=\"' . $icono . '\"></td>';
             $contAux++;
         }
         $mesaHtml .= '</tr></table>';
@@ -71,7 +80,7 @@ foreach ($mesas as $mesa) {
         $resultadoScript .= '$("#' . $idMesa. '").css(\'transform\', \'rotate('.$gradosRotacion.'deg)\');';
         
     }else{
-        $resultadoScript .= '$("#x' . $x . 'y' . $y . '").html("<center><p data-rot=\"'.$gradosRotacion.'\" data-asientos=\"'.$numAsientos.'\" data-id=\"'.$idMesa.'\" class=\"numAsientos\">' . $numAsientos . '</p></center>");';
+        $resultadoScript .= '$("#x' . $x . 'y' . $y . '").html("<center><p data-activa=\"'.$activa.'\"  data-rot=\"'.$gradosRotacion.'\" data-asientos=\"'.$numAsientos.'\" data-id=\"'.$idMesa.'\" class=\"numAsientos '.$claseMesaAct.'\">' . $numAsientos . '</p></center>");';
     }
 
     

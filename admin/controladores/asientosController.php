@@ -36,6 +36,7 @@ if (isset($_POST['accion'])){
         $mesaId = $_POST['id'];
         $asientos = $_POST['asientos'];
         $gradosRotacion = $_POST['gradosRot'];
+        $activa = $_POST['activa'];
         
         // Primero debo comprobar si hay que añadir o eliminar asientos
         
@@ -55,7 +56,7 @@ if (isset($_POST['accion'])){
             
         }
         
-        $consulta = "update mesa set numAsientos = ".$asientos. ", gradosRotacion = ".$gradosRotacion. " where Id = ".$mesaId;
+        $consulta = "update mesa set numAsientos = ".$asientos. ", gradosRotacion = ".$gradosRotacion. ", Activa = ".$activa." where Id = ".$mesaId;
         $bd->update($consulta);   
         
         
@@ -67,20 +68,28 @@ if (isset($_POST['accion'])){
         $biblio = $_POST['biblio'];
         $asientos = $_POST['asientos'];
         $gradosRotacion = $_POST['gradosRot'];
+        $activa = $_POST['activa'];
         $x = $_POST['x'];
         $y = $_POST['y'];
         
-        $consulta = $bd->insertar('mesa', 'Biblioteca_Id, gradosRotacion, x, y, Planta, numAsientos', $biblio.','.$gradosRotacion.','.$x.','.$y.','.$planta.','.$asientos);
+        $consulta = $bd->insertar('mesa', 'Biblioteca_Id, gradosRotacion, x, y, Planta, numAsientos, Activa', $biblio.','.$gradosRotacion.','.$x.','.$y.','.$planta.','.$asientos.','.$activa);
         
         // Obtengo el id de la última mesa insertada para crear sus asientos
         $datos = $bd->consulta("select max(Id) as id from mesa");
         $ultimaMesa = $datos[0]['id'];        
         
         crearAsientos($bd, $asientos, $ultimaMesa);
-        
-         header('Content-type: application/json; charset=utf-8');
-        echo json_encode(array("consulta" => $consulta), JSON_FORCE_OBJECT);
                 
+    }else if ($accion === 'eliminarMesa'){
+        
+        $id = $_POST['id'];
+        $asientos = $_POST['asientos'];
+        
+        // Elimino la mesa
+        $bd->eliminar('mesa', 'id = '.$id);
+        
+        // Elimino los asientos de la mesa
+        eliminarAsientos($bd, $asientos, $id);
     }
 }
 
