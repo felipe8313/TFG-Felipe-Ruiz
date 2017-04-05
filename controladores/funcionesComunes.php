@@ -6,10 +6,8 @@
  * and open the template in the editor.
  */
 
-function enviarCorreo($email, $cuerpo, $asunto) {
 
-    include_once '../../resources/phpmailer/smtp.php';
-    include_once '../../resources/phpmailer/phpmailer.php';
+function enviarCorreo($email, $cuerpo, $asunto) {   
 
     $mail = new PHPMailer;
     $mail->isSMTP();

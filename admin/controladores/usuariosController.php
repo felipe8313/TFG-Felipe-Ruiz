@@ -8,6 +8,9 @@
 
 include_once '../../clases/bd.class.php';
 include_once '../../controladores/funcionesComunes.php';
+include_once '../../resources/phpmailer/smtp.php';
+include_once '../../resources/phpmailer/phpmailer.php';
+
 $bd = new bd();
 
 if (isset($_POST['accion'])){
@@ -73,10 +76,10 @@ if (isset($_POST['accion'])){
         $bd->insertar($tabla, $columnas, $valores);
                 
         // Envío un correo al usuario informando de sus claves
-        $cuerpo = '<html><body><h4>Hola ' . $nombre . ', aquí tienes los datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
+        $cuerpo = '<html><body><h4>Hola ' . utf8_encode($nombre) . ', aquí tienes los datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
             . ' ' . $pass. '</body></html>';       
         
-        enviarCorreo($email, $cuerpo, 'Alta en Librarino');
+        enviarCorreo($email, utf8_decode($cuerpo), 'Alta en Librarino');
         
         header('Location: '.$_SERVER['HTTP_REFERER']);
         
@@ -163,29 +166,15 @@ if (isset($_POST['accion'])){
         $bd->update($update);
         
         // Mando esta información por email al usuario
-        $cuerpo = '<html><body><h4>Hola ' . $nombre . ', se han modificado tus datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
+        $cuerpo = '<html><body><h4>Hola ' . utf8_encode($nombre) . ', se han modificado tus datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
             . ' ' . $pass. '</body></html>';  
         
         
-        enviarCorreo($email, $cuerpo, 'Nueva contraseña');
+        enviarCorreo($email, utf8_decode($cuerpo), utf8_decode('Nueva contraseña'));
         
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
-
-
-
-
-
 
 function generaPass(){
     //Se define una cadena de caractares. Te recomiendo que uses esta.

@@ -17,17 +17,16 @@ $bd = new bd();
 
 // Si no se especifica un usuario significa que solo quiero obtener el estado actual del sitio
 if ($usuario === "") {
-    
+
     // Obtengo los datos del asiento
     $datos = $bd->consulta("select Estado from Asiento where Id = '" . $idDispositivo . "'");
 
     $estado = (int) $datos[0]['Estado'];
 
-    echo "Respuesta:".$estado;
-    
-}else{
+    echo "Respuesta:" . $estado;
+} else {
 
-// Obtengo los datos del asiento
+    // Obtengo los datos del asiento
     $datos = $bd->consulta("select Estado, Usuario_reserva, Usuario_ocupacion from Asiento where Id = '" . $idDispositivo . "'");
 
     $estado = (int) $datos[0]['Estado'];
@@ -39,48 +38,47 @@ if ($usuario === "") {
         if ($usuario === $usuarioOcupacion) {
 
             $bd->update("update Asiento set Estado = 1, Usuario_ocupacion = NULL, HoraOcupacion = NULL where Id = '" . $idDispositivo . "'");
-
             echo "Respuesta:1";
         } else {
             echo "Respuesta:3";
         }
     } else if ($estado === 1) { // Asiento libre
-        
         // Compruebo si el usuario es un usuario del sistema
-        $datos = $bd->consulta("select NIU from Usuario where NIU = '".$usuario."'");
+        $datos = $bd->consulta("select NIU from Usuario where NIU = '" . $usuario . "'");
         $niuValido = $datos[0]['NIU'];
-        
-        if ($niuValido === $usuario){
-            // Ocupo el asiento
-            $bd->update("update Asiento set Estado = 0, Usuario_ocupacion = '" . $usuario . "', HoraOcupacion = now(), Usuario_reserva = NULL, HoraReserva = NULL where Id = '" . $idDispositivo . "'");
-            echo "Respuesta:0";
 
-            // Creo un trabajo programado para liberar al cabo de 3 horas
-            $job = "CREATE EVENT liberarAsientoOcupado".$idDispositivo."
-                    ON SCHEDULE AT date_add(now(), INTERVAL 30 second)
-                    do call liberarAsientoOcupado('".$idDispositivo."', '".$usuario."');"; 
-            $bd->consulta($job);            
-        }else{
+        if ($niuValido === $usuario) {
+            ocuparAsiento($bd, $usuario, $idDispositivo);
+        } else {
             echo "Respuesta:3"; // Respuesta de usuario no válido 
         }
-     
-        
-                
         
     } else if ($estado === 2) { // Asiento reservado
         $usuarioReserva = $datos[0]['Usuario_reserva'];
-
+        
         // Si es el usuario que ha reservado el sitio
         if ($usuario === $usuarioReserva) {
-
-            // Ocupo el asiento
-            $bd->update("update Asiento set Estado = 0, Usuario_ocupacion = '" . $usuario . "', HoraOcupacion = now(), Usuario_reserva = NULL, HoraReserva = NULL where Id = '" . $idDispositivo . "'");
-            echo "Respuesta:0";
+            ocuparAsiento($bd, $usuario, $idDispositivo);
         } else {
             echo "Respuesta:3";
         }
     }
 }
 
+function ocuparAsiento($bd, $usuario, $id) {
+    
+    // Ocupo el asiento
+    $bd->update("update Asiento set Estado = 0, Usuario_ocupacion = '" . $usuario . "', HoraOcupacion = now(), Usuario_reserva = NULL, HoraReserva = NULL where Id = '" . $id . "'");
+    echo "Respuesta:0";
+
+    // Creo un trabajo programado para liberar al cabo de 3 horas
+    $job = "CREATE EVENT liberarAsientoOcupado" . $id . "
+                    ON SCHEDULE AT date_add(now(), INTERVAL 30 second)
+                    do call liberarAsientoOcupado('" . $id . "', '" . $usuario . "');";
+    $bd->consulta($job);
+
+    // Inserto un registro en el histórico
+    $bd->insertar('historicoreservas', 'Usuario, Asiento, Fecha', '\''.$usuario . '\',' . $id . ', now()');
+}
 
 
