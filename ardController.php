@@ -42,19 +42,29 @@ if ($usuario === "") {
 
             echo "Respuesta:1";
         } else {
-            echo 'El sitio está ocupado';
+            echo "Respuesta:3";
         }
     } else if ($estado === 1) { // Asiento libre
-     
-        // Ocupo el asiento
-        $bd->update("update Asiento set Estado = 0, Usuario_ocupacion = '" . $usuario . "', HoraOcupacion = now(), Usuario_reserva = NULL, HoraReserva = NULL where Id = '" . $idDispositivo . "'");
-        echo "Respuesta:0";
         
-        // Creo un trabajo programado para liberar al cabo de 3 horas
-        $job = "CREATE EVENT liberarAsientoOcupado".$idDispositivo."
-                ON SCHEDULE AT date_add(now(), INTERVAL 30 second)
-                do call liberarAsientoOcupado('".$idDispositivo."', '".$usuario."');"; 
-        $bd->consulta($job);
+        // Compruebo si el usuario es un usuario del sistema
+        $datos = $bd->consulta("select NIU from Usuario where NIU = '".$usuario."'");
+        $niuValido = $datos[0]['NIU'];
+        
+        if ($niuValido === $usuario){
+            // Ocupo el asiento
+            $bd->update("update Asiento set Estado = 0, Usuario_ocupacion = '" . $usuario . "', HoraOcupacion = now(), Usuario_reserva = NULL, HoraReserva = NULL where Id = '" . $idDispositivo . "'");
+            echo "Respuesta:0";
+
+            // Creo un trabajo programado para liberar al cabo de 3 horas
+            $job = "CREATE EVENT liberarAsientoOcupado".$idDispositivo."
+                    ON SCHEDULE AT date_add(now(), INTERVAL 30 second)
+                    do call liberarAsientoOcupado('".$idDispositivo."', '".$usuario."');"; 
+            $bd->consulta($job);            
+        }else{
+            echo "Respuesta:3"; // Respuesta de usuario no válido 
+        }
+     
+        
                 
         
     } else if ($estado === 2) { // Asiento reservado

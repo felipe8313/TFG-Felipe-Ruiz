@@ -13,7 +13,7 @@
                     $asientoReservado = $datos[0]['Id'];
                     $horaReserva = explode(' ', $datos[0]['Hora']);
 
-                    echo '<center>Tiene reservado el siguiente asiento: <b class="parpadea naranja">' . $asientoReservado . '</b><center>';
+                    echo '<center>Tiene reservado el siguiente asiento: <b class="parpadea azul">' . $asientoReservado . '</b><center>';
                     echo '<br>El asiento volverá a estar libre hoy a las ' . $horaReserva[1] . '</center>';
                     echo '<form method="POST" action="controladores/reservaController.php"><input type="hidden" name="accion" value="cancelarReserva"><input type="hidden" name="asientoReservado" value="' . $asientoReservado . '">'
                     . '<div align="center"><br><input type="submit" class="btn btn-primary" value="Cancelar reserva"></div></form>';
