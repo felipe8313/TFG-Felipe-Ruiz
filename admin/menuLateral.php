@@ -8,7 +8,7 @@
             <li id="asientos" onclick=" window.location.href= 'asientos.php'" class="itemList">
                 <span><img class="imgitem" src="resources/imgs/asientos.png"></span> Asientos 
             </li>
-            <li id="estadisticas" class="itemList">
+            <li id="estadisticas" class="itemList" onclick=" window.location.href= 'estadisticas.php'">
                 <span><img class="imgitem" src="resources/imgs/estadisticas.png"></span> Estadísticas 
             </li>
             <li id="incidencias" class="itemList">

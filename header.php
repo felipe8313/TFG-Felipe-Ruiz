@@ -1,13 +1,13 @@
 <header class="cabecera">
     <div class="row">
-        <div class="col-md-1">
+        <div class="col-md-1 col-lg-1 col-xs-1 col-sm-1">
             <img class="logoHeader" width="55%" src="resources/imgs/logo.png"/>
         </div>
-        <div class="col-md-7">            
+        <div class="col-md-7 col-lg-7 col-xs-7 col-sm-7">            
             <h1 class="titulo">LIBRARINO</h1>
             <h4 class="subtitulo">Tu biblioteca inteligente</h4>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 col-lg-4 col-xs-4 col-sm-4">
             <nav>
                 <?php
                 // Muestro un botón u otro dependiendo si el usuario ha iniciado sesión

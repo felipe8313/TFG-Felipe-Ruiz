@@ -8,12 +8,32 @@
 
 include 'clases/bd.class.php';
 $bd = new bd();
-for ($i = 1; $i <= 17; $i++) { // bucle mesas
+
+for ($i = 1; $i<= 50000; $i++){
     
-    // Creamos la mesa    
-    $bd->insertar('Mesa', 'id, numAsientos, zona, Planta, Biblioteca_Id', '\''.$i.'Z4B1P1\', 4, 4, 1, 1');   
+    $arrayUsuarios = array('0619182220', '1234', '123456');
+    $arrayAsientos = array(536, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566);
+    $randAsiento = $arrayAsientos[rand(0, 13)];
+    $randAlumno = $arrayUsuarios[rand(0, 2)];
+    $randDia = rand(1, 28);
+    $randMes = rand(1, 12);
+    $randAnio = 2017;
+    $randHoras = rand(8, 21);
+    $randMinutos = rand(0, 59);
     
-    for ($j = 1; $j <= 4; $j++) {// bucle asientos
-        $bd->insertar('Asiento', 'Id, Estado, Mesa_id', '\'M'.$i.'Z4B1P1A'.$j.'\', 1, \''.$i.'Z4B1P1\'');  
+    if ($randHoras < 10){
+        $randHoras = '0'.$randHoras;
     }
+    
+    if ($randMinutos < 10){
+        $randMinutos = '0'.$randMinutos;
+    }
+    
+    $fechaRand = $randAnio.'-'.$randMes.'-'.$randDia.' '.$randHoras.':'.$randMinutos;
+    $usuario = '0619182220';
+    
+    echo $fechaRand.'<br>'; 
+    
+    $bd->insertar('historico', 'Asiento, Fecha, Usuario', $randAsiento.', '.'\''.$fechaRand.'\', \''.$randAlumno.'\'');
+        
 }

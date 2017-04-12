@@ -39,3 +39,28 @@ function enviarCorreo($email, $cuerpo, $asunto) {
     $mail->addAddress($email);
     $mail->send();
 }
+
+
+function getBibliotecas($bd, $plantas = false){
+    // Cargamos las opciones del select de biblioteca
+    $bibliotecas = $bd->consulta("select Id, Plantas, Nombre from biblioteca");
+    $opcionesBibliotecas = '';
+
+    foreach ($bibliotecas as $biblio) {
+        if ($plantas){
+            $opcionesBibliotecas .= '<option value="' . $biblio['Id'] . '/' . $biblio['Plantas'] . '">' . utf8_encode($biblio['Nombre']) . '</option>';
+        }else{
+            $opcionesBibliotecas .= '<option value="' . $biblio['Id'] . '">' . utf8_encode($biblio['Nombre']) . '</option>';
+        }
+        
+    }
+    
+    return $opcionesBibliotecas;
+}
+
+function getAnioActual(){
+    
+    $hoy = getdate();
+    
+    return $hoy['year']; 
+}

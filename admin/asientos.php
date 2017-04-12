@@ -21,17 +21,9 @@ and open the template in the editor.
         include_once 'header.php';
         include_once 'menuLateral.php';
         include_once '../clases/bd.class.php';
+        include_once '../controladores/funcionesComunes.php';
         $bd = new bd();
-        error_reporting(0);
-
-
-        // Cargamos las opciones del select de biblioteca
-        $bibliotecas = $bd->consulta("select Id, Plantas, Nombre from biblioteca");
-        $opcionesBibliotecas = '';
-
-        foreach ($bibliotecas as $biblio) {
-            $opcionesBibliotecas .= '<option value="' . $biblio['Id'] . '/' . $biblio['Plantas'] . '">' . utf8_encode($biblio['Nombre']) . '</option>';
-        }
+        error_reporting(0);       
         ?>
         <div class="content">
             <div class="row">
@@ -40,7 +32,7 @@ and open the template in the editor.
                         <label>Biblioteca</label>
                         <select id="biblioteca" onchange="cargaSelectPlantas(this.value)" class="form-control">
                             <option>Seleccione una biblioteca</option>
-                            <?php echo $opcionesBibliotecas ?>
+                            <?php echo getBibliotecas($bd, true) ?>
                         </select>
                     </div>
                     <div class="col-md-6">
@@ -98,7 +90,7 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
-        
+
         <!-- Modal -->
         <div class="modal fade" id="modalCreaMesa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -113,7 +105,7 @@ and open the template in the editor.
                         <input class="form-control" type="number" min="1" id="creaNumAsientos" value="">
                         <br>
                         <label>Rotación (0 - 180 grados)</label>
-                        <input class="form-control" type="number" max="180" min="0" id="creaGradosRot" value="">
+                        <input class="form-control" type="number" max="180" min="0" id="creaGradosRot" value="0">
                         <br>
                         <select required="true" class="form-control" id="creaAct" name="creaAct" >
                             <option selected="selected" value="1">Activada</option>
@@ -134,14 +126,14 @@ and open the template in the editor.
                             $(document).ready(function () {
                                 $("#asientos").addClass("selectedItem");
                             });
-                            
-                            function getBiblioActual(){
-                                
+
+                            function getBiblioActual() {
+
                                 // Obtengo la biblioteca actual
                                 var infoBiblio = $("#biblioteca").val();
                                 var res = infoBiblio.split("/");
                                 var biblio = res[0];
-                                
+
                                 return biblio;
                             }
 
@@ -162,7 +154,7 @@ and open the template in the editor.
                             }
 
                             function cargaPlanta(planta) {
-                                
+
                                 var biblio = getBiblioActual();
 
                                 $("#mapa").load('controladores/asientosController.php', {accion: 'cargarMapa', biblio: biblio, planta: planta},
@@ -170,13 +162,13 @@ and open the template in the editor.
                                     $(".numAsientos").css("cursor", "move");
                                     $(".numAsientos").draggable();
                                     $(".numAsientos").click(function () {
-                                        
+
                                         var mesa = $(this);
                                         var asientos = mesa.data("asientos");
                                         var gradosRot = mesa.data("rot");
-                                        var id = mesa.data("id"); 
+                                        var id = mesa.data("id");
                                         var activa = mesa.data("activa");
-                                        
+
                                         // Cargo los datos de la mesa
                                         $("#mesaId").val(id);
                                         $("#modiPlanta").val(planta);
@@ -186,14 +178,14 @@ and open the template in the editor.
                                         $("#modiAct").val(activa);
                                         $("#modalModiMesa").modal('show');
                                     });
-                                    
-                                    $(".suelta").dblclick(function(){
-                                        
+
+                                    $(".suelta").dblclick(function () {
+
                                         var celda = $(this);
                                         $("#creaX").val(celda.data("x"));
                                         $("#creaY").val(celda.data("y"));
                                         $("#modalCreaMesa").modal('show');
-                                        
+
                                     });
 
                                     $(".suelta").droppable({
@@ -218,47 +210,51 @@ and open the template in the editor.
                                     });
                                 });
                             }
-                            
-                            function modificarMesa(){
-                                
+
+                            function modificarMesa() {
+
                                 var id = $("#mesaId").val();
                                 var asientos = $("#modiNumAsientos").val();
                                 var gradosRot = $("#modiGradosRot").val();
                                 var planta = $("#planta").val();
                                 var activa = $("#modiAct").val();
-                                
-                                $.ajax({
-                                    type: "POST",
-                                    data: {accion: 'modiMesa', asientos: asientos, id: id, gradosRot: gradosRot, activa: activa},
-                                    url: 'controladores/asientosController.php',
-                                    success: function(){
-                                        $("#modalModiMesa").modal('hide');
-                                        cargaPlanta(planta);
-                                    }
-                                });                              
-                                
+
+                                if (asientos === '' || gradosRot === '' || activa === '') {
+                                    alert('Debe completar todos los campos');
+                                } else {
+                                    $.ajax({
+                                        type: "POST",
+                                        data: {accion: 'modiMesa', asientos: asientos, id: id, gradosRot: gradosRot, activa: activa},
+                                        url: 'controladores/asientosController.php',
+                                        success: function () {
+                                            $("#modalModiMesa").modal('hide');
+                                            cargaPlanta(planta);
+                                        }
+                                    });
+                                }
+
                             }
-                            
-                            function eliminarMesa(){
-                                
+
+                            function eliminarMesa() {
+
                                 var id = $("#mesaId").val();
                                 var asientos = $("#modiNumAsientos").val();
                                 var planta = $("#planta").val();
-                                
+
                                 $.ajax({
                                     type: "POST",
                                     data: {accion: 'eliminarMesa', id: id, asientos: asientos},
                                     url: 'controladores/asientosController.php',
-                                    success: function(){
+                                    success: function () {
                                         $("#modalModiMesa").modal('hide');
                                         cargaPlanta(planta);
                                     }
-                                });                              
-                                
+                                });
+
                             }
-                            
-                            function crearMesa(){
-                                
+
+                            function crearMesa() {
+
                                 var asientos = $("#creaNumAsientos").val();
                                 var gradosRot = $("#creaGradosRot").val();
                                 var planta = $("#planta").val();
@@ -266,19 +262,23 @@ and open the template in the editor.
                                 var activa = $("#creaAct").val();
                                 var x = $("#creaX").val();
                                 var y = $("#creaY").val();
-                                
-                                $.ajax({
-                                    type: "POST",
-                                    data: {accion: 'crearMesa', asientos: asientos, gradosRot: gradosRot, planta: planta, biblio: biblio, x: x, y: y, activa: activa},
-                                    url: 'controladores/asientosController.php',
-                                    success: function(){
-                                        $("#modalCreaMesa").modal('hide');
-                                        cargaPlanta(planta);
-                                    }
-                                });  
+
+                                if (asientos === '' || gradosRot === '' || activa === '') {
+                                    alert('Debe completar todos los campos');
+                                } else {
+                                    $.ajax({
+                                        type: "POST",
+                                        data: {accion: 'crearMesa', asientos: asientos, gradosRot: gradosRot, planta: planta, biblio: biblio, x: x, y: y, activa: activa},
+                                        url: 'controladores/asientosController.php',
+                                        success: function () {
+                                            $("#modalCreaMesa").modal('hide');
+                                            cargaPlanta(planta);
+                                        }
+                                    });
+                                }
                             }
-                            
-                            
+
+
 
 
 
