@@ -63,7 +63,7 @@ if (isset($_POST['accion'])){
         $direccion = utf8_decode($_POST['direccion']);
         $plantas = $_POST['plantas'];
         
-        if (isset($_FILES['ficheroModi'])){
+        if (isset($_FILES['ficheroModi']) && $_FILES['ficheroModi']['name'] !== ''){
             
             // Subo al sistema la imagen de la biblioteca
             $directorio = $_SERVER['DOCUMENT_ROOT'].'/librarinoApp/resources/imgs';

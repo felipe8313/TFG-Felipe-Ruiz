@@ -1,18 +1,23 @@
 <?php
 session_start();
 include 'clases/bd.class.php';
-error_reporting(0);
+
+$biblioteca = (int)$_GET['id'];
+$planta = (int)$_GET['planta'];
+
 
 $asientoOcupado = '';
 $asientoReservado = '';
+
 $bd = new bd();
 
-// Obtengo el nombre de la biblioteca
-$datos = $bd->consulta('select Nombre from Biblioteca where Id = 1');
+// Obtengo el nombre y el número de plantas de la biblioteca
+$datos = $bd->consulta('select Nombre, Plantas from Biblioteca where Id = '.$biblioteca);
 $nombreBiblio = $datos[0]['Nombre'];
+$plantas = $datos[0]['Plantas'];
 
 // Obtengo el número de asientos libres de esta planta
-$datos = $bd->consulta('select count(*) as num from Asiento join Mesa m on (m.id = Mesa_id) where Estado = 1 and Biblioteca_Id = 1 and Planta = 2');
+$datos = $bd->consulta('select count(*) as num from Asiento join Mesa m on (m.id = Mesa_id) where Estado = 1 and Biblioteca_Id = '.$biblioteca.' and Planta = '.$planta);
 $numAsientosLibres = $datos[0]['num'];
 ?>
 <html>
@@ -26,8 +31,18 @@ $numAsientosLibres = $datos[0]['num'];
     <body>        
         <?php include 'header.php' ?>
         <ul class="nav nav-pills nav-justified">
-            <li role="presentation"><a href="informatica1.php"><h4>Planta 1</h4></a></li>
-            <li role="presentation" class="active"><a href="informatica2.php"><h4>Planta 2</h4></a></li>
+            <?php
+            if ($plantas > 1){
+                for ($i = 1; $i <= $plantas; $i++){  
+                    if ($planta === $i){
+                        $activa = 'class="active"';
+                    }else{
+                        $activa = '';
+                    }
+                    echo '<li '.$activa.' role="presentation"><a href="biblioteca.php?id='.$biblioteca.'&planta='.$i.'"><h4>Planta '.$i.'</h4></a></li>';
+                }
+            }            
+            ?>
         </ul>
         <div class="contenido">
             <div align="center">
@@ -35,8 +50,6 @@ $numAsientosLibres = $datos[0]['num'];
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    
-
                     <?php
                     include 'modulos/panelReserva.php';
                     ?>
@@ -48,7 +61,7 @@ $numAsientosLibres = $datos[0]['num'];
                         <div class="panel-body">
                             <center>
                                 <div id="mapa"></div>
-                            </center> 
+                            </center>
                         </div>
                     </div>
                 </div>                
@@ -63,16 +76,16 @@ $numAsientosLibres = $datos[0]['num'];
             $(document).ready(function () {
                 recargaMapa();
                 setInterval(recargaMapa, 3000);
+
             });
 
             function recargaMapa() {
-                $("#mapa").load('mapas/mapa.php', {biblio: 1, planta: 2}, function () {
-                    
+                $("#mapa").load('mapas/mapa.php', {biblio: <?php echo $biblioteca ?>, planta: <?php echo $planta ?>}, function () {
+
                     // Elimino el borde de las tablas
                     $(".table").addClass("mapa");
                     $(".table").removeClass("table-bordered");
-                    $(".table").removeClass("table"); 
-
+                    $(".table").removeClass("table");
 
                     $(".asiento").click(
                             function () {
@@ -97,6 +110,10 @@ $numAsientosLibres = $datos[0]['num'];
                                 $("#modalReserva").modal("show");
 
                             });
+
+                    // Añado el parpadeo al asiento ocupado o reservado
+                    $("#<?php echo $asientoOcupado ?>").addClass("parpadea");
+                    $("#<?php echo $asientoReservado ?>").addClass("parpadea");
 
                 });
             }

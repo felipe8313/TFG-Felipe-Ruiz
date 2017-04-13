@@ -5,6 +5,7 @@
         </div>
         <div class="col-md-4">            
             <h1 class="titulo">LIBRARINO</h1>
+            <h4 class="subtitulo">Tu biblioteca inteligente</h4>
         </div>
         <div class="col-md-5">            
             <h2 class="tituloPanel">PANEL DE ADMINISTRACIÓN</h2>

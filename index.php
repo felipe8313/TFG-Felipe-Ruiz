@@ -32,7 +32,7 @@ session_start();
                                 }
                                 echo '<div class="col-md-6">';
                                 echo '<div id="imagen">';
-                                echo '<a href="'.$biblioteca['vista'].'"><img class="imagenMain" src="' .$biblioteca['DirectorioImagen'] . '"></a>';
+                                echo '<a href="biblioteca.php?id='.$biblioteca['Id'].'&planta=1"><img class="imagenMain" src="' .$biblioteca['DirectorioImagen'] . '"></a>';
                                 echo '<div><h4>|| ' .  utf8_encode($biblioteca['Nombre']) . '</h4></div>';
                                 echo '</div>';
                                 echo '</div>';
