@@ -4,6 +4,22 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+
+<?php
+session_start();
+include_once 'header.php';
+include_once 'menuLateral.php';
+include_once '../clases/bd.class.php';
+include_once '../controladores/funcionesComunes.php';
+$bd = new bd();
+error_reporting(0);
+
+if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']){
+    header('Location: index.php');
+}
+
+
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -16,15 +32,6 @@ and open the template in the editor.
         <link rel="shortcut icon" href="../resources/imgs/logo.png">
     </head>
     <body>
-        <?php
-        session_start();
-        include_once 'header.php';
-        include_once 'menuLateral.php';
-        include_once '../clases/bd.class.php';
-        include_once '../controladores/funcionesComunes.php';
-        $bd = new bd();
-        error_reporting(0);       
-        ?>
         <div class="content">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">

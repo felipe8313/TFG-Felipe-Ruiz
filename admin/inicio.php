@@ -4,6 +4,15 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+<?php
+session_start();
+include_once 'header.php';
+include_once 'menuLateral.php';
+
+if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
+    header('Location: index.php');
+}
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -15,10 +24,6 @@ and open the template in the editor.
         <link rel="shortcut icon" href="../resources/imgs/logo.png">
     </head>
     <body>
-        <?php 
-        include_once 'header.php';
-        include_once 'menuLateral.php';
-        ?>
         <div class="content">
             <center>
                 <h2>Bienvenid@ al panel de administración</h2>

@@ -4,6 +4,17 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+<?php
+session_start();
+include_once 'header.php';
+include_once 'menuLateral.php';
+include_once '../clases/bd.class.php';
+include_once '../controladores/funcionesComunes.php';
+
+if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
+    header('Location: index.php');
+}
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -19,11 +30,6 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-        session_start();
-        include_once 'header.php';
-        include_once 'menuLateral.php';
-        include_once '../clases/bd.class.php';
-        include_once '../controladores/funcionesComunes.php';
         $bd = new bd();
         //error_reporting(0);
         ?>
@@ -133,7 +139,7 @@ and open the template in the editor.
                                             "Noviembre", "Diciembre"],
                                         firstDay: 1
                                     });
-                                    
+
                                     $("#estadisticas").addClass("selectedItem");
 
                                 });
@@ -142,7 +148,7 @@ and open the template in the editor.
 
                                     var anio = $("#anio").val();
                                     var bibliotecas = $("#bibliotecas").val();
-                                    
+
                                     if (anio === '' || bibliotecas === null) {
                                         alert("Debe completar todos los parámetros del filtro");
                                     } else {

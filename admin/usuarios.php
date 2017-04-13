@@ -4,6 +4,17 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+<?php
+session_start();
+include_once 'header.php';
+include_once 'menuLateral.php';
+include_once '../clases/bd.class.php';
+error_reporting(0);
+
+if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
+    header('Location: index.php');
+}
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -17,67 +28,60 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-        session_start();
-        include_once 'header.php';
-        include_once 'menuLateral.php';
-        include_once '../clases/bd.class.php';
-        error_reporting(0);
-        
         // Cargo en la tabla los usuarios que coinciden con el filtro
-        if (isset($_GET['nombre'])){
-            $nombre = strtoupper($_GET['nombre']);            
-        }else{
+        if (isset($_GET['nombre'])) {
+            $nombre = strtoupper($_GET['nombre']);
+        } else {
             $nombre = '';
         }
-        
-        if (isset($_GET['niuDni'])){
+
+        if (isset($_GET['niuDni'])) {
             $niuDni = strtoupper($_GET['niuDni']);
-        }else{
+        } else {
             $niuDni = '';
-        }     
-        
-        if ($nombre !== '' || $niuDni !== ''){
+        }
+
+        if ($nombre !== '' || $niuDni !== '') {
             $bd = new bd();
-            $consulta = "select * from Usuario where (ucase(nombre) like '%".$nombre."%' or ucase(apellidos) like '%".$nombre."%')  and (ucase(DNI) like '%".$niuDni."%' or ucase(NIU) like '%".$niuDni."%')";
+            $consulta = "select * from Usuario where (ucase(nombre) like '%" . $nombre . "%' or ucase(apellidos) like '%" . $nombre . "%')  and (ucase(DNI) like '%" . $niuDni . "%' or ucase(NIU) like '%" . $niuDni . "%')";
             $datos = $bd->consulta($consulta);
             $cuerpoTabla = '';
 
             foreach ($datos as $usuario) {
                 $cuerpoTabla .= '<tr>';
-                $cuerpoTabla .= '<td>'.$usuario['NIU'].'</td>';
-                $cuerpoTabla .= '<td>'.$usuario['DNI'].'</td>';
-                $cuerpoTabla .= '<td>'.$usuario['Nombre'].'</td>';
-                $cuerpoTabla .= '<td>'.$usuario['Apellidos'].'</td>';
+                $cuerpoTabla .= '<td>' . $usuario['NIU'] . '</td>';
+                $cuerpoTabla .= '<td>' . $usuario['DNI'] . '</td>';
+                $cuerpoTabla .= '<td>' . $usuario['Nombre'] . '</td>';
+                $cuerpoTabla .= '<td>' . $usuario['Apellidos'] . '</td>';
 
-                if ($usuario['Rol'] === '1'){ // alumno
+                if ($usuario['Rol'] === '1') { // alumno
                     $rol = 'Usuario';
-                }else if ($usuario['Rol'] === '2'){ // bibliotecario
+                } else if ($usuario['Rol'] === '2') { // bibliotecario
                     $rol = 'Bibliotecario';
-                }else if($usuario['Rol'] === '3'){ // administrador
+                } else if ($usuario['Rol'] === '3') { // administrador
                     $rol = 'Administrador';
-                }else{
+                } else {
                     $rol = '';
                 }
 
-                $cuerpoTabla .= '<td>'.$rol.'</td>';
+                $cuerpoTabla .= '<td>' . $rol . '</td>';
 
-                if ($usuario['Bloqueado'] === '1'){
+                if ($usuario['Bloqueado'] === '1') {
                     $bloq = 'SI';
-                }else if ($usuario['Bloqueado'] === '0'){
+                } else if ($usuario['Bloqueado'] === '0') {
                     $bloq = 'NO';
-                }else{
+                } else {
                     $bloq = '';
                 }
 
-                $cuerpoTabla .= '<td>'.$bloq.'</td>';
-                $cuerpoTabla .= '<td>'.$usuario['TipoUsuario'].'</td>'; 
-                $cuerpoTabla .= '<td>'.$usuario['Titulación'].'</td>';
-                $cuerpoTabla .= '<td>'.$usuario['Email'].'</td>';  
-                $cuerpoTabla .= '<td><button type="button" class="btn btn-default" onclick="cargarUsuario(\''.$usuario['DNI'].'\')"><span class="glyphicon glyphicon-pencil"></span></button></td>'; 
-                $cuerpoTabla .= '</tr>';            
+                $cuerpoTabla .= '<td>' . $bloq . '</td>';
+                $cuerpoTabla .= '<td>' . $usuario['TipoUsuario'] . '</td>';
+                $cuerpoTabla .= '<td>' . $usuario['Titulación'] . '</td>';
+                $cuerpoTabla .= '<td>' . $usuario['Email'] . '</td>';
+                $cuerpoTabla .= '<td><button type="button" class="btn btn-default" onclick="cargarUsuario(\'' . $usuario['DNI'] . '\')"><span class="glyphicon glyphicon-pencil"></span></button></td>';
+                $cuerpoTabla .= '</tr>';
             }
-        
-        }            
+        }
         ?>
         <div class="content">
             <div class="botonesCabecera">
@@ -93,11 +97,11 @@ and open the template in the editor.
                             <form method="GET" action="usuarios.php">
                                 <div class="col-md-5">
                                     <label>Nombre y/o apellidos</label>
-                                    <input value="<?php echo $nombre?>" type="text" class="form-control" name="nombre">  
+                                    <input value="<?php echo $nombre ?>" type="text" class="form-control" name="nombre">  
                                 </div>
                                 <div class="col-md-5">
                                     <label>NIU o DNI</label>
-                                    <input value="<?php echo $niuDni?>" type="text" class="form-control" name="niuDni">  
+                                    <input value="<?php echo $niuDni ?>" type="text" class="form-control" name="niuDni">  
                                 </div>
                                 <div class="col-md-2">
                                     <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&ensp; Buscar</button><br><br>
@@ -123,7 +127,7 @@ and open the template in the editor.
                         </tr>
                     </thead>
                     <tbody>
-                        <?php echo $cuerpoTabla?>
+<?php echo $cuerpoTabla ?>
                     </tbody>
                 </table>
             </div>
@@ -156,7 +160,7 @@ and open the template in the editor.
                             <div class="col-md-6">                               
 
                                 <!-- Solo el administrador podrá definir roles -->
-                                <?php if ($_SESSION['Rol'] === 2) { ?>
+<?php if ($_SESSION['Rol'] === 2) { ?>
                                     <label>Rol*</label>
                                     <select required="true" name="rol" class="form-control">
                                         <option value="">Seleccione...</option>
@@ -164,7 +168,7 @@ and open the template in the editor.
                                         <option value="2">Bibliotecario</option>
                                         <option value="3">Administrador</option>
                                     </select><br>
-                                <?php } ?>
+<?php } ?>
 
                                 <label>Bloqueado*</label>
                                 <select required="true" name="bloqueado" class="form-control">
@@ -197,21 +201,21 @@ and open the template in the editor.
     <script type="text/javascript" src="resources/datatables/dataTables.min.js"></script>
     <script type="text/javascript" src="resources/datatables/dataTables.bootstrap.min.js"></script>
     <script>
-                    $(document).ready(function () {
-                        $("#usuarios").addClass("selectedItem");
-                        $('#tablaUsuarios').DataTable({
-                            "language": {
-                                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
-                            }
-                        });
-                    });
-                    
-                    function limpiar(){
-                        window.location.href = "usuarios.php";
-                    }
-                    
-                    function cargarUsuario(dni){
-                        window.location.href = "verUsuario.php?dni=" + dni;
-                    }
+                                        $(document).ready(function () {
+                                            $("#usuarios").addClass("selectedItem");
+                                            $('#tablaUsuarios').DataTable({
+                                                "language": {
+                                                    "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
+                                                }
+                                            });
+                                        });
+
+                                        function limpiar() {
+                                            window.location.href = "usuarios.php";
+                                        }
+
+                                        function cargarUsuario(dni) {
+                                            window.location.href = "verUsuario.php?dni=" + dni;
+                                        }
     </script>
 </html>

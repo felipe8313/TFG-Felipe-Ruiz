@@ -4,6 +4,19 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+
+<?php
+session_start();
+include_once 'header.php';
+include_once 'menuLateral.php';
+include_once '../clases/bd.class.php';
+error_reporting(0);
+
+if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
+    header('Location: index.php');
+}
+?>
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -17,12 +30,6 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-        session_start();
-        include_once 'header.php';
-        include_once 'menuLateral.php';
-        include_once '../clases/bd.class.php';
-        error_reporting(0);                
-        
         $bd = new bd();
         $consulta = "select * from Biblioteca";
         $datos = $bd->consulta($consulta);
@@ -30,14 +37,14 @@ and open the template in the editor.
 
         foreach ($datos as $biblio) {
             $cuerpoTabla .= '<tr>';
-            $cuerpoTabla .= '<td>'.$biblio['Id'].'</td>';
-            $cuerpoTabla .= '<td>'.utf8_encode($biblio['Nombre']).'</td>';
-            $cuerpoTabla .= '<td>'.utf8_encode($biblio['Direccion']).'</td>';
-            $cuerpoTabla .= '<td>'.$biblio['Plantas'].'</td>'; 
-            $cuerpoTabla .= '<td><button type="button" class="btn btn-default" onclick="cargarBiblio(\''.$biblio['Id'].'\')"><span class="glyphicon glyphicon-pencil"></span></button>&ensp;'; 
-            $cuerpoTabla .= '<button type="button" class="btn btn-default" onclick="eliminaBiblio(\''.$biblio['Id'].'\')"><span class="glyphicon glyphicon-remove"></span></button></td>'; 
-            $cuerpoTabla .= '</tr>';            
-        }          
+            $cuerpoTabla .= '<td>' . $biblio['Id'] . '</td>';
+            $cuerpoTabla .= '<td>' . utf8_encode($biblio['Nombre']) . '</td>';
+            $cuerpoTabla .= '<td>' . utf8_encode($biblio['Direccion']) . '</td>';
+            $cuerpoTabla .= '<td>' . $biblio['Plantas'] . '</td>';
+            $cuerpoTabla .= '<td><button type="button" class="btn btn-default" onclick="cargarBiblio(\'' . $biblio['Id'] . '\')"><span class="glyphicon glyphicon-pencil"></span></button>&ensp;';
+            $cuerpoTabla .= '<button type="button" class="btn btn-default" onclick="eliminaBiblio(\'' . $biblio['Id'] . '\')"><span class="glyphicon glyphicon-remove"></span></button></td>';
+            $cuerpoTabla .= '</tr>';
+        }
         ?>
         <div class="content">
             <div class="botonesCabecera">
@@ -57,7 +64,7 @@ and open the template in the editor.
                         </tr>
                     </thead>
                     <tbody>
-                        <?php echo $cuerpoTabla?>
+<?php echo $cuerpoTabla ?>
                     </tbody>
                 </table>
             </div>
@@ -92,7 +99,7 @@ and open the template in the editor.
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-        
+
         <!-- Modal para modificar una biblioteca -->
         <div id="modalModiBiblio" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
@@ -123,51 +130,50 @@ and open the template in the editor.
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-        
+
     </body>
     <script type="text/javascript" src="../resources/jquery.js"></script>
     <script type="text/javascript" src="../resources/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="resources/datatables/dataTables.min.js"></script>
     <script type="text/javascript" src="resources/datatables/dataTables.bootstrap.min.js"></script>
     <script>
-                    $(document).ready(function () {
-                        $("#menuBiblioteca").addClass("selectedItem");
-                        $('#tablaBiblios').DataTable({
-                            "language": {
-                                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
-                            },
-                            "lengthMenu": [[-1, 10, 25, 50], ["Todos", 10, 25, 50]],                                    
-                            scrollY: $(window).height() - 350,
-                            scrollX: "100%"
-                        });
-                    });
-                    
-                    function cargarBiblio(id){
-                        $.ajax({
-                            
-                            type: 'POST',
-                            url: 'controladores/bibliotecasController.php',
-                            data: {accion: 'cargarBiblio', id:id},
-                            success: function(response){
-                                
-                                $("#id").val(id);
-                                $("#nombreModi").val(response.nombre);
-                                $("#direccionModi").val(response.direccion);
-                                $("#plantasModi").val(response.plantas);
-                                
-                                $("#modalModiBiblio").modal("show");                               
-                            }
-                        });
-                        
-                        
-                    }
-                    
-                    function eliminaBiblio(id){
-                        
-                        if (confirm('¿Está seguro de eliminar está biblioteca?')){
-                            window.location.href = "controladores/bibliotecasController.php?accion=eliminarBiblio&id=" + id;
-                        }
-                    }
-                    
+        $(document).ready(function () {
+            $("#menuBiblioteca").addClass("selectedItem");
+            $('#tablaBiblios').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
+                },
+                "lengthMenu": [[-1, 10, 25, 50], ["Todos", 10, 25, 50]],
+                scrollY: $(window).height() - 350,
+                scrollX: "100%"
+            });
+        });
+
+        function cargarBiblio(id) {
+            $.ajax({
+                type: 'POST',
+                url: 'controladores/bibliotecasController.php',
+                data: {accion: 'cargarBiblio', id: id},
+                success: function (response) {
+
+                    $("#id").val(id);
+                    $("#nombreModi").val(response.nombre);
+                    $("#direccionModi").val(response.direccion);
+                    $("#plantasModi").val(response.plantas);
+
+                    $("#modalModiBiblio").modal("show");
+                }
+            });
+
+
+        }
+
+        function eliminaBiblio(id) {
+
+            if (confirm('¿Está seguro de eliminar está biblioteca?')) {
+                window.location.href = "controladores/bibliotecasController.php?accion=eliminarBiblio&id=" + id;
+            }
+        }
+
     </script>
 </html>
