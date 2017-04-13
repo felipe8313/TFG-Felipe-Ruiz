@@ -73,7 +73,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Reservar asiento</h4>
+                <h4 class="modal-title">Asiento</h4>
             </div>
             <form method="POST" action="controladores/reservaController.php">
                 <input type="hidden" name="accion" value="reservar">
@@ -85,8 +85,8 @@
                         if (!isset($_SESSION['InicioSesion'])) {
                             echo '<h4>Para reservar un asiento debe iniciar sesión</h4>';
                         } else {
-                            if (isset($asientoReservado) && $asientoReservado !=='') {
-                                echo '<h4>holaa'.$asientoReservado.'Solo puede reservar un asiento</h4>';
+                            if ((isset($asientoReservado) && $asientoReservado !=='') || (isset($asientoOcupado) && $asientoOcupado !=='')) {
+                                echo '<h4>Solo puede reservar u ocupar un asiento al mismo tiempo</h4>';
                             } else {
                                 echo '<div id="contenidoModalReserva"></div>';
                             }

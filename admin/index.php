@@ -24,6 +24,13 @@ include 'clases/bd.class.php';
                     <img width="30%" src="../resources/imgs/logo.png"/>
                 </div>
                 <br/>
+                <?php 
+                    // Muestro los mensajes de error
+                    if (isset($_SESSION['error'])){
+                        echo '<p class="aviso">'.$_SESSION['error'].'</p>';
+                        unset($_SESSION['error']);
+                    }
+                ?>
                 <form method="POST" action="../controladores/loginController.php">
                     <input type="hidden" name="modo" value="admin"/>
                     <input type="hidden" name="accion" value="login">

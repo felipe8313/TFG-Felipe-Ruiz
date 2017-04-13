@@ -49,6 +49,16 @@ $numAsientosLibres = $datos[0]['num'];
                 <h3><?php echo utf8_encode($nombreBiblio) ?></h3>
             </div>
             <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                <?php
+                    if (isset($_SESSION['error'])){
+                        echo '<div class="alert alert-danger" role="alert">'.$_SESSION['error'].'</div>';
+                        unset($_SESSION['error']);
+                    }
+                ?>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-12">
                     <?php
                     include 'modulos/panelReserva.php';

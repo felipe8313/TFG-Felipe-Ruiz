@@ -78,7 +78,7 @@ function ocuparAsiento($bd, $usuario, $id) {
     $bd->consulta($job);
 
     // Inserto un registro en el histórico
-    $bd->insertar('historicoreservas', 'Usuario, Asiento, Fecha', '\''.$usuario . '\',' . $id . ', now()');
+    $bd->insertar('historico', 'Usuario, Asiento, Fecha', '\''.$usuario . '\',' . $id . ', now()');
 }
 
 

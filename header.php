@@ -45,13 +45,20 @@
                 <input type="hidden" name="accion" value="login">
                 <input type="hidden" name="modo" value="app"/>
                 <div class="modal-body">
-                    <label for="user">Usuario</label>
-                    <input id="user" type="text" name="user" class="form-control"><br>
-                    <label for="pass">Contraseña</label>
-                    <input id="pass" type="password" name="pass" class="form-control">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input id="user" type="text" name="user" class="form-control">
+                    </div>
+                    <br><br>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input id="pass" type="password" name="pass" class="form-control">
+                    </div>                    
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                    <center>
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-ok"></span>&ensp;Iniciar sesión</button>
+                    </center>
                 </div>
             </form>
         </div><!-- /.modal-content -->
