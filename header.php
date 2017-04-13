@@ -16,7 +16,7 @@
                     echo '<ul class="dropdown-menu opcionesUsuario">
                         <li><a href="#" data-toggle="modal" data-target="#modalCambiarPass">Cambiar contraseña</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="controladores/loginController.php">Cerrar sesión <span class="glyphicon glyphicon-off"></span></a></li>
+                        <li><a href="controladores/loginController.php?accion=logoutApp">Cerrar sesión <span class="glyphicon glyphicon-off"></span></a></li>
                         </ul>';
                 } else {
                     echo '<a class="itemMenu" data-toggle="modal" data-target="#modalInicioSesion" href="#">Iniciar Sesión</a>';  

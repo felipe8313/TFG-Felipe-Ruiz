@@ -133,6 +133,8 @@ and open the template in the editor.
                                             "Noviembre", "Diciembre"],
                                         firstDay: 1
                                     });
+                                    
+                                    $("#estadisticas").addClass("selectedItem");
 
                                 });
 

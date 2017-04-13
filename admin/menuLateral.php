@@ -11,10 +11,13 @@
             <li id="estadisticas" class="itemList" onclick=" window.location.href= 'estadisticas.php'">
                 <span><img class="imgitem" src="resources/imgs/estadisticas.png"></span> Estadísticas 
             </li>
+            <li id="menuBiblioteca" class="itemList" onclick=" window.location.href= 'bibliotecas.php'">
+                <span><img class="imgitem" src="resources/imgs/biblioteca.png"></span> Bibliotecas 
+            </li>
             <li id="incidencias" class="itemList">
                 <span><img class="imgitem" src="resources/imgs/alerta.png"></span> Incidencias 
             </li>
-            <li class="itemList">
+            <li class="itemList" onclick=" window.location.href= '../controladores/loginController.php?accion=logoutAdmin'">
                 <span><img class="imgitem" src="resources/imgs/salir.png"></span> Salir 
             </li>
         </ul>
