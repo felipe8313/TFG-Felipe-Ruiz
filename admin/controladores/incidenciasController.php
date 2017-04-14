@@ -19,9 +19,9 @@ if (isset($_GET['accion'])){
         $id = $_GET['id'];
         
         if ($estado === 0){
-            $bd->update("update incidencia set Estado = ".$estado.", fechaCierre = now() where id = ".$id);
+            $bd->update("incidencia", "Estado = ".$estado.", fechaCierre = now()", "id = ".$id);
         }else{
-            $bd->update("update incidencia set Estado = ".$estado." where id = ".$id);
+            $bd->update("incidencia", "Estado = ".$estado, "id = ".$id);
         }
         
         header('Location: '.$_SERVER['HTTP_REFERER']);

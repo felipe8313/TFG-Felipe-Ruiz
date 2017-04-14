@@ -131,11 +131,10 @@ if (isset($_POST['accion'])){
         }else{
             $updateImagen = '';
         }
-
-        $update = "update Usuario set NIU = '".$niu."', DNI = '".$dniNuevo."', Nombre = '".$nombre."', Apellidos = '".$apellidos."', "
-                . "Rol = ".$rol.", Bloqueado = ".$bloqueado.", TipoUsuario = '".$tipo."', Email = '".$email."'".$updateImagen." where DNI = '".$dni."'";
         
-        $bd->update($update);
+        $set = "NIU = '".$niu."', DNI = '".$dniNuevo."', Nombre = '".$nombre."', Apellidos = '".$apellidos."', "
+                . "Rol = ".$rol.", Bloqueado = ".$bloqueado.", TipoUsuario = '".$tipo."', Email = '".$email."'".$updateImagen;
+        $bd->update("Usuario", $set, "DNI = '".$dni."'");
         
         header('Location: '.$_SERVER['HTTP_REFERER']);      
         
@@ -162,8 +161,7 @@ if (isset($_POST['accion'])){
         }
         
         // Una vez generada la nueva contraseña la almaceno
-        $update = "update Usuario set Contrasenia = '".$passCodificada."' where DNI = '".$dni."'";
-        $bd->update($update);
+        $bd->update("Usuario", "Contrasenia = '".$passCodificada."'", "DNI = '".$dni."'");
         
         // Mando esta información por email al usuario
         $cuerpo = '<html><body><h4>Hola ' . utf8_encode($nombre) . ', se han modificado tus datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'

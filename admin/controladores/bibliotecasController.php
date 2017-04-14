@@ -82,16 +82,15 @@ if (isset($_POST['accion'])){
             // Muevo el archivo a su directorio definitivo
             move_uploaded_file($_FILES['ficheroModi']['tmp_name'], utf8_decode($directorio));
 
-            // Creo la biblioteca
-            $bd->update("update Biblioteca set Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas.", DirectorioImagen = 'resources/imgs/".$nombreArchivo."' where id = ".$id);
+            // Modifico la biblioteca
+            $bd->update("Biblioteca", "Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas.", DirectorioImagen = 'resources/imgs/".$nombreArchivo."'", "id = ".$id);
             
         }else{
-            $bd->update("update Biblioteca set Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas." where id = ".$id);
+            $bd->update("Biblioteca", "Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas, "id = ".$id);
         }
         header('Location: '.$_SERVER['HTTP_REFERER']);
         
-    }
-    
+    }    
 }
 
 

@@ -20,8 +20,8 @@ if ($accion === 'reservar'){
     
     $asientoReservado = $_POST['asientoReservado'];
     
-    // Indico en la base de datos la reserva
-    $bd->consulta("update Asiento set Estado=2, HoraReserva=date_add(now(), interval 2 hour), Usuario_reserva = '".$_SESSION['NIU']."' where Id = '".$asientoReservado."'");
+    // Indico en la base de datos la reserva    
+    $bd->update("Asiento", "Estado=2, HoraReserva=date_add(now(), interval 2 hour), Usuario_reserva = '".$_SESSION['NIU']."'", "Id = '".$asientoReservado."'");
     
     // Creo un trabajo programado para liberar el asiento si no lo ha ocupado en una hora
     $job = "CREATE EVENT liberarAsientoReservado".$asientoReservado."
@@ -37,8 +37,8 @@ if ($accion === 'reservar'){
     
     $asientoReservado = $_POST['asientoReservado'];
     
-    // Indico que el asiento está libre y pongo a NULL los demás parámetros
-    $bd->consulta("update Asiento set Estado=1, HoraReserva=NULL, Usuario_reserva = NULL where Id = '".$asientoReservado."'");
+    // Indico que el asiento está libre y pongo a NULL los demás parámetros    
+    $bd->update("Asiento", "Estado=1, HoraReserva=NULL, Usuario_reserva = NULL", "Id = '".$asientoReservado."'");
     
 }else if ($accion === 'incidencia'){
     

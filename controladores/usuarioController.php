@@ -17,7 +17,7 @@ if ($accion === 'cambiaContrasenia'){
     $user = $_SESSION['NIU'];
     $pass = $_POST['pass'];
     
-    $datos = $bd->update("update Usuario set contrasenia = '".crypt($pass,$user)."' where NIU = '".$user."'");
+    $bd->update("Usuario", "contrasenia = '".crypt($pass,$user)."'",  "NIU = '".$user."'");
     
 }
 

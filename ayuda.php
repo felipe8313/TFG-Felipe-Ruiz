@@ -49,13 +49,13 @@ include 'clases/bd.class.php';
                         </div>
                     </div>
                     <p class="parrafoAyuda">
-                        A continuación solo tienes que entrar en la biblioteca que desees, seleccionar una planta y el asiento. Solo deberas pulsar el botón 'Reservar' para reservar la 
+                        A continuación solo tienes que entrar en la biblioteca que desees, seleccionar una planta y el asiento. Solo deberas pulsar el botón 'Reservar' para realizar la 
                         reserva. <b>Si en el plazo de una hora no has ocupado el asiento, volverá a estar libre.</b>
                     </p>
                     <h3 class="tituloApartado">Una vez en la biblioteca, ¿cómo ocupo el asiento?</h3>
                     <p class="parrafoAyuda">
                         Solo tendrás que pasar el código de barras de tu carnet universitario por el lector que tiene el dispositivo que hay frente a ti. Una vez hecho esto, <b>dispondrás de 
-                            3 horas hasta que el asiento vuelva a quedar libre</b>, aunque podrá volver a ocuparlo si alguien no lo ha reservado antes.
+                            3 horas hasta que el asiento vuelva a quedar libre</b>, aunque podrás volver a ocuparlo si alguien no lo ha reservado antes.
                     </p>
                     <h3 class="tituloApartado">¿Y que pasa cuando quiera irme?</h3>
                     <p class="parrafoAyuda">

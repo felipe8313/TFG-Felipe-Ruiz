@@ -23,16 +23,32 @@ class bd {
 
     public function insertar($tabla, $columnas, $valores) {
 
+        // Bloqueo la tabla para que nadie lea o escriba
+        $sqlLock = 'LOCK TABLES '.$tabla.' READ, WRITE';
+        mysql_query($sqlLock);
+        
         $sql = "insert into " . $tabla . " (" . $columnas . ") values (" . $valores . ")";
         mysql_query($sql);
+        
+        // Desbloqueo la tabla
+        $sqlUnlock = 'UNLOCK TABLES';
+        mysql_query($sqlUnlock);
         
         return $sql;
     }
 
     public function eliminar($tabla, $where) {
+        
+        // Bloqueo la tabla para que nadie lea o escriba
+        $sqlLock = 'LOCK TABLES '.$tabla.' READ, WRITE';
+        mysql_query($sqlLock);
 
         $sql = "delete from " . $tabla . " where " . $where;
         mysql_query($sql);
+        
+        // Desbloqueo la tabla
+        $sqlUnlock = 'UNLOCK TABLES';
+        mysql_query($sqlUnlock);
     }
 
     public function consulta($consulta) {
@@ -51,9 +67,18 @@ class bd {
         
     }
     
-    public function update($consulta) {
-
-        mysql_query($consulta); 
+    public function update($tabla, $valores, $where) {
+        
+        // Bloqueo la tabla para que nadie lea o escriba
+        $sqlLock = 'LOCK TABLES '.$tabla.' READ, WRITE';
+        mysql_query($sqlLock);
+        
+        $sql = "update ".$tabla." set ".$valores." where ".$where;
+        mysql_query($sql);
+        
+        // Desbloqueo la tabla
+        $sqlUnlock = 'UNLOCK TABLES';
+        mysql_query($sqlUnlock);
         
     }
 }

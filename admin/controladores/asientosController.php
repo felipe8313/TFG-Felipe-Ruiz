@@ -28,8 +28,7 @@ if (isset($_POST['accion'])){
         $celdaX = $_POST['celdaX'];
         $celdaY = $_POST['celdaY'];
         
-        $consulta = "update mesa set x = ".$celdaX. ", y = ".$celdaY. " where Id = ".$mesaId;
-        $bd->update($consulta);      
+        $bd->update("mesa", "x = ".$celdaX. ", y = ".$celdaY, "Id = ".$mesaId);
         
     }else if ($accion === 'modiMesa'){
         
@@ -56,12 +55,8 @@ if (isset($_POST['accion'])){
             
         }
         
-        $consulta = "update mesa set numAsientos = ".$asientos. ", gradosRotacion = ".$gradosRotacion. ", Activa = ".$activa." where Id = ".$mesaId;
-        $bd->update($consulta);   
-        
-        
-        
-        
+        $bd->update("mesa", "numAsientos = ".$asientos. ", gradosRotacion = ".$gradosRotacion. ", Activa = ".$activa, "Id = ".$mesaId);
+                
     }else if ($accion === 'crearMesa'){
         
         $planta = $_POST['planta'];
