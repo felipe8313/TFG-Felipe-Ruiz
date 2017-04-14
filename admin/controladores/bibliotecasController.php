@@ -5,8 +5,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+session_start();
 include_once '../../clases/bd.class.php';
+include_once '../../controladores/funcionesComunes.php';
 $bd = new bd();
 
 if (isset($_POST['accion'])){
@@ -37,7 +38,13 @@ if (isset($_POST['accion'])){
         move_uploaded_file($_FILES['fichero']['tmp_name'], utf8_decode($directorio));
         
         // Creo la biblioteca
-        $bd->insertar('Biblioteca', 'Nombre, Direccion, DirectorioImagen, Plantas', '\''.$nombre.'\', \''.$direccion.'\', \'resources/imgs/'.$nombreArchivo.'\', '.$plantas);
+        $resultado = $bd->insertar('Biblioteca', 'Nombre, Direccion, DirectorioImagen, Plantas', '\''.$nombre.'\', \''.$direccion.'\', \'resources/imgs/'.$nombreArchivo.'\', '.$plantas);
+        
+        if ($resultado){
+            info("Biblioteca creada correctamente");
+        }else{
+            error("Error al crear la biblioteca");
+        }
         
         header('Location: '.$_SERVER['HTTP_REFERER']);
         
@@ -83,11 +90,18 @@ if (isset($_POST['accion'])){
             move_uploaded_file($_FILES['ficheroModi']['tmp_name'], utf8_decode($directorio));
 
             // Modifico la biblioteca
-            $bd->update("Biblioteca", "Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas.", DirectorioImagen = 'resources/imgs/".$nombreArchivo."'", "id = ".$id);
+            $resultado = $bd->update("Biblioteca", "Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas.", DirectorioImagen = 'resources/imgs/".$nombreArchivo."'", "id = ".$id);
             
         }else{
-            $bd->update("Biblioteca", "Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas, "id = ".$id);
+            $resultado = $bd->update("Biblioteca", "Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas, "id = ".$id);
         }
+        
+        if ($resultado){
+            info("Biblioteca actualizada correctamente");
+        }else{
+            error("Error al actualizar la biblioteca");
+        }
+        
         header('Location: '.$_SERVER['HTTP_REFERER']);
         
     }    
@@ -100,7 +114,14 @@ if (isset($_GET['accion'])){
     $accion = $_GET['accion'];
     
     if ($accion === 'eliminarBiblio'){
-        $bd->eliminar('biblioteca', 'id = '.$_GET['id']);
+        $resultado = $bd->eliminar('biblioteca', 'id = '.$_GET['id']);
+        
+        if ($resultado){
+            info("Biblioteca eliminada correctamente");
+        }else{
+            error("Error al eliminar la biblioteca");
+        }
+        
         header('Location: '.$_SERVER['HTTP_REFERER']);
     }
     

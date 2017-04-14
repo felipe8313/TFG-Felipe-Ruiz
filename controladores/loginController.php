@@ -5,8 +5,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-include '../clases/bd.class.php';
-include 'funcionesComunes.php';
+include_once '../clases/bd.class.php';
+include_once 'funcionesComunes.php';
 session_start();
 $bd = new bd();
 
@@ -20,15 +20,21 @@ if (isset($_POST['accion'])){
         $pass = $_POST['pass'];
         $modo = $_POST['modo'];
 
-        $datos = $bd->consulta("select Nombre, Rol, Bloqueado from Usuario where (DNI = '".$user."' or NIU = '".$user."') and contrasenia = '".crypt($pass,$user)."'");
-        //echo is_array($datos).' - ' count($datos)
+        $datos = $bd->consulta("select Nombre, Rol, Bloqueado from Usuario where (DNI = '".$user."' or NIU = '".$user."') and Contrasenia = '".crypt($pass,$user)."'");
+        
         if (is_array($datos) && count($datos) !== 0){
 
+            $_SESSION['Bloqueado'] = (int)$datos[0]['Bloqueado'];
+            
+            if ($_SESSION['Bloqueado'] === 1){
+                error("*Este usuario está bloqueado. Contacte con información en su biblioteca");
+                exit();
+            }
+            
             // Obtengo los datos del usuario
             $_SESSION['Nombre'] = $datos[0]['Nombre'];
             $_SESSION['NIU'] = $user;
             $_SESSION['Rol'] = (int)$datos[0]['Rol'];
-            $_SESSION['Bloqueado'] = $datos[0]['Bloqueado'];
             $_SESSION['InicioSesion'] = true;
             
             // Login por la parte de admon
@@ -42,7 +48,7 @@ if (isset($_POST['accion'])){
                 }
                 
                 
-            }else{ // login por la app
+            }else{ // login por la app                
                 header('Location: '.$_SERVER['HTTP_REFERER']);
             }
 

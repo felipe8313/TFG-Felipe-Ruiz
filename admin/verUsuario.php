@@ -45,6 +45,21 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
         ?>
         <div class="content">
             <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                <?php
+                    if (isset($_SESSION['error'])){
+                        echo '<div class="alert alert-danger" role="alert">'.$_SESSION['error'].'</div>';
+                        unset($_SESSION['error']);
+                    }
+                    
+                    if (isset($_SESSION['mensaje'])){
+                        echo '<div class="alert alert-success" role="alert">'.$_SESSION['mensaje'].'</div>';
+                        unset($_SESSION['mensaje']);
+                    }
+                ?>
+                </div>
+            </div>
+            <div class="row">
                 <button onclick="nuevaContrasenia('<?php echo $dni ?>')" class="btn btn-default"><span class="glyphicon glyphicon-lock"></span>&ensp; Generar nueva contraseña</button>
                 <img class="imagenUsuario" width="15%" src="resources/imagenesUsuarios/<?php echo $imagen ?>">
             </div>

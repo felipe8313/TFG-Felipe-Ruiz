@@ -10,6 +10,7 @@ include_once '../../clases/bd.class.php';
 include_once '../../controladores/funcionesComunes.php';
 include_once '../../resources/phpmailer/smtp.php';
 include_once '../../resources/phpmailer/phpmailer.php';
+session_start();
 
 $bd = new bd();
 
@@ -73,13 +74,20 @@ if (isset($_POST['accion'])){
         $columnas = 'NIU, DNI, Nombre, Apellidos, Rol, Bloqueado, Contrasenia, TipoUsuario, Email, Imagen';
         $valores = "'".$niu."', '".$dni."', '".$nombre."', '".$apellidos."', ".$rol.", ".$bloqueado.", '".$passCodificada."','".$tipo."','".$email."', '".$nombreFinal."'";
         
-        $bd->insertar($tabla, $columnas, $valores);
+        $resultado = $bd->insertar($tabla, $columnas, $valores);
                 
-        // Envío un correo al usuario informando de sus claves
-        $cuerpo = '<html><body><h4>Hola ' . utf8_encode($nombre) . ', aquí tienes los datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
-            . ' ' . $pass. '</body></html>';       
-        
-        enviarCorreo($email, utf8_decode($cuerpo), 'Alta en Librarino');
+        if ($resultado){
+            info("Usuario creado correctamente");
+            
+            // Envío un correo al usuario informando de sus claves
+            $cuerpo = '<html><body><h4>Hola ' . utf8_encode($nombre) . ', aquí tienes los datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
+                . ' ' . $pass. '</body></html>';       
+
+            enviarCorreo($email, utf8_decode($cuerpo), 'Alta en Librarino');
+            
+        }else{
+            error("Error al crear al usuario");
+        }
         
         header('Location: '.$_SERVER['HTTP_REFERER']);
         
@@ -134,7 +142,13 @@ if (isset($_POST['accion'])){
         
         $set = "NIU = '".$niu."', DNI = '".$dniNuevo."', Nombre = '".$nombre."', Apellidos = '".$apellidos."', "
                 . "Rol = ".$rol.", Bloqueado = ".$bloqueado.", TipoUsuario = '".$tipo."', Email = '".$email."'".$updateImagen;
-        $bd->update("Usuario", $set, "DNI = '".$dni."'");
+        $resultado = $bd->update("Usuario", $set, "DNI = '".$dni."'");
+        
+        if ($resultado){
+            info("Usuario actualizado correctamente");                 
+        }else{
+            error("Error al actualizar el usuario");
+        }
         
         header('Location: '.$_SERVER['HTTP_REFERER']);      
         

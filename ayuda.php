@@ -20,6 +20,11 @@ include 'clases/bd.class.php';
                         echo '<div class="alert alert-danger" role="alert">'.$_SESSION['error'].'</div>';
                         unset($_SESSION['error']);
                     }
+                    
+                    if (isset($_SESSION['mensaje'])){
+                        echo '<div class="alert alert-success" role="alert">'.$_SESSION['mensaje'].'</div>';
+                        unset($_SESSION['mensaje']);
+                    }
                 ?>
                 </div>
             </div>

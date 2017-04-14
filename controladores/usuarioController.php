@@ -8,6 +8,7 @@
 
 session_start();
 include_once '../clases/bd.class.php';
+include 'funcionesComunes.php';
 $bd = new bd();
 
 $accion = $_POST['accion'];
@@ -17,7 +18,13 @@ if ($accion === 'cambiaContrasenia'){
     $user = $_SESSION['NIU'];
     $pass = $_POST['pass'];
     
-    $bd->update("Usuario", "contrasenia = '".crypt($pass,$user)."'",  "NIU = '".$user."'");
+    $resultado = $bd->update("Usuario", "contrasenia = '".crypt($pass,$user)."'",  "NIU = '".$user."'");
+    
+    if ($resultado){
+        info("Contraseña actualizada correctamente");
+    }else{
+        error("Error al actualizar la contraseña");
+    }
     
 }
 

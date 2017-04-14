@@ -89,6 +89,21 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                     <span class="glyphicon glyphicon-plus"></span>&ensp; Nuevo usuario
                 </button>
             </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                <?php
+                    if (isset($_SESSION['error'])){
+                        echo '<div class="alert alert-danger" role="alert">'.$_SESSION['error'].'</div>';
+                        unset($_SESSION['error']);
+                    }
+                    
+                    if (isset($_SESSION['mensaje'])){
+                        echo '<div class="alert alert-success" role="alert">'.$_SESSION['mensaje'].'</div>';
+                        unset($_SESSION['mensaje']);
+                    }
+                ?>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="row">
                     <div class="panel panel-default">

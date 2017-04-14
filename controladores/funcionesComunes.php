@@ -71,3 +71,10 @@ function error($error){
     $_SESSION['error'] = $error;
     header('Location: '.$_SERVER['HTTP_REFERER']);
 }
+
+function info($info){
+    session_start();
+    
+    $_SESSION['mensaje'] = $info;
+    header('Location: '.$_SERVER['HTTP_REFERER']);
+}
