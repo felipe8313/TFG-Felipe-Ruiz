@@ -8,6 +8,10 @@ and open the template in the editor.
     Author     : Felipe
 */
 
+.hayIncidencia{
+    background: tomato !important;
+}
+
 .imgitem{
     width: 15%; 
     float: left;

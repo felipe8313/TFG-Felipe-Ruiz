@@ -75,26 +75,36 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Asiento</h4>
             </div>
-            <form method="POST" action="controladores/reservaController.php">
-                <input type="hidden" name="accion" value="reservar">
-                <input type="hidden" id="asientoReservado" name="asientoReservado" value="reservar">
-                <div class="modal-body">
-                    <div align="center">                        
-                        <?php
-                        // Si el usuario ya ha reservado un sitio no puede reservar más
-                        if (!isset($_SESSION['InicioSesion'])) {
-                            echo '<h4>Para reservar un asiento debe iniciar sesión</h4>';
+            <div class="modal-body">
+                <div align="center">                        
+                    <?php
+                    // Si el usuario ya ha reservado un sitio no puede reservar más
+                    if (!isset($_SESSION['InicioSesion'])) {
+                        echo '<h4>Para reservar un asiento debe iniciar sesión</h4>';
+                    } else {
+                        if ((isset($asientoReservado) && $asientoReservado !== '') || (isset($asientoOcupado) && $asientoOcupado !== '')) {
+                            echo '<h4>Solo puede reservar u ocupar un asiento al mismo tiempo</h4>';
                         } else {
-                            if ((isset($asientoReservado) && $asientoReservado !=='') || (isset($asientoOcupado) && $asientoOcupado !=='')) {
-                                echo '<h4>Solo puede reservar u ocupar un asiento al mismo tiempo</h4>';
-                            } else {
-                                echo '<div id="contenidoModalReserva"></div>';
-                            }
+                            echo '<form method="POST" action="controladores/reservaController.php">';
+                            echo '<input type="hidden" name="accion" value="reservar">';
+                            echo '<input type="hidden" id="asientoReservado" name="asientoReservado" value="">';
+                            echo '<div id="contenidoModalReserva"></div>';
+                            echo '</form>';                                                       
                         }
-                        ?>                    
-                    </div>
+                        
+                        // Para notificar una incidencia
+                        echo '<hr>';
+                        echo '<form method="POST" action="controladores/reservaController.php">';
+                        echo '<input type="hidden" name="accion" value="incidencia">';
+                        echo '<input type="hidden" id="asientoIncidencia" name="asientoIncidencia" value="">';
+                        echo '<h4>Notificar una incidencia</h4><br>';
+                        echo '<textarea id="txtIncidencia" name="txtIncidencia" class="form-control" col="4" rows="6"></textarea><br>';
+                        echo '<button class="btn btn-default">Notificar</button>';
+                        echo '</form>'; 
+                    }
+                    ?>                    
                 </div>
-            </form>
+            </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

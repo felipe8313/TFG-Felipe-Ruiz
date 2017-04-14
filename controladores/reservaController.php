@@ -33,8 +33,6 @@ if ($accion === 'reservar'){
     // Envío un correo con la información de la reserva
     enviaAvisoReserva($bd, $_SESSION['NIU'], $asientoReservado);
     
-    header('Location: '.$_SERVER['HTTP_REFERER']);
-    
 }else if ($accion === 'cancelarReserva'){// Cancelo la reserva del usuario
     
     $asientoReservado = $_POST['asientoReservado'];
@@ -42,9 +40,17 @@ if ($accion === 'reservar'){
     // Indico que el asiento está libre y pongo a NULL los demás parámetros
     $bd->consulta("update Asiento set Estado=1, HoraReserva=NULL, Usuario_reserva = NULL where Id = '".$asientoReservado."'");
     
-    header('Location: '.$_SERVER['HTTP_REFERER']);
+}else if ($accion === 'incidencia'){
     
+    $asientoIncidencia = $_POST['asientoIncidencia'];
+    $descripcion = $_POST['txtIncidencia'];
+    
+    $bd->insertar('incidencia', 'asiento, usuario, fecha, descripcion, estado', $asientoIncidencia.', \''.$_SESSION['NIU'].'\', now(), \''.$descripcion.'\', 1'); 
+    
+    $_SESSION['mensaje'] = 'Notificación creada correctamente. ¡Gracias por su ayuda!';
 }
+
+header('Location: '.$_SERVER['HTTP_REFERER']);
 
 
 

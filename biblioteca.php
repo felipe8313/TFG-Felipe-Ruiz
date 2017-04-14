@@ -55,6 +55,11 @@ $numAsientosLibres = $datos[0]['num'];
                         echo '<div class="alert alert-danger" role="alert">'.$_SESSION['error'].'</div>';
                         unset($_SESSION['error']);
                     }
+                    
+                    if (isset($_SESSION['mensaje'])){
+                        echo '<div class="alert alert-success" role="alert">'.$_SESSION['mensaje'].'</div>';
+                        unset($_SESSION['mensaje']);
+                    }
                 ?>
                 </div>
             </div>
@@ -105,13 +110,14 @@ $numAsientosLibres = $datos[0]['num'];
 
                                 // Indico en la variable del formulario el asiento que se ha clicado
                                 $("#asientoReservado").val(id);
+                                $("#asientoIncidencia").val(id);
 
                                 // Obtengo el estado del asiento
                                 var estado = $(this).data('estado');
 
                                 // Segun el estado muestro una información u otra en el modal
                                 if (estado === 1) { // asiento libre
-                                    $("#contenidoModalReserva").html('<h4>¿Desea reservar este asiento?</h4><br><button type="submit" class="btn btn-primary">Reservar</button>');
+                                    $("#contenidoModalReserva").html('<h4>¿Desea reservar este asiento?</h4><br><button type="submit" class="btn btn-default">Reservar</button>');
                                 } else { // asiento reservado/ocupado
                                     $("#contenidoModalReserva").html('<h4>Este asiento está reservado u ocupado</h4>');
                                 }

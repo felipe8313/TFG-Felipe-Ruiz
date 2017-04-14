@@ -13,6 +13,16 @@ include 'clases/bd.class.php';
         <?php include 'header.php' ?>
         <div class="contenido">
             <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                <?php
+                    if (isset($_SESSION['error'])){
+                        echo '<div class="alert alert-danger" role="alert">'.$_SESSION['error'].'</div>';
+                        unset($_SESSION['error']);
+                    }
+                ?>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <h3 class="tituloApartado">¿Qué es Librarino?</h3>
                     <p class="parrafoAyuda">

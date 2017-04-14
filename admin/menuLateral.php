@@ -1,3 +1,19 @@
+<?php 
+// Obtengo el número de incidencias abiertas
+include_once '../clases/bd.class.php';
+$bd = new bd();
+
+$datos = $bd->consulta("select count(*) as num from incidencia where estado = 1");
+$num = (int)$datos[0]['num'];
+
+if ($num > 0){
+    $claseIncidencia = 'hayIncidencia';
+}else{
+    $claseIncidencia = '';
+}
+
+?>
+
 
 <div class="nav-side-menu">    
     <div class="menu-list">
@@ -14,7 +30,7 @@
             <li id="menuBiblioteca" class="itemList" onclick=" window.location.href= 'bibliotecas.php'">
                 <span><img class="imgitem" src="resources/imgs/biblioteca.png"></span> Bibliotecas 
             </li>
-            <li id="incidencias" class="itemList">
+            <li id="incidencias" class="itemList <?php echo $claseIncidencia?>" onclick=" window.location.href= 'incidencias.php'">
                 <span><img class="imgitem" src="resources/imgs/alerta.png"></span> Incidencias 
             </li>
             <li class="itemList" onclick=" window.location.href= '../controladores/loginController.php?accion=logoutAdmin'">

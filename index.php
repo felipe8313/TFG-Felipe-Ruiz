@@ -16,6 +16,16 @@ session_start();
     <body>        
         <?php include 'header.php'?>
         <div class="contenido">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                <?php
+                    if (isset($_SESSION['error'])){
+                        echo '<div class="alert alert-danger" role="alert">'.$_SESSION['error'].'</div>';
+                        unset($_SESSION['error']);
+                    }
+                ?>
+                </div>
+            </div>
             <div class="row"> 
                 <div class="col-md-10 col-md-offset-1">
                     <div align="center">

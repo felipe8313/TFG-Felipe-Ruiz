@@ -20,13 +20,13 @@ if (isset($_POST['accion'])){
         $pass = $_POST['pass'];
         $modo = $_POST['modo'];
 
-        $datos = $bd->consulta("select Nombre, NIU, Rol, Bloqueado from Usuario where (DNI = '".$user."' or NIU = '".$user."') and contrasenia = '".crypt($pass,$user)."'");
+        $datos = $bd->consulta("select Nombre, Rol, Bloqueado from Usuario where (DNI = '".$user."' or NIU = '".$user."') and contrasenia = '".crypt($pass,$user)."'");
         //echo is_array($datos).' - ' count($datos)
         if (is_array($datos) && count($datos) !== 0){
 
             // Obtengo los datos del usuario
             $_SESSION['Nombre'] = $datos[0]['Nombre'];
-            $_SESSION['NIU'] = $datos[0]['NIU'];
+            $_SESSION['NIU'] = $user;
             $_SESSION['Rol'] = (int)$datos[0]['Rol'];
             $_SESSION['Bloqueado'] = $datos[0]['Bloqueado'];
             $_SESSION['InicioSesion'] = true;
