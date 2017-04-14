@@ -9,6 +9,22 @@ and open the template in the editor.
 */
 @import url('https://fonts.googleapis.com/css?family=Gloria+Hallelujah');
 
+.etiquetaLibre{
+    font-weight: bold;
+    color: lightgreen !important;
+}
+
+.etiquetaReservado{
+    font-weight: bold;
+    color: blue !important;
+}
+
+.etiquetaOcupado{
+    font-weight: bold;
+    color: red !important;
+}
+
+
 .mapa{
     width: 30%;
 }
