@@ -8,13 +8,17 @@
             if (isset($_SESSION['InicioSesion'])) {
 
                 // compruebo si el usuario tiene reservado algún asiento y le muestro el id
-                $datos = $bd->consulta("select Id, date_add(HoraReserva, INTERVAL 1 HOUR) as Hora from Asiento where Usuario_reserva = '" . $_SESSION['NIU'] . "'");
+                $datos = $bd->consulta("select a.Id, date_add(HoraReserva, INTERVAL 1 HOUR) as Hora, Nombre, Planta from Asiento a join Mesa m on (m.id = a.Mesa_Id) join Biblioteca b on (b.id = m.Biblioteca_id) where Usuario_reserva = '" . $_SESSION['NIU'] . "'");
                 if (is_array($datos)) {
                     $asientoReservado = $datos[0]['Id'];
                     $horaReserva = explode(' ', $datos[0]['Hora']);
-
-                    echo '<center>Tiene reservado el siguiente asiento: <b class="parpadea azul">' . $asientoReservado . '</b><center>';
-                    echo '<br>El asiento volverá a estar libre hoy a las ' . $horaReserva[1] . '</center>';
+                    $bibliotecaRes = $datos[0]['Nombre'];
+                    $plantaRes = $datos[0]['Planta'];
+                    
+                    echo '<b>Biblioteca: </b>'.utf8_encode($bibliotecaRes).'<br>';
+                    echo '<b>Planta: </b>'.utf8_encode($plantaRes).'<br>';
+                    echo '<b>Asiento: </b><b class="parpadea azul">' . $asientoReservado . '</b>';
+                    echo '<br>El asiento volverá a estar libre hoy a las ' . $horaReserva[1] . '';
                     echo '<form method="POST" action="controladores/reservaController.php"><input type="hidden" name="accion" value="cancelarReserva"><input type="hidden" name="asientoReservado" value="' . $asientoReservado . '">'
                     . '<div align="center"><br><input type="submit" class="btn btn-primary" value="Cancelar reserva"></div></form>';
                 } else {
@@ -51,11 +55,15 @@
             if (isset($_SESSION['InicioSesion'])) {
 
                 // compruebo si el usuario tiene reservado algún asiento y le muestro el id
-                $datos = $bd->consulta("select Id from Asiento where Usuario_ocupacion = '" . $_SESSION['NIU'] . "'");
+                $datos = $bd->consulta("select a.Id, Nombre, Planta from Asiento a join Mesa m on (m.id = a.Mesa_Id) join Biblioteca b on (b.id = m.Biblioteca_id) where Usuario_ocupacion ='" . $_SESSION['NIU'] . "'");
                 if (is_array($datos)) {
                     $asientoOcupado = $datos[0]['Id'];
-
-                    echo '<center>Está ocupando el asiento: <b class="parpadea rojo">' . $asientoOcupado . '</b><center>';
+                    $bibliotecaOcu = $datos[0]['Nombre'];
+                    $plantaOcu = $datos[0]['Planta'];
+                    
+                    echo '<b>Biblioteca: </b>'.utf8_encode($bibliotecaOcu).'<br>';
+                    echo '<b>Planta: </b>'.utf8_encode($plantaOcu).'<br>';
+                    echo '<b>Asiento: </b><b class="parpadea rojo">' . $asientoOcupado . '</b>';
                 } else {
                     echo '<center>Todavía no ha ocupado ningún asiento</center>';
                 }

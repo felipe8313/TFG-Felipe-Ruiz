@@ -8,6 +8,7 @@ include 'clases/bd.class.php';
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="resources/style.css"/>
         <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.css"/>
+        <link rel="shortcut icon" href="resources/imgs/logo.png">
     </head>
     <body>        
         <?php include 'header.php' ?>
