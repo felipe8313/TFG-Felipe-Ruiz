@@ -166,3 +166,17 @@ body, html {
 .selectedItem{
     background: #00979C !important;
 }
+
+
+@media screen and (max-width: 1399px) and (min-width: 1366px){
+
+    .nav-side-menu{
+        top: 16.5%;
+    }
+    
+    .content{
+        top: 19%
+    }
+
+
+}

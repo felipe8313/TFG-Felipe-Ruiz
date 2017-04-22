@@ -20,7 +20,7 @@ if (isset($_POST['accion'])){
         
         // Incluyo el mapa
         $modo = 'modificar';
-        include '../../mapas/mapa.php';
+        include '../../mapa.php';
         
     }else if ($accion === 'actualizaPosicion'){
         

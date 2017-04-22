@@ -37,18 +37,39 @@ session_start();
                         <div class="row">
                             <?php
                             $bd = new bd();
-                            $datos = $bd->consulta("select * from Biblioteca");
+                            $datos = $bd->consulta("select b.*, count(a.id) as numLibres from Biblioteca b join Mesa m on (b.Id = m.Biblioteca_Id) 
+                                                    join Asiento a on (a.Mesa_Id = m.id)
+                                                    where estado = 1
+                                                    group by b.id");
                             $cont = 0;
 
                             foreach ($datos as $biblioteca) {
-
+                                
+                                $numLibres = (int)$biblioteca['numLibres'];
+                                
+                                // Si no hay asientos libres, muestro el texto en rojo sino en verde
+                                if ($numLibres > 0){
+                                    $claseNumLibres = 'hayLibres';
+                                }else{
+                                    $claseNumLibres = 'noHayLbres';
+                                }
+                                
+                                if ($numLibres === 1){
+                                    $txtNumLibres = ' asiento libre';
+                                }else{
+                                    $txtNumLibres = ' asientos libres';
+                                }                           
+                                
                                 if ($cont % 2 === 0) {
                                     echo '</div><div class="row">';
                                 }
                                 echo '<div class="col-md-6">';
-                                echo '<div id="imagen">';
+                                echo '<div class="panel panel-default">';
+                                echo '<div class="panel-body" style="padding: 0 !important">';
                                 echo '<a href="biblioteca.php?id='.$biblioteca['Id'].'&planta=1"><img class="imagenMain" src="' .$biblioteca['DirectorioImagen'] . '"></a>';
-                                echo '<div><h4>|| ' .  utf8_encode($biblioteca['Nombre']) . '</h4></div>';
+                                echo '<div class="desImagen"><h4>|| ' .  utf8_encode($biblioteca['Nombre']) . '</h4></div>';                                
+                                echo '</div>';
+                                echo '<br><h4 class="'.$claseNumLibres.'">'.$numLibres.$txtNumLibres.'</h4><br>';                              
                                 echo '</div>';
                                 echo '</div>';
                                 $cont++;

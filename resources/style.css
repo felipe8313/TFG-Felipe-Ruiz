@@ -100,25 +100,17 @@ h4{
 
 #imagen {
     position:relative;
-    border-radius: 100px !important;
 }
 
 #imagen:hover{
     border: 6px;
 }
 
-#imagen>div
-{
+.desImagen{
     position: relative;
-    bottom:60px;
     color:#fff;
     background-color:#000;
     padding:20px 10px;
-    opacity:0.75;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-
-
 }
 
 nav{
@@ -144,10 +136,6 @@ nav{
 
 .col-md-4{
     padding: 0 !important; 
-}
-
-.imagenMain{
-    border-radius: 20px;
 }
 
 a:link{  
@@ -259,6 +247,16 @@ tr.espacioFila > td
     color: sandybrown;
 }
 
+.noHayLibres{
+    font-weight: bold;
+    color: tomato;
+}
+
+.hayLibres{
+    font-weight: bold;
+    color: green;
+}
+
 .parrafoAyuda{
     font-size: 16px;
     margin-top: 20px;
@@ -267,4 +265,29 @@ tr.espacioFila > td
 .logoHeader{
     margin-top: 7%;
     margin-left: 32%;
+    width: 55%;
 }
+
+@media screen and (min-width: 800px){
+
+    .logoHeader{
+        margin-top: 35%;
+        margin-left: 15%;
+        width: 100%;
+    }    
+
+    .itemMenu {
+        padding: 11px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 1399px) and (min-width: 1366px){
+
+    .logoHeader{
+        margin-top: 22%;
+        margin-left: 15%;
+        width: 75%;
+    }
+}
+

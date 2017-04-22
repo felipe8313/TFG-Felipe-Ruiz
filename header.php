@@ -1,7 +1,7 @@
 <header class="cabecera">
     <div class="row">
         <div class="col-md-1 col-lg-1 col-xs-1 col-sm-1">
-            <img class="logoHeader" width="55%" src="resources/imgs/logo.png"/>
+            <img class="logoHeader" src="resources/imgs/logo.png"/>
         </div>
         <div class="col-md-7 col-lg-7 col-xs-7 col-sm-7">            
             <h1 class="titulo">LIBRARINO</h1>

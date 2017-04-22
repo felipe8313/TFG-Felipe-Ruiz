@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-include '../clases/bd.class.php';
+include_once 'clases/bd.class.php';
 $bd = new bd();
 
 if (!isset($biblio)){
