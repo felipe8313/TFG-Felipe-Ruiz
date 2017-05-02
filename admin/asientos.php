@@ -23,13 +23,13 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']){
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Usuarios</title>
+        <title>Asientos</title>
         <link rel="stylesheet" type="text/css" href="resources/menu_style.css"/>
         <link rel="stylesheet" type="text/css" href="resources/admin_style.css"/>
         <link rel="stylesheet" type="text/css" href="resources/datatables/dataTables.min.css"/> 
         <link rel="stylesheet" type="text/css" href="../resources/bootstrap/css/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="../resources/style.css"/>
-        <link rel="shortcut icon" href="../resources/imgs/logo.png">
+        <link rel="shortcut icon" href="resources/imgs/logo.png">
     </head>
     <body>
         <div class="content">
