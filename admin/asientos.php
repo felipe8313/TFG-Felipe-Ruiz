@@ -65,7 +65,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']){
                 </div>
             </div>
         </div>
-        <!-- Modal -->
+        <!-- Modal modificar mesa-->
         <div class="modal fade" id="modalModiMesa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -96,7 +96,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']){
             </div>
         </div>
 
-        <!-- Modal -->
+        <!-- Modal crear mesa-->
         <div class="modal fade" id="modalCreaMesa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -197,6 +197,9 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']){
                                         var celda = $(this);
                                         $("#creaX").val(celda.data("x"));
                                         $("#creaY").val(celda.data("y"));
+                                        $("#creaNumAsientos").val("");
+                                        $("#creaGradosRot").val("");
+                                        $("#creaAct").val("");
                                         $("#modalCreaMesa").modal('show');
 
                                     });
