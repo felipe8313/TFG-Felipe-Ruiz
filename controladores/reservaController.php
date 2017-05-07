@@ -43,7 +43,7 @@ if ($accion === 'reservar'){
 }else if ($accion === 'incidencia'){
     
     $asientoIncidencia = $_POST['asientoIncidencia'];
-    $descripcion = $_POST['txtIncidencia'];
+    $descripcion = nl2br($_POST['txtIncidencia']);
     
     $bd->insertar('incidencia', 'asiento, usuario, fecha, descripcion, estado', $asientoIncidencia.', \''.$_SESSION['NIU'].'\', now(), \''.$descripcion.'\', 1'); 
     

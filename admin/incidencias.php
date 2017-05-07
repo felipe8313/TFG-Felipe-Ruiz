@@ -60,8 +60,13 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
         }
 
         $bd = new bd();
-        $consulta = "select id, asiento, Fecha, fechaCierre, Nombre, Apellidos, descripcion, estado from incidencia join usuario on (usuario = NIU or usuario = DNI) "
-                . "where estado = ".$estado.$where;
+        $consulta = "select i.id, asiento, Fecha, fechaCierre, u.Nombre, Apellidos, descripcion, i.estado, m.Planta, b.nombre as biblio
+                    from incidencia i join usuario u on (usuario = NIU or usuario = DNI)
+                    join Asiento a on (a.id = asiento)
+                    join Mesa m on (m.id = a.Mesa_id)
+                    join Biblioteca b on (b.id = m.Biblioteca_Id)
+                    where i.estado = ".$estado.$where;
+        echo $consulta;
         
         $datos = $bd->consulta($consulta);
         $cuerpoTabla = '';
@@ -91,6 +96,8 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
             $cuerpoTabla .= '<tr>';
             $cuerpoTabla .= '<td>' . $incidencia['id'] . '</td>';
             $cuerpoTabla .= '<td>' . $incidencia['asiento'] . '</td>';
+            $cuerpoTabla .= '<td>' . utf8_encode($incidencia['biblio']) . '</td>';
+            $cuerpoTabla .= '<td>' . $incidencia['Planta'] . '</td>';
             $cuerpoTabla .= '<td>' . utf8_encode($incidencia['Nombre'] . ' ' . $incidencia['Apellidos']) . '</td>';
             $cuerpoTabla .= '<td>' . $fecha->format('d-m-Y') . '</td>';
             $cuerpoTabla .= '<td>' . $incidencia['descripcion'] . '</td>';
@@ -138,7 +145,9 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Asiento</th>    
+                            <th>Asiento</th>   
+                            <th>Biblioteca</th>
+                            <th>Planta</th>
                             <th>Nombre y apellidos</th>
                             <th>Fecha</th>
                             <th>Descripción</th>
