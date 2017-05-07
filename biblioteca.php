@@ -5,7 +5,6 @@ include 'clases/bd.class.php';
 $biblioteca = (int) $_GET['id'];
 $planta = (int) $_GET['planta'];
 
-
 $asientoOcupado = '';
 $asientoReservado = '';
 
@@ -27,6 +26,7 @@ $numAsientosLibres = $datos[0]['num'];
         <link rel="stylesheet" type="text/css" href="resources/style.css"/>
         <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.css"/>
         <link rel="shortcut icon" href="resources/imgs/logo.png">
+        <script type="text/javascript" src="resources/jquery.js"></script>
     </head>
     <body>        
         <?php include 'header.php' ?>
@@ -78,14 +78,15 @@ $numAsientosLibres = $datos[0]['num'];
                                     $datos = $bd->consulta("select a.Id, date_add(HoraReserva, INTERVAL 1 HOUR) as Hora, Nombre, Planta from Asiento a join Mesa m on (m.id = a.Mesa_Id) join Biblioteca b on (b.id = m.Biblioteca_id) where Usuario_reserva = '" . $_SESSION['NIU'] . "'");
                                     if (is_array($datos)) {
                                         $asientoReservado = $datos[0]['Id'];
-                                        $horaReserva = explode(' ', $datos[0]['Hora']);
+                                        $diaReserva = date('d-m-Y', strtotime($datos[0]['Hora']));
+                                        $horaReserva = date('H:i', strtotime($datos[0]['Hora']));
                                         $bibliotecaRes = $datos[0]['Nombre'];
                                         $plantaRes = $datos[0]['Planta'];
 
                                         echo '<b>Biblioteca: </b>' . utf8_encode($bibliotecaRes) . '<br>';
                                         echo '<b>Planta: </b>' . utf8_encode($plantaRes) . '<br>';
                                         echo '<b>Asiento: </b><b class="parpadea azul">' . $asientoReservado . '</b>';
-                                        echo '<br>El asiento volverá a estar libre hoy a las ' . $horaReserva[1] . '';
+                                        echo '<br>El asiento volverá a estar libre el '.$diaReserva.' a las ' . $horaReserva . '';
                                         echo '<form method="POST" action="controladores/reservaController.php"><input type="hidden" name="accion" value="cancelarReserva"><input type="hidden" name="asientoReservado" value="' . $asientoReservado . '">'
                                         . '<div align="center"><br><input type="submit" class="btn btn-primary" value="Cancelar reserva"></div></form>';
                                     } else {
@@ -148,7 +149,7 @@ $numAsientosLibres = $datos[0]['num'];
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <center>
-                                <div id="mapa"></div>
+                                <?php include_once 'mapa.php'?>
                             </center>
                         </div>
                     </div>
@@ -171,6 +172,7 @@ $numAsientosLibres = $datos[0]['num'];
                             if (!isset($_SESSION['InicioSesion'])) {
                                 echo '<h4>Para reservar un asiento debe iniciar sesión</h4>';
                             } else {
+                                
                                 if ((isset($asientoReservado) && $asientoReservado !== '') || (isset($asientoOcupado) && $asientoOcupado !== '')) {
                                     echo '<h4>Solo puede reservar u ocupar un asiento al mismo tiempo</h4>';
                                 } else {
@@ -197,58 +199,47 @@ $numAsientosLibres = $datos[0]['num'];
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-        <?php include 'footer.php' ?>        
-        <script type="text/javascript" src="resources/jquery.js"></script>
+        <?php include 'footer.php' ?>   
         <script type="text/javascript" src="resources/bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript" src="resources/js/funcionesJs.js"></script>
         <script type="text/javascript">
 
             $(document).ready(function () {
-                recargaMapa();
-                setInterval(recargaMapa, 3000);
+                // Elimino el borde de las tablas
+                $(".table").addClass("mapa");
+                $(".table").removeClass("table-bordered");
+                $(".table").removeClass("table");
+
+                $(".asiento").click(
+                        function () {
+
+                            // Obtendo el id del asiento
+                            var id = $(this).attr('id');
+
+                            // Indico en la variable del formulario el asiento que se ha clicado
+                            $("#asientoReservado").val(id);
+                            $("#asientoIncidencia").val(id);
+
+                            // Obtengo el estado del asiento
+                            var estado = $(this).data('estado');
+
+                            // Segun el estado muestro una información u otra en el modal
+                            if (estado === 1) { // asiento libre
+                                $("#contenidoModalReserva").html('<h4>¿Desea reservar este asiento?</h4><br><button type="submit" class="btn btn-default">Reservar</button>');
+                            } else { // asiento reservado/ocupado
+                                $("#contenidoModalReserva").html('<h4>Este asiento está reservado u ocupado</h4>');
+                            }
+
+                            // Muestro el modal
+                            $("#modalReserva").modal("show");
+
+                        });
+
+                // Añado el parpadeo al asiento ocupado o reservado
+                $("#<?php echo $asientoOcupado ?>").addClass("parpadea");
+                $("#<?php echo $asientoReservado ?>").addClass("parpadea");
 
             });
-
-            function recargaMapa() {
-                $("#mapa").load('mapa.php', {biblio: <?php echo $biblioteca ?>, planta: <?php echo $planta ?>}, function () {
-
-                    // Elimino el borde de las tablas
-                    $(".table").addClass("mapa");
-                    $(".table").removeClass("table-bordered");
-                    $(".table").removeClass("table");
-
-                    $(".asiento").click(
-                            function () {
-
-                                // Obtendo el id del asiento
-                                var id = $(this).attr('id');
-
-                                // Indico en la variable del formulario el asiento que se ha clicado
-                                $("#asientoReservado").val(id);
-                                $("#asientoIncidencia").val(id);
-
-                                // Obtengo el estado del asiento
-                                var estado = $(this).data('estado');
-
-                                // Segun el estado muestro una información u otra en el modal
-                                if (estado === 1) { // asiento libre
-                                    $("#contenidoModalReserva").html('<h4>¿Desea reservar este asiento?</h4><br><button type="submit" class="btn btn-default">Reservar</button>');
-                                } else { // asiento reservado/ocupado
-                                    $("#contenidoModalReserva").html('<h4>Este asiento está reservado u ocupado</h4>');
-                                }
-
-                                // Muestro el modal
-                                $("#modalReserva").modal("show");
-
-                            });
-
-                    // Añado el parpadeo al asiento ocupado o reservado
-                    $("#<?php echo $asientoOcupado ?>").addClass("parpadea");
-                    $("#<?php echo $asientoReservado ?>").addClass("parpadea");
-
-                });
-            }
-
         </script>
     </body>
 </html>

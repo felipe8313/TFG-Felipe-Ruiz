@@ -44,6 +44,8 @@ unsigned long interval = 8000; // establecemos 8 segundos
 char ssid[] = "iPhone de Felipe";
 char pass[] = "felipe8313";
 char server[] = "172.20.10.2";
+
+// Número de asiento
 String id = "344";
 
 // Variables para indicar el estado actual del asiento
@@ -58,7 +60,7 @@ LCD LCD;
 // Clase para controlar la lectura del código de barras
 class KbdRptParser : public KeyboardReportParser{
 
-  // Métodos para controlar la lectura de un nuevo caractarer
+  // Métodos para controlar la lectura de un nuevo caráctarer
   protected:
     virtual void OnKeyDown	(uint8_t mod, uint8_t key);
     virtual void OnKeyPressed(uint8_t key);

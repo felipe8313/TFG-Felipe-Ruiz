@@ -62,7 +62,7 @@ include 'clases/bd.class.php';
                         Solo tendrás que pasar el código de barras de tu carnet universitario por el lector que tiene el dispositivo que hay frente a ti. Una vez hecho esto, <b>dispondrás de 
                             3 horas hasta que el asiento vuelva a quedar libre</b>, aunque podrás volver a ocuparlo si alguien no lo ha reservado antes.
                     </p>
-                    <h3 class="tituloApartado">¿Y que pasa cuando quiera irme?</h3>
+                    <h3 class="tituloApartado">¿Y qué pasa cuando quiera irme?</h3>
                     <p class="parrafoAyuda">
                         Para liberar el asiento, pasa de nuevo el carnet universitario por el lector, así de simple.
                     </p>

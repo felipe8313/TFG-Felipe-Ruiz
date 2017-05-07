@@ -7,12 +7,16 @@
  */
 
 include_once 'clases/bd.class.php';
-$bd = new bd();
 
-if (!isset($biblio)){
-    $biblio = $_POST['biblio'];
+if (!isset($bd)){
+    $bd = new bd();
+}
+
+if (!isset($biblioteca)){
+    $biblioteca = $_POST['biblio'];
     $planta = $_POST['planta'];
 }
+
 if (!isset($modo)){
     $modo = 'lista';
 }
@@ -28,7 +32,7 @@ for ($i = 0; $i <= 30; $i++) {
 $resultado .= '</table>';
 $resultadoScript = '<script>';
 
-$mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = ".$biblio." and Planta = ".$planta);
+$mesas = $bd->consulta("select * from Mesa where Biblioteca_Id = ".$biblioteca." and Planta = ".$planta);
 
 foreach ($mesas as $mesa) {
 
@@ -48,11 +52,12 @@ foreach ($mesas as $mesa) {
         $claseAsientoAct = 'hvr-grow asiento';
     }
 
-    if ($modo !== 'modificar'){
+    if ($modo !== 'modificar'){        
         // Obtengo los asientos de la mesa
         $asientos = $bd->consulta("select * from Asiento where Mesa_id = '" . $idMesa . "'");
         $contAux = 0;
         $mesaHtml = '<table id=\"'.$idMesa.'\" style=\"width:'.(11 * $numAsientos).'px\" class=\"tablaAsientos '.$claseMesaAct.'\"><tr>';
+                
         foreach ($asientos as $asiento) {
 
             $idAsiento = $asiento['Id'];

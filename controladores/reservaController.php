@@ -21,7 +21,7 @@ if ($accion === 'reservar'){
     $asientoReservado = $_POST['asientoReservado'];
     
     // Indico en la base de datos la reserva    
-    $bd->update("Asiento", "Estado=2, HoraReserva=date_add(now(), interval 2 hour), Usuario_reserva = '".$_SESSION['NIU']."'", "Id = '".$asientoReservado."'");
+    $bd->update("Asiento", "Estado=2, HoraReserva=now(), Usuario_reserva = '".$_SESSION['NIU']."'", "Id = '".$asientoReservado."'");
     
     // Creo un trabajo programado para liberar el asiento si no lo ha ocupado en una hora
     $job = "CREATE EVENT liberarAsientoReservado".$asientoReservado."
@@ -62,9 +62,13 @@ function enviaAvisoReserva($bd, $usuario, $asiento){
     $nombre = utf8_encode($datos[0]['Nombre']);
     
     // Obtengo los datos del asiento
-    $datos = $bd->consulta("select nombre, planta from Asiento a join mesa m on (a.Mesa_id = m.id) join biblioteca b on (m.Biblioteca_Id = b.Id) where a.id = ".$asiento);
+    $datos = $bd->consulta("select nombre, planta, date_add(horaReserva, INTERVAL 1 hour) as vencimientoReserva from Asiento a 
+                join mesa m on (a.Mesa_id = m.id) join biblioteca b on (m.Biblioteca_Id = b.Id) where a.id = ".$asiento);
+    
     $biblio = utf8_encode($datos[0]['nombre']);
     $planta = $datos[0]['planta'];
+    $fechaVencimientoReserva = date('d-m-Y', strtotime($datos[0]['vencimientoReserva']));
+    $horaVencimientoReserva = date('H:i', strtotime($datos[0]['vencimientoReserva']));
     
     $cuerpo = '<html>';
     $cuerpo .= '</body>';
@@ -73,8 +77,8 @@ function enviaAvisoReserva($bd, $usuario, $asiento){
     $cuerpo .= '</h4>';
     $cuerpo .= '<b>Biblioteca: </b>'.$biblio.'<br>';
     $cuerpo .= '<b>Planta: </b>'.$planta.'<br>';
-    $cuerpo .= '<b>Asiento: </b>'.$asiento.'<br>';
-    
+    $cuerpo .= '<b>Asiento: </b>'.$asiento.'<br><br>';
+    $cuerpo .= 'Su reserva expirará el '.$fechaVencimientoReserva.' a las '.$horaVencimientoReserva;    
     $cuerpo .= '</body>';
     $cuerpo .= '</body>';
     $cuerpo .= '</html>';
