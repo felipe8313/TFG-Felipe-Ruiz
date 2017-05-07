@@ -26,9 +26,13 @@ if (isset($_POST['accion'])){
         $nombre = $_POST['nombre'];
         $apellidos = $_POST['apellidos'];
         $email = $_POST['email'];
-        
+        $biblioteca = $_POST['biblioteca'];
         $bloqueado = $_POST['bloqueado'];
         $tipo = $_POST['tipo'];
+        
+        if (!isset($_POST['biblioteca'])){
+            $biblioteca = 0;
+        }
         
         // El rol por defecto será el de alumno
         if (isset($_POST['rol'])){
@@ -60,19 +64,23 @@ if (isset($_POST['accion'])){
         
         // Obtengo la extensión del fichero subido
         $nombreArchivo = basename($_FILES['fichero']['name']);
-        $extension = end(explode(".", $nombreArchivo));
+               
         
-        $nombreFinal = $dni.'.'.$extension;
-        $directorio .= '/'.$nombreFinal;
-        
-        
-        // Muevo el archivo a su directorio definitivo
-        move_uploaded_file($_FILES['fichero']['tmp_name'], utf8_decode($directorio));
+        if ($nombreArchivo !== ''){
+            $extension = end(explode(".", $nombreArchivo));
+            $nombreFinal = $dni.'.'.$extension;
+            $directorio .= '/'.$nombreFinal;
+            
+            // Muevo el archivo a su directorio definitivo
+            move_uploaded_file($_FILES['fichero']['tmp_name'], utf8_decode($directorio));
+        }else{
+            $nombreFinal = 'sinfoto.gif';
+        }
         
         // Inserto al usuario en la base de datos
         $tabla = 'usuario';
-        $columnas = 'NIU, DNI, Nombre, Apellidos, Rol, Bloqueado, Contrasenia, TipoUsuario, Email, Imagen';
-        $valores = "'".$niu."', '".$dni."', '".$nombre."', '".$apellidos."', ".$rol.", ".$bloqueado.", '".$passCodificada."','".$tipo."','".$email."', '".$nombreFinal."'";
+        $columnas = 'NIU, DNI, Nombre, Apellidos, Rol, Bloqueado, Contrasenia, TipoUsuario, Email, Imagen, Biblioteca';
+        $valores = "'".$niu."', '".$dni."', '".$nombre."', '".$apellidos."', ".$rol.", ".$bloqueado.", '".$passCodificada."','".$tipo."','".$email."', '".$nombreFinal."', ".$biblioteca;
         
         $resultado = $bd->insertar($tabla, $columnas, $valores);
                 
@@ -81,7 +89,7 @@ if (isset($_POST['accion'])){
             
             // Envío un correo al usuario informando de sus claves
             $cuerpo = '<html><body><h4>Hola ' . utf8_encode($nombre) . ', aquí tienes los datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
-                . ' ' . $pass. '</body></html>';       
+                . ' ' . $pass. '<br><br><a href="http://172.20.10.2/librarinoApp">Acceda a Librarino</a></body></html>';       
 
             enviarCorreo($email, utf8_decode($cuerpo), 'Alta en Librarino');
             
@@ -91,8 +99,7 @@ if (isset($_POST['accion'])){
         
         header('Location: '.$_SERVER['HTTP_REFERER']);
         
-    }else if ($accion === 'modificarUsuario'){
-        
+    }else if ($accion === 'modificarUsuario'){        
         
         // Obtengo los datos
         $dni = $_POST['dniActual'];
@@ -179,7 +186,7 @@ if (isset($_POST['accion'])){
         
         // Mando esta información por email al usuario
         $cuerpo = '<html><body><h4>Hola ' . utf8_encode($nombre) . ', se han modificado tus datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
-            . ' ' . $pass. '</body></html>';  
+            . ' ' . $pass. '<br><br><a href="http://172.20.10.2/librarinoApp">Acceda a Librarino</a></body></html>';  
         
         
         enviarCorreo($email, utf8_decode($cuerpo), utf8_decode('Nueva contraseña'));

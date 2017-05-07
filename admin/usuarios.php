@@ -9,6 +9,8 @@ session_start();
 include_once 'header.php';
 include_once 'menuLateral.php';
 include_once '../clases/bd.class.php';
+include_once '../controladores/funcionesComunes.php';
+
 error_reporting(0);
 
 if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
@@ -175,15 +177,21 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                             <div class="col-md-6">                               
 
                                 <!-- Solo el administrador podrá definir roles -->
-<?php if ($_SESSION['Rol'] === 2) { ?>
-                                    <label>Rol*</label>
-                                    <select required="true" name="rol" class="form-control">
-                                        <option value="">Seleccione...</option>
-                                        <option value="1">Usuario normal</option>
-                                        <option value="2">Bibliotecario</option>
-                                        <option value="3">Administrador</option>
-                                    </select><br>
-<?php } ?>
+                                <?php if ($_SESSION['Rol'] === 3) { ?>
+                                <label>Rol*</label>
+                                <select onchange="actualizaSelects(this.value)" required="true" name="rol" class="form-control">
+                                    <option value="">Seleccione...</option>
+                                    <option value="1">Alumno</option>
+                                    <option value="2">Bibliotecario</option>
+                                    <option value="3">Administrador</option>
+                                </select><br>
+                                <label>Biblioteca</label>
+                                <select disabled="true" id="biblioteca" onchange="cargaSelectPlantas(this.value)" name="biblioteca" class="form-control">
+                                    <option value="0">Seleccione una biblioteca</option>
+                                    <?php echo getBibliotecas($bd) ?>
+                                </select>
+                                <br>
+                                <?php } ?>
 
                                 <label>Bloqueado*</label>
                                 <select required="true" name="bloqueado" class="form-control">
@@ -191,12 +199,16 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                                     <option value="1">Sí</option>
                                 </select><br>                            
                                 <label>Tipo de usuario*</label>
-                                <select required="true" name="tipo" class="form-control">
-                                    <option value="">Seleccione...</option>
+                                <?php if ($_SESSION['Rol'] === 2) { ?>
+                                <select id="tipo" name="tipo" class="form-control">
+                                <?php }else{ ?>
+                                <select disabled="true" id="tipo" name="tipo" class="form-control">
+                                <?php } ?>
+                                    <option value="0">Seleccione...</option>
                                     <option value="PDI">Pdi</option>
                                     <option value="PAS">Pas</option>
                                     <option value="ALUMNO">Alumno</option>
-                                </select><br>
+                                </select><br>                                
                                 <label>Foto*</label>
                                 <input multiple="true" type="file" name="fichero" accept="image/*"><br>
                             </div>
@@ -231,6 +243,19 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
 
                                         function cargarUsuario(dni) {
                                             window.location.href = "verUsuario.php?dni=" + dni;
+                                        }
+                                        
+                                        function actualizaSelects(tipoUsuario){                                            
+                                            if (tipoUsuario == 2){
+                                                $("#biblioteca").attr("disabled", false);
+                                                $("#tipo").attr("disabled", true);
+                                            }else if (tipoUsuario == 1){
+                                                $("#biblioteca").attr("disabled", true);
+                                                $("#tipo").attr("disabled", false);                                                
+                                            }else if (tipoUsuario == 3){
+                                                $("#biblioteca").attr("disabled", true);
+                                                $("#tipo").attr("disabled", true);                                                
+                                            }
                                         }
     </script>
 </html>

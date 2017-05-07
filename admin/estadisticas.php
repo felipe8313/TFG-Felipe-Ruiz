@@ -68,7 +68,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                 </div>
                 <hr>
                 <div class="row">
-                    <h3 class="tituloApartado">Por rango de fechas</h3>
+                    <h3 class="tituloApartado">Total en rango de fechas</h3>
                     <div class="col-md-4">
                         <div class="row">
                             <div class="col-md-6">
@@ -90,7 +90,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                 </div>
                 <hr>
                 <div class="row">
-                    <h3 class="tituloApartado">Por tipo de usuario</h3>
+                    <h3 class="tituloApartado">Por tipo de usuario, biblioteca y rango de fechas</h3>
                     <div class="col-md-4">
                         <label>Biblioteca</label>
                         <select class="form-control" id="biblioteca">

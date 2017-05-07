@@ -17,8 +17,6 @@ error_reporting(0);
 if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']){
     header('Location: index.php');
 }
-
-
 ?>
 <html>
     <head>
@@ -39,7 +37,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']){
                         <label>Biblioteca</label>
                         <select id="biblioteca" onchange="cargaSelectPlantas(this.value)" class="form-control">
                             <option>Seleccione una biblioteca</option>
-                            <?php echo getBibliotecas($bd, true) ?>
+                            <?php echo getBibliotecas($bd, true, $_SESSION['Biblioteca']) ?>
                         </select>
                     </div>
                     <div class="col-md-6">
@@ -132,6 +130,14 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']){
     <script>
                             $(document).ready(function () {
                                 $("#asientos").addClass("selectedItem");
+                                
+                                // El bibliotecario solo podrá modificar su biblioteca
+                                <?php 
+                                if ($_SESSION['Rol'] === 2){
+                                    echo '$("#biblioteca").attr("disabled", true);';
+                                    echo 'cargaSelectPlantas($("#biblioteca").val());';
+                                }
+                                ?>
                             });
 
                             function getBiblioActual() {

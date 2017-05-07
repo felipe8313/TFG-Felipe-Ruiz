@@ -41,16 +41,23 @@ function enviarCorreo($email, $cuerpo, $asunto) {
 }
 
 
-function getBibliotecas($bd, $plantas = false){
+function getBibliotecas($bd, $plantas = false, $biblioDefecto = 0){
     // Cargamos las opciones del select de biblioteca
     $bibliotecas = $bd->consulta("select Id, Plantas, Nombre from biblioteca");
     $opcionesBibliotecas = '';
 
     foreach ($bibliotecas as $biblio) {
-        if ($plantas){
-            $opcionesBibliotecas .= '<option value="' . $biblio['Id'] . '/' . $biblio['Plantas'] . '">' . utf8_encode($biblio['Nombre']) . '</option>';
+        
+        if ($biblioDefecto !== 0 && $biblioDefecto === $biblio['Id']){
+            $selecccionada = "selected";    
         }else{
-            $opcionesBibliotecas .= '<option value="' . $biblio['Id'] . '">' . utf8_encode($biblio['Nombre']) . '</option>';
+            $selecccionada = '';
+        }
+        
+        if ($plantas){            
+            $opcionesBibliotecas .= '<option '.$selecccionada.' value="' . $biblio['Id'] . '/' . $biblio['Plantas'] . '">' . utf8_encode($biblio['Nombre']) . '</option>';
+        }else{
+            $opcionesBibliotecas .= '<option '.$selecccionada.' value="' . $biblio['Id'] . '">' . utf8_encode($biblio['Nombre']) . '</option>';
         }
         
     }

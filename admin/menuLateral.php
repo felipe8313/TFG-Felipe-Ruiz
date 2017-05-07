@@ -27,9 +27,11 @@ if ($num > 0){
             <li id="estadisticas" class="itemList" onclick=" window.location.href= 'estadisticas.php'">
                 <span><img class="imgitem" src="resources/imgs/estadisticas.png"></span> Estadísticas 
             </li>
+            <?php if ($_SESSION['Rol'] === 3){ // Solo el administrador podrá modificar bibliotecas?>
             <li id="menuBiblioteca" class="itemList" onclick=" window.location.href= 'bibliotecas.php'">
                 <span><img class="imgitem" src="resources/imgs/biblioteca.png"></span> Bibliotecas 
             </li>
+            <?php }?>
             <li id="incidencias" class="itemList <?php echo $claseIncidencia?>" onclick=" window.location.href= 'incidencias.php'">
                 <span><img class="imgitem" src="resources/imgs/alerta.png"></span> Incidencias 
             </li>

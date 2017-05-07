@@ -84,7 +84,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                     <div class="col-md-6">                     
 
                         <!-- Solo el administrador podrá definir roles -->
-<?php if ($_SESSION['Rol'] === 2) { ?>
+                            <?php if ($_SESSION['Rol'] === 2) { ?>
                             <label>Rol*</label>
                             <select required="true" id="rol" name="rol" class="form-control">
                                 <option value="">Seleccione...</option>
@@ -92,7 +92,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                                 <option value="2">Bibliotecario</option>
                                 <option value="3">Administrador</option>
                             </select><br>
-<?php } ?>
+                            <?php } ?>
 
                         <label>Bloqueado*</label>
                         <select required="true" id="bloqueado" name="bloqueado" class="form-control">
