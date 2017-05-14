@@ -89,7 +89,7 @@ void KbdRptParser::OnKeyPressed(uint8_t key) {
 
     LCD.eraseBlock(0,50,maxX,maxY); // Borro la parte donde se va a imprimir el código     
     delay(300);
-    LCD.setX((maxX/2)-40); // Muevo el cursor
+    LCD.setX((maxX/2)-45); // Muevo el cursor
     LCD.setY((maxY/2 + 20));  
     delay(300);
     LCD.printStr(charAux); // Muestro el código en la pantalla
@@ -159,10 +159,10 @@ void actualizaEstado(String estado) {
 
 // Muestra el estado actual en la pantalla LCD
 void pintaEstado(char* estado){
-    LCD.eraseBlock(0,35,maxX,(maxY)); // Borro la parte del estado anterior     
+    LCD.eraseBlock(0,30,maxX,(maxY)); // Borro la parte del estado anterior     
     delay(300);
-    LCD.setX((maxX/2)-43);
-    LCD.setY((maxY/2) + 5);  
+    LCD.setX((maxX/2)-40);
+    LCD.setY((maxY/2)-2);  
     delay(300);
     LCD.printStr(estado);
 }
@@ -224,14 +224,14 @@ void setup(){
   LCD.setY((maxY/2)-22);
   LCD.printStr("TELEC. E INFORM.");
   delay(100);
-  LCD.setX((maxX/2)-32);
+  LCD.setX((maxX/2)-30);
   LCD.setY((maxY/2)-10);  
   LCD.printStr(charAux);
   delay(300);
   LCD.drawLine(0,(maxY/2)-1,maxX,(maxY/2)-1,1);
   delay(300);
-  LCD.setX((maxX/2)-43);
-  LCD.setY((maxY/2) + 5);
+  LCD.setX((maxX/2)-40);
+  LCD.setY((maxY/2));
   //////////////////////////////////////////////////////////////////////////////////////
 
   // Inicializo los pines de la bombilla led

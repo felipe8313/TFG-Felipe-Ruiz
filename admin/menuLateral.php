@@ -30,7 +30,7 @@ $numIncidencias = (int)$datos[0]['num'];
                 <span><img class="imgitem" src="resources/imgs/alerta.png"></span>
                 <b data-badge="<?php echo $numIncidencias?>" class="bagde1">Incidencias&ensp;</b>
             </li>
-            <li class="itemList" onclick=" window.location.href= '../controladores/loginController.php?accion=logoutAdmin'">
+            <li class="itemList" onclick=" window.location.href= '../controladores/loginController.php?accion=logout&modo=admin'">
                 <span><img class="imgitem" src="resources/imgs/salir.png"></span> <b>Salir </b>
             </li>
         </ul>

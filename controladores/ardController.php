@@ -6,9 +6,7 @@
  * and open the template in the editor.
  */
 
-//error_reporting(E_ALL);
-//ini_set('display_errors', '1');
-include 'clases/bd.class.php';
+include '../clases/bd.class.php';
 
 $idDispositivo = $_GET['id'];
 $usuario = $_GET['usuario'];
@@ -24,6 +22,7 @@ if ($usuario === "") {
     $estado = (int) $datos[0]['Estado'];
 
     echo "Respuesta:" . $estado;
+    
 } else {
 
     // Obtengo los datos del asiento
@@ -36,8 +35,7 @@ if ($usuario === "") {
 
         // Si el usuario pasa de nuevo la tarjeta libero el sitio
         if ($usuario === $usuarioOcupacion) {
-
-            $bd->update("update Asiento set Estado = 1, Usuario_ocupacion = NULL, HoraOcupacion = NULL where Id = '" . $idDispositivo . "'");
+            $bd->update("Asiento", "Estado = 1, Usuario_ocupacion = NULL, HoraOcupacion = NULL", "Id = '" . $idDispositivo . "'");
             echo "Respuesta:1";
         } else {
             echo "Respuesta:3";
@@ -68,7 +66,7 @@ if ($usuario === "") {
 function ocuparAsiento($bd, $usuario, $id) {
     
     // Ocupo el asiento
-    $bd->update("update Asiento set Estado = 0, Usuario_ocupacion = '" . $usuario . "', HoraOcupacion = now(), Usuario_reserva = NULL, HoraReserva = NULL where Id = '" . $id . "'");
+    $bd->update("Asiento", "Estado = 0, Usuario_ocupacion = '" . $usuario . "', HoraOcupacion = now(), Usuario_reserva = NULL, HoraReserva = NULL", "Id = '" . $id . "'");
     echo "Respuesta:0";
 
     // Creo un trabajo programado para liberar al cabo de 3 horas

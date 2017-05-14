@@ -10,6 +10,7 @@ include_once 'header.php';
 include_once 'menuLateral.php';
 include_once '../clases/bd.class.php';
 include_once '../controladores/funcionesComunes.php';
+error_reporting(0);
 
 if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
     header('Location: index.php');

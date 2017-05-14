@@ -268,7 +268,7 @@ tr.espacioFila > td
     width: 55%;
 }
 
-@media screen and (min-width: 800px){
+@media screen and (min-width: 800px) and (max-width: 1366px){
 
     .logoHeader{
         margin-top: 35%;

@@ -83,7 +83,7 @@ foreach ($mesas as $mesa) {
         
         $resultadoScript .= '$("#x' . $x . 'y' . $y . '").html("' . $mesaHtml . '");';
         $resultadoScript .= '$("#x' . $x . 'y' . $y . '").css(\'transform\', \'rotate('.$gradosRotacion.'deg)\');';
-        $resultadoScript .= '$("#x' . $x . 'y' . $y . '").css(\'height\', $("#x' . $x . 'y' . $y . '").width());';
+        $resultadoScript .= '$("#x' . $x . 'y' . $y . '").css(\'height\', $("#x' . $x . 'y' . $y . '").width() - 100);';
         
     }else{
         $resultadoScript .= '$("#x' . $x . 'y' . $y . '").html("<center><p data-activa=\"'.$activa.'\"  data-rot=\"'.$gradosRotacion.'\" data-asientos=\"'.$numAsientos.'\" data-id=\"'.$idMesa.'\" class=\"numAsientos '.$claseMesaAct.'\">' . $numAsientos . '</p></center>");';

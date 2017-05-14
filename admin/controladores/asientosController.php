@@ -10,6 +10,7 @@ include_once '../../clases/bd.class.php';
 $bd = new bd();
 
 if (isset($_POST['accion'])){
+    
     $accion = $_POST['accion'];
     
     if ($accion === 'cargarMapa'){

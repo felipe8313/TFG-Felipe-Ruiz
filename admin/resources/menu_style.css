@@ -194,7 +194,9 @@ body, html {
     }
     
     .content{
-        top: 19%
+        top: 19%;
+        width: 85%;
+        left: 14%;
     }
 
 

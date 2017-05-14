@@ -64,20 +64,16 @@ if (isset($_GET['accion'])){
 
     $accion = $_GET['accion'];
     
-    if ($accion === 'logoutApp'){
+    if ($accion === 'logout'){
+        $modo = $_GET['modo'];
         session_unset();
         session_destroy();
-
-        header('Location: '.$_SERVER['HTTP_REFERER']);
         
-    }else if ($accion === 'logoutAdmin'){
-        
-        session_unset();
-        session_destroy();
-
-        header('Location: ../admin');
-        
-        
+        if ($modo === 'app'){
+            header('Location: '.$_SERVER['HTTP_REFERER']);
+        }else if($modo === 'admin'){
+            header('Location: ../admin');
+        }
     }
     
     

@@ -8,6 +8,7 @@ and open the template in the editor.
 session_start();
 include_once 'header.php';
 include_once 'menuLateral.php';
+error_reporting(0);
 
 if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
     header('Location: index.php');

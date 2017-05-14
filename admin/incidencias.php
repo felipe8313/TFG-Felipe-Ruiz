@@ -9,7 +9,7 @@ session_start();
 include_once 'header.php';
 include_once 'menuLateral.php';
 include_once '../clases/bd.class.php';
-//error_reporting(0);
+error_reporting(0);
 
 if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
     header('Location: index.php');
