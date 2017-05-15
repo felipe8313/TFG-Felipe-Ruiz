@@ -45,7 +45,7 @@ if ($accion === 'reservar'){
     $asientoIncidencia = $_POST['asientoIncidencia'];
     $descripcion = nl2br($_POST['txtIncidencia']);
     
-    $bd->insertar('incidencia', 'asiento, usuario, fecha, descripcion, estado', $asientoIncidencia.', \''.$_SESSION['NIU'].'\', now(), \''.$descripcion.'\', 1'); 
+    $bd->insertar('incidencia', 'asiento, usuario, fecha, descripcion, estado', $asientoIncidencia.', \''.$_SESSION['DNI'].'\', now(), \''.$descripcion.'\', 1'); 
     
     $_SESSION['mensaje'] = 'Notificación creada correctamente. ¡Gracias por su ayuda!';
     

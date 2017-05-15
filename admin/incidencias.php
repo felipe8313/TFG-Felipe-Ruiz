@@ -61,7 +61,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
 
         $bd = new bd();
         $consulta = "select i.id, asiento, Fecha, fechaCierre, u.Nombre, Apellidos, descripcion, i.estado, m.Planta, b.nombre as biblio
-                    from incidencia i join usuario u on (usuario = NIU or usuario = DNI)
+                    from incidencia i join usuario u on (usuario = DNI)
                     join Asiento a on (a.id = asiento)
                     join Mesa m on (m.id = a.Mesa_id)
                     join Biblioteca b on (b.id = m.Biblioteca_Id)

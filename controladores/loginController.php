@@ -20,7 +20,7 @@ if (isset($_POST['accion'])){
         $pass = $_POST['pass'];
         $modo = $_POST['modo'];
 
-        $datos = $bd->consulta("select Nombre, Rol, Bloqueado, Biblioteca from Usuario where (DNI = '".$user."' or NIU = '".$user."') and Contrasenia = '".crypt($pass,$user)."'");
+        $datos = $bd->consulta("select Nombre, Rol, Bloqueado, Biblioteca, NIU, DNI from Usuario where (DNI = '".$user."' or NIU = '".$user."') and Contrasenia = '".crypt($pass,$user)."'");
         
         if (is_array($datos) && count($datos) !== 0){
 
@@ -33,7 +33,8 @@ if (isset($_POST['accion'])){
             
             // Obtengo los datos del usuario
             $_SESSION['Nombre'] = $datos[0]['Nombre'];
-            $_SESSION['NIU'] = $user;
+            $_SESSION['NIU'] = $datos[0]['NIU'];
+            $_SESSION['DNI'] = $datos[0]['DNI'];
             $_SESSION['Rol'] = (int)$datos[0]['Rol'];
             $_SESSION['Biblioteca'] = $datos[0]['Biblioteca'];
             $_SESSION['InicioSesion'] = true;
