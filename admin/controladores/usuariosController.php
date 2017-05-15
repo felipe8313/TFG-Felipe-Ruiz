@@ -164,6 +164,10 @@ if (isset($_POST['accion'])){
         
         $dni = $_POST['dni'];
         
+        if (isset($_POST['modo'])){
+            $modo = $_POST['modo'];
+        }
+        
         // Obtengo el NIU del usuario (si lo tiene)
         $datos = $bd->consulta("select Nombre, NIU, Email from usuario where DNI = '".$dni."'");
         $niu = $datos[0]['NIU'];
@@ -190,6 +194,11 @@ if (isset($_POST['accion'])){
         
         
         enviarCorreo($email, utf8_decode($cuerpo), utf8_decode('Nueva contraseña'));
+        
+        if ($modo === 'app'){
+            info("La nueva contraseña ha sido enviada a su correo electrónico");
+            header('Location: '.$_SERVER['HTTP_REFERER']);            
+        }
         
     }
     

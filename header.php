@@ -53,7 +53,11 @@
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input id="pass" type="password" name="pass" class="form-control">
-                    </div>                    
+                    </div>
+                    <br>
+                    <center>
+                        <a href="#" onclick="abreModalNuevaPass()">¿Ha olvidado su contraseña?</a>
+                    </center>
                 </div>
                 <div class="modal-footer">
                     <center>
@@ -85,7 +89,35 @@
                     <div id="mensajePass"><b style="color:red">Las contraseñas no coinciden</b></div>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" id="boton" class="btn btn-primary" value="Guardar">                         
+                    <center>
+                        <input type="submit" id="boton" class="btn btn-default" value="Guardar">        
+                    </center>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
+
+<!-- modal para nueva contraseña -->
+<div id="modalNuevaPass" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Generar nueva contraseña</h4>
+            </div>
+            <form method="POST" action="admin/controladores/usuariosController.php">
+                <div class="modal-body">           
+                    <input name="accion" type="hidden" value="nuevaContrasenia">
+                    <input name="modo" type="hidden" value="app">
+                    <label for="dniNewPass">DNI</label>
+                    <input id="dniNewPass" name="dni" class="form-control" type="text"><br>
+                </div>
+                <div class="modal-footer">
+                    <center>
+                        <input type="submit" id="boton" class="btn btn-default" value="Generar">   
+                    </center>
                 </div>
             </form>
         </div>
@@ -104,7 +136,13 @@
             $("#mensajePass").html('<b style="color:red">Las contraseñas no coinciden</b>');
             $('#boton').attr("disabled", true);
         }    
-    }    
+    }  
+    
+    function abreModalNuevaPass(){
+        $("#modalInicioSesion").modal("hide");
+        setTimeout($("#modalNuevaPass").modal("show"), 1000);
+    }
+    
 </script>
 
 
