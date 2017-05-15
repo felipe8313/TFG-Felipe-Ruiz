@@ -173,21 +173,32 @@ $numAsientosLibres = $datos[0]['num'];
                                 echo '<h4>Para reservar un asiento debe iniciar sesión</h4>';
                             } else {
                                 
-                                if ((isset($asientoReservado) && $asientoReservado !== '') || (isset($asientoOcupado) && $asientoOcupado !== '')) {
-                                    echo '<h4>Solo puede reservar u ocupar un asiento al mismo tiempo</h4>';
-                                } else {
+                                // Si es el bibliotecario o el admin muestro la info del asiento
+                                if ($_SESSION['Rol'] === 1){
+                                    if ((isset($asientoReservado) && $asientoReservado !== '') || (isset($asientoOcupado) && $asientoOcupado !== '')) {
+                                        echo '<h4>Solo puede reservar u ocupar un asiento al mismo tiempo</h4>';
+                                    } else {
+                                        echo '<form method="POST" action="controladores/reservaController.php">';
+                                        echo '<input type="hidden" name="accion" value="reservar">';
+                                        echo '<input type="hidden" id="asientoReservado" name="asientoReservado" class="asientoClicado" value="">';
+                                        echo '<div id="contenidoModalReserva"></div>';
+                                        echo '</form>';
+                                    }
+                                }else{
                                     echo '<form method="POST" action="controladores/reservaController.php">';
-                                    echo '<input type="hidden" name="accion" value="reservar">';
-                                    echo '<input type="hidden" id="asientoReservado" name="asientoReservado" value="">';
-                                    echo '<div id="contenidoModalReserva"></div>';
+                                    echo '<input type="hidden" name="accion" value="liberar">';
+                                    echo '<input type="hidden" name="asiento" class="asientoClicado" value="">';
+                                    echo '<div id="contenidoModalReservaBibliotecario"></div>';
                                     echo '</form>';
                                 }
+                                
+                                
 
                                 // Para notificar una incidencia
                                 echo '<hr>';
                                 echo '<form method="POST" action="controladores/reservaController.php">';
                                 echo '<input type="hidden" name="accion" value="incidencia">';
-                                echo '<input type="hidden" id="asientoIncidencia" name="asientoIncidencia" value="">';
+                                echo '<input type="hidden" class="asientoClicado" id="asientoIncidencia" name="asientoIncidencia" value="">';
                                 echo '<h4>Notificar una incidencia</h4><br>';
                                 echo '<textarea id="txtIncidencia" name="txtIncidencia" class="form-control" col="4" rows="6"></textarea><br>';
                                 echo '<button class="btn btn-default">Notificar</button>';
@@ -216,18 +227,26 @@ $numAsientosLibres = $datos[0]['num'];
                             // Obtendo el id del asiento
                             var id = $(this).attr('id');
 
-                            // Indico en la variable del formulario el asiento que se ha clicado
-                            $("#asientoReservado").val(id);
-                            $("#asientoIncidencia").val(id);
+                            // Indico en la variable de los formularios de los modales el asiento que se ha clicado
+                            $(".asientoClicado").val(id);
 
                             // Obtengo el estado del asiento
                             var estado = $(this).data('estado');
+                            
+                            // Obtengo los datos del alumno que ha ocupado o reservado el asiento
+                            var usuarioNombre = $(this).data('usuarionombre');
+                            var usuarioNIU = $(this).data('usuarioniu');
+                            var usuarioDNI = $(this).data('usuariodni');
 
                             // Segun el estado muestro una información u otra en el modal
                             if (estado === 1) { // asiento libre
                                 $("#contenidoModalReserva").html('<h4>¿Desea reservar este asiento?</h4><br><button type="submit" class="btn btn-default">Reservar</button>');
+                                $("#contenidoModalReservaBibliotecario").html("<h4>Este asiento está libre</h4>");
                             } else { // asiento reservado/ocupado
                                 $("#contenidoModalReserva").html('<h4>Este asiento está reservado u ocupado</h4>');
+                                
+                                // Mediante ajax obtengo quien ha reservado u ocupado el asiento
+                                $("#contenidoModalReservaBibliotecario").html('<h4>Este asiento está reservado/ocupado por:<br><br><table class="table table-bordered table-striped"><thead><tr><th>NIU</th><th>DNI</th><th>Nombre y apellidos</th></tr><tbody><tr><td>'+usuarioNIU+'</td><td>'+usuarioDNI+'</td><td>'+usuarioNombre+'</td></tr></tbody></thead></table></h4><br><input type="submit" class="btn btn-success" value="Liberar">');
                             }
 
                             // Muestro el modal

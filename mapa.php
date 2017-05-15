@@ -54,7 +54,7 @@ foreach ($mesas as $mesa) {
 
     if ($modo !== 'modificar'){        
         // Obtengo los asientos de la mesa
-        $asientos = $bd->consulta("select * from Asiento where Mesa_id = '" . $idMesa . "'");
+        $asientos = $bd->consulta("select Id, Estado, Nombre, Apellidos, NIU, DNI from Asiento left join Usuario on (DNI = Usuario_ocupacion or DNI = Usuario_reserva or NIU = Usuario_ocupacion or  NIU = Usuario_reserva) where Mesa_id = '" . $idMesa . "'");
         $contAux = 0;
         $mesaHtml = '<table id=\"'.$idMesa.'\" style=\"width:'.(11 * $numAsientos).'px\" class=\"tablaAsientos '.$claseMesaAct.'\"><tr>';
                 
@@ -76,7 +76,7 @@ foreach ($mesas as $mesa) {
                 $mesaHtml .= '</tr><tr>';
             }
 
-            $mesaHtml .= '<td><img data-estado=\"' . $estado . '\" class=\"'.$claseAsientoAct.'\" width=\"100%\" id=\"' . $idAsiento . '\" src=\"' . $icono . '\"></td>';
+            $mesaHtml .= '<td><img data-usuarioNombre=\"'.utf8_encode($asiento['Nombre'].' '.$asiento['Apellidos']).'\" data-usuarioNIU=\"' . $asiento['NIU'] . '\" data-usuariodni=\"' . $asiento['DNI'] . '\" data-estado=\"' . $estado . '\" class=\"'.$claseAsientoAct.'\" width=\"100%\" id=\"' . $idAsiento . '\" src=\"' . $icono . '\"></td>';
             $contAux++;
         }
         $mesaHtml .= '</tr></table>';

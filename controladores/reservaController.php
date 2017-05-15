@@ -48,6 +48,10 @@ if ($accion === 'reservar'){
     $bd->insertar('incidencia', 'asiento, usuario, fecha, descripcion, estado', $asientoIncidencia.', \''.$_SESSION['NIU'].'\', now(), \''.$descripcion.'\', 1'); 
     
     $_SESSION['mensaje'] = 'Notificación creada correctamente. ¡Gracias por su ayuda!';
+    
+}else if ($accion === 'liberar'){
+    $bd->consulta('call liberarAsiento('.$_POST['asiento'].')');
+    header('Location: '.$_SERVER['HTTP_REFERER']);
 }
 
 header('Location: '.$_SERVER['HTTP_REFERER']);
