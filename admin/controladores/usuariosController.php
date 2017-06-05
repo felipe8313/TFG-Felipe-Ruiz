@@ -41,17 +41,10 @@ if (isset($_POST['accion'])){
             $rol = 1;
         }
         
-        // Genero la contraseña aleatoriamente y la codifico. La codifico utilizando el NIU o el DNI
+        // Genero la contraseña aleatoriamente y la codifico. La codifico utilizando el DNI
         $pass = generaPass();
-        
-        if ($niu !== ''){
-            $usuario = $niu;
-            $passCodificada = crypt($pass, $niu);            
-        }else{
-            $usuario = $dni;
-            $passCodificada = crypt($pass, $dni);
-        }
-        
+        $passCodificada = crypt($pass, $dni);
+                
         // Subo al sistema la imagen del alumno
         $directorio = $_SERVER['DOCUMENT_ROOT'].'/librarinoApp/admin/resources/imagenesUsuarios';
         
@@ -85,7 +78,12 @@ if (isset($_POST['accion'])){
         $resultado = $bd->insertar($tabla, $columnas, $valores);
                 
         if ($resultado){
-            info("Usuario creado correctamente");
+            info("Usuario creado correctamente");          
+            $usuario = $dni;
+        
+            if ($niu !== ''){
+                $usuario .= ' o '.$niu;          
+            }
             
             // Envío un correo al usuario informando de sus claves
             $cuerpo = '<html><body><h4>Hola ' . utf8_encode($nombre) . ', aquí tienes los datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'
@@ -176,17 +174,15 @@ if (isset($_POST['accion'])){
         
         // Genero la contraseña aleatoriamente y la codifico. La codifico utilizando el NIU o el DNI
         $pass = generaPass();
-        
-        if ($niu !== ''){
-            $usuario = $niu;
-            $passCodificada = crypt($pass, $niu);            
-        }else{
-            $usuario = $dni;
-            $passCodificada = crypt($pass, $dni);
-        }
+        $passCodificada = crypt($pass, $dni);
         
         // Una vez generada la nueva contraseña la almaceno
         $bd->update("Usuario", "Contrasenia = '".$passCodificada."'", "DNI = '".$dni."'");
+                
+        $usuario = $dni;        
+        if ($niu !== ''){
+            $usuario .= ' o '.$niu;          
+        }
         
         // Mando esta información por email al usuario
         $cuerpo = '<html><body><h4>Hola ' . utf8_encode($nombre) . ', se han modificado tus datos de acceso a Librarino: </h4><b>Usuario: </b>' . $usuario . '<br/><br/><b>Contraseña: </b>'

@@ -15,10 +15,10 @@ $accion = $_POST['accion'];
 
 if ($accion === 'cambiaContrasenia'){
     
-    $user = $_SESSION['NIU'];
+    $user = $_SESSION['DNI'];
     $pass = $_POST['pass'];
     
-    $resultado = $bd->update("Usuario", "contrasenia = '".crypt($pass,$user)."'",  "NIU = '".$user."'");
+    $resultado = $bd->update("Usuario", "contrasenia = '".crypt($pass,$user)."'",  "DNI = '".$user."'");
     
     if ($resultado){
         info("Contraseña actualizada correctamente");
