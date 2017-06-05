@@ -20,7 +20,7 @@ if (isset($_POST['accion'])){
         $pass = $_POST['pass'];
         $modo = $_POST['modo'];
 
-        $datos = $bd->consulta("select Nombre, Rol, Bloqueado, Biblioteca, NIU, DNI from Usuario where (DNI = '".$user."' or NIU = '".$user."') and Contrasenia = '".crypt($pass,$user)."'");
+        $datos = $bd->consulta("select Nombre, Rol, Bloqueado, Biblioteca, NIU, DNI from Usuario where (DNI = '".strtoupper($user)."' or NIU = '".$user."') and Contrasenia = '".crypt($pass,$user)."'");
         
         if (is_array($datos) && count($datos) !== 0){
 

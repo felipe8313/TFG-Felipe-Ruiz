@@ -41,41 +41,32 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
         } else {
             $niuDni = '';
         }
-
+        
+        // El bibliotecario solo podrá gestionar alumnos
+        if ($_SESSION['Rol'] === 2){
+            $condicionBibliotecario = ' and Rol = 1';
+        }else{
+            $condicionBibliotecario = '';
+        }
+        
         if ($nombre !== '' || $niuDni !== '') {
             $bd = new bd();
-            $consulta = "select * from Usuario where (ucase(nombre) like '%" . $nombre . "%' or ucase(apellidos) like '%" . $nombre . "%')  and (ucase(DNI) like '%" . $niuDni . "%' or ucase(NIU) like '%" . $niuDni . "%')";
+            $consulta = "select * from Usuario where (ucase(nombre) like '%" . $nombre . "%' or ucase(apellidos) like '%" . $nombre . "%')  and (ucase(DNI) like '%" . $niuDni . "%' or ucase(NIU) like '%" . $niuDni . "%')".$condicionBibliotecario;
             $datos = $bd->consulta($consulta);
             $cuerpoTabla = '';
 
             foreach ($datos as $usuario) {
+                
+                $roles = array('' => '', 1 => 'Usuario', 2 => 'Bibliotecario', 3 => 'Administrador');
+                $estados = array('' => '', 0 => 'NO', 1 => 'SI');
+                
                 $cuerpoTabla .= '<tr>';
                 $cuerpoTabla .= '<td>' . $usuario['NIU'] . '</td>';
                 $cuerpoTabla .= '<td>' . $usuario['DNI'] . '</td>';
                 $cuerpoTabla .= '<td>' . $usuario['Nombre'] . '</td>';
                 $cuerpoTabla .= '<td>' . $usuario['Apellidos'] . '</td>';
-
-                if ($usuario['Rol'] === '1') { // alumno
-                    $rol = 'Usuario';
-                } else if ($usuario['Rol'] === '2') { // bibliotecario
-                    $rol = 'Bibliotecario';
-                } else if ($usuario['Rol'] === '3') { // administrador
-                    $rol = 'Administrador';
-                } else {
-                    $rol = '';
-                }
-
-                $cuerpoTabla .= '<td>' . $rol . '</td>';
-
-                if ($usuario['Bloqueado'] === '1') {
-                    $bloq = 'SI';
-                } else if ($usuario['Bloqueado'] === '0') {
-                    $bloq = 'NO';
-                } else {
-                    $bloq = '';
-                }
-
-                $cuerpoTabla .= '<td>' . $bloq . '</td>';
+                $cuerpoTabla .= '<td>' . $roles[$usuario['Rol']] . '</td>';
+                $cuerpoTabla .= '<td>' . $estados[$usuario['Bloqueado']] . '</td>';
                 $cuerpoTabla .= '<td>' . $usuario['TipoUsuario'] . '</td>';
                 $cuerpoTabla .= '<td>' . $usuario['Titulación'] . '</td>';
                 $cuerpoTabla .= '<td>' . $usuario['Email'] . '</td>';
@@ -208,8 +199,8 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                                     <option value="PAS">Pas</option>
                                     <option value="ALUMNO">Alumno</option>
                                 </select><br>                                
-                                <label>Foto*</label>
-                                <input multiple="true" type="file" name="fichero" accept="image/*"><br>
+                                <label>Imagen</label>
+                                <input type="file" name="fichero" accept="image/*"><br>
                             </div>
                         </div>
                         <div class="modal-footer">

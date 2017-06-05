@@ -84,7 +84,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                     <div class="col-md-6">                     
 
                         <!-- Solo el administrador podrá definir roles -->
-                            <?php if ($_SESSION['Rol'] === 2) { ?>
+                            <?php if ($_SESSION['Rol'] === 3) { ?>
                             <label>Rol*</label>
                             <select required="true" id="rol" name="rol" class="form-control">
                                 <option value="">Seleccione...</option>
@@ -106,8 +106,8 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                             <option value="PAS">Pas</option>
                             <option value="ALUMNO">Alumno</option>
                         </select><br>
-                        <label>Imagen*</label>
-                        <input multiple="true" type="file" name="fichero" accept="image/*"><br>
+                        <label>Imagen</label>
+                        <input type="file" name="fichero" accept="image/*"><br>
                     </div>                    
                 </div>
                 <div class="row">

@@ -237,16 +237,17 @@ $numAsientosLibres = $datos[0]['num'];
                             var usuarioNombre = $(this).data('usuarionombre');
                             var usuarioNIU = $(this).data('usuarioniu');
                             var usuarioDNI = $(this).data('usuariodni');
+                            var usuarioHora = $(this).data('usuariohora');
 
                             // Segun el estado muestro una información u otra en el modal
                             if (estado === 1) { // asiento libre
                                 $("#contenidoModalReserva").html('<h4>¿Desea reservar este asiento?</h4><br><button type="submit" class="btn btn-default">Reservar</button>');
-                                $("#contenidoModalReservaBibliotecario").html("<h4>Este asiento está libre</h4>");
+                                $("#contenidoModalReservaBibliotecario").html('<h4>¿Desea reservar este asiento?</h4><br><button type="submit" class="btn btn-default">Reservar</button>');
                             } else { // asiento reservado/ocupado
                                 $("#contenidoModalReserva").html('<h4>Este asiento está reservado u ocupado</h4>');
                                 
                                 // Mediante ajax obtengo quien ha reservado u ocupado el asiento
-                                $("#contenidoModalReservaBibliotecario").html('<h4>Este asiento está reservado/ocupado por:<br><br><table class="table table-bordered table-striped"><thead><tr><th>NIU</th><th>DNI</th><th>Nombre y apellidos</th></tr><tbody><tr><td>'+usuarioNIU+'</td><td>'+usuarioDNI+'</td><td>'+usuarioNombre+'</td></tr></tbody></thead></table></h4><br><input type="submit" class="btn btn-success" value="Liberar">');
+                                $("#contenidoModalReservaBibliotecario").html('<h4>Este asiento está reservado/ocupado por:<br><br><table class="table table-bordered table-striped"><thead><tr><th>NIU</th><th>DNI</th><th>Nombre y apellidos</th><th>Día y hora</th></tr><tbody><tr><td>'+usuarioNIU+'</td><td>'+usuarioDNI+'</td><td>'+usuarioNombre+'</td><td>'+usuarioHora+'</td></tr></tbody></thead></table></h4><br><input type="submit" class="btn btn-success" value="Liberar">');
                             }
 
                             // Muestro el modal

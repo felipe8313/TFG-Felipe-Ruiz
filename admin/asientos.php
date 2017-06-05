@@ -80,7 +80,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']){
                         <label>Rotación (0 - 180 grados)</label>
                         <input class="form-control" type="number" max="180" min="0" id="modiGradosRot" value="">
                         <br>
-                        <label>Activa</label>
+                        <label>Estado</label>
                         <select required="true" class="form-control" id="modiAct" name="modiAct" >
                             <option value="1">Activada</option>
                             <option value="0">Desactivada</option>
@@ -112,8 +112,9 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']){
                         <label>Rotación (0 - 180 grados)</label>
                         <input class="form-control" type="number" max="180" min="0" id="creaGradosRot" value="0">
                         <br>
+                        <label>Estado</label>
                         <select required="true" class="form-control" id="creaAct" name="creaAct" >
-                            <option selected="selected" value="1">Activada</option>
+                            <option selected="true" value="1">Activada</option>
                             <option value="0">Desactivada</option>
                         </select>
                     </div>
@@ -199,7 +200,6 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']){
                                         $("#creaY").val(celda.data("y"));
                                         $("#creaNumAsientos").val("");
                                         $("#creaGradosRot").val("");
-                                        $("#creaAct").val("");
                                         $("#modalCreaMesa").modal('show');
 
                                     });
