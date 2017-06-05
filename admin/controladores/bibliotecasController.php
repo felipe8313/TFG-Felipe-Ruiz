@@ -122,6 +122,18 @@ if (isset($_GET['accion'])){
             error("Error al eliminar la biblioteca");
         }
         
+        //Obtengo las mesas de la biblioteca y los asientos para eliminarlas
+        $mesas = $bd->consulta("select id from Mesa where biblioteca_id = ".$_GET['id']);
+        
+        foreach ($mesas as $mesa){
+            $bd->eliminar('mesa', 'id = '.$mesa['id']);
+            $asientos = $bd->consulta("select id from Asiento where mesa_id = ".$mesa['id']);
+            
+            foreach ($asientos as $asiento){
+                $bd->eliminar('asiento', 'id = '.$asiento['id']);
+            }
+        }
+        
         header('Location: '.$_SERVER['HTTP_REFERER']);
     }
     
