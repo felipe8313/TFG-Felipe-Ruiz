@@ -21,7 +21,7 @@ if ($accion === 'reservar'){
     $asientoReservado = $_POST['asientoReservado'];
     
     // Indico en la base de datos la reserva    
-    $bd->update("Asiento", "Estado=2, HoraReserva=now(), Usuario_reserva = '".$_SESSION['NIU']."'", "Id = '".$asientoReservado."'");
+    $bd->update("Asiento", "Estado=2, HoraReserva=now(), Usuario_reserva = '".$_SESSION['DNI']."'", "Id = '".$asientoReservado."'");
     
     // Creo un trabajo programado para liberar el asiento si no lo ha ocupado en una hora
     $job = "CREATE EVENT liberarAsientoReservado".$asientoReservado."
@@ -31,7 +31,7 @@ if ($accion === 'reservar'){
     $bd->consulta($job);
     
     // Envío un correo con la información de la reserva
-    enviaAvisoReserva($bd, $_SESSION['NIU'], $asientoReservado);
+    enviaAvisoReserva($bd, $_SESSION['DNI'], $asientoReservado);
     
 }else if ($accion === 'cancelarReserva'){// Cancelo la reserva del usuario
     
@@ -61,7 +61,7 @@ header('Location: '.$_SERVER['HTTP_REFERER']);
 function enviaAvisoReserva($bd, $usuario, $asiento){
     
     // Obtengo el email del usuario
-    $datos = $bd->consulta("select Nombre, Email from Usuario where NIU = '".$usuario."'");
+    $datos = $bd->consulta("select Nombre, Email from Usuario where DNI = '".$usuario."'");
     $email = $datos[0]['Email'];
     $nombre = utf8_encode($datos[0]['Nombre']);
     

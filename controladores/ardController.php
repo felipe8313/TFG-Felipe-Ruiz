@@ -24,7 +24,11 @@ if ($usuario === "") {
     echo "Respuesta:" . $estado;
     
 } else {
-
+        
+    // Obtengo el DNI del usuario
+    $datos = $bd->consulta("select DNI from Usuario where NIU = '".$usuario."'");
+    $dniUsuario = $datos[0]['DNI'];
+    
     // Obtengo los datos del asiento
     $datos = $bd->consulta("select Estado, Usuario_reserva, Usuario_ocupacion from Asiento where Id = '" . $idDispositivo . "'");
 
@@ -34,29 +38,28 @@ if ($usuario === "") {
         $usuarioOcupacion = $datos[0]['Usuario_ocupacion'];
 
         // Si el usuario pasa de nuevo la tarjeta libero el sitio
-        if ($usuario === $usuarioOcupacion) {
+        if ($dniUsuario === $usuarioOcupacion) {
             $bd->update("Asiento", "Estado = 1, Usuario_ocupacion = NULL, HoraOcupacion = NULL", "Id = '" . $idDispositivo . "'");
             echo "Respuesta:1";
         } else {
             echo "Respuesta:3";
         }
+        
     } else if ($estado === 1) { // Asiento libre
-        // Compruebo si el usuario es un usuario del sistema
-        $datos = $bd->consulta("select NIU from Usuario where NIU = '" . $usuario . "'");
-        $niuValido = $datos[0]['NIU'];
-
-        if ($niuValido === $usuario) {
-            ocuparAsiento($bd, $usuario, $idDispositivo);
+    
+        if ($dniUsuario != '') {
+            ocuparAsiento($bd, $dniUsuario, $idDispositivo);
         } else {
             echo "Respuesta:3"; // Respuesta de usuario no válido 
         }
         
     } else if ($estado === 2) { // Asiento reservado
+        
         $usuarioReserva = $datos[0]['Usuario_reserva'];
         
         // Si es el usuario que ha reservado el sitio
-        if ($usuario === $usuarioReserva) {
-            ocuparAsiento($bd, $usuario, $idDispositivo);
+        if ($dniUsuario === $usuarioReserva) {
+            ocuparAsiento($bd, $dniUsuario, $idDispositivo);
         } else {
             echo "Respuesta:3";
         }

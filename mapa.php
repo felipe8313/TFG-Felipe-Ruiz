@@ -55,7 +55,7 @@ foreach ($mesas as $mesa) {
     if ($modo !== 'modificar'){        
         // Obtengo los asientos de la mesa
         $asientos = $bd->consulta("select Id, Estado, Nombre, Apellidos, NIU, DNI, ifnull(HoraReserva, HoraOcupacion) as Hora 
-                                   from Asiento left join Usuario on (DNI = Usuario_ocupacion or DNI = Usuario_reserva or NIU = Usuario_ocupacion or  NIU = Usuario_reserva) where Mesa_id = '" . $idMesa . "'");
+                                   from Asiento left join Usuario on (DNI = Usuario_ocupacion or DNI = Usuario_reserva) where Mesa_id = '" . $idMesa . "'");
         $contAux = 0;
         $mesaHtml = '<table id=\"'.$idMesa.'\" style=\"width:'.(11 * $numAsientos).'px\" class=\"tablaAsientos '.$claseMesaAct.'\"><tr>';
                 
