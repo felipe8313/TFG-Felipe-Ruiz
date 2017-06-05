@@ -9,6 +9,7 @@ session_start();
 include_once 'header.php';
 include_once 'menuLateral.php';
 include_once '../clases/bd.class.php';
+include_once '../controladores/funcionesComunes.php';
 error_reporting(0);
 
 if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
@@ -31,6 +32,13 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
         <?php
         // Cargo en la tabla los usuarios que coinciden con el filtro
         $where = '';
+        
+        if (isset($_GET['biblioteca']) && $_GET['biblioteca'] !== '') {
+            $biblio = $_GET['biblioteca'];
+            $where .= ' and b.id = '.$biblio;
+        } else {
+            $biblio = '';
+        }
         
         if (isset($_GET['asiento']) && $_GET['asiento'] !== '') {
             $asiento = $_GET['asiento'];
@@ -114,7 +122,14 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                         <div class="panel-heading">Filtro</div>
                         <div class="panel-body">
                             <form method="GET" action="incidencias.php">
-                                 <div class="col-md-2">
+                                <div class="col-md-3">
+                                    <label>Biblioteca</label>
+                                    <select class="form-control" name="biblioteca">
+                                        <option value="">Seleccione una biblioteca</option>
+                                        <?php echo getBibliotecas($bd, FALSE, $biblio)?>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
                                     <label>Asiento</label>
                                     <input value="<?php echo $asiento ?>" type="text" class="form-control" name="asiento">  
                                 </div>
@@ -133,7 +148,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
                                     <label>Hasta</label>
                                     <input value="<?php echo $hasta ?>" type="text" class="datepicker form-control" name="hasta">  
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&ensp; Buscar</button><br><br>
                                     <button type="button" onclick="limpiar()" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span>&ensp; Limpiar</button>
                                 </div>                                
