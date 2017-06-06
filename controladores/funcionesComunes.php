@@ -72,11 +72,14 @@ function getAnioActual(){
     return $hoy['year']; 
 }
 
-function error($error){
+function error($error, $back = true){
     session_start();
     
     $_SESSION['error'] = $error;
-    header('Location: '.$_SERVER['HTTP_REFERER']);
+    
+    if ($back){
+        header('Location: '.$_SERVER['HTTP_REFERER']);
+    }
 }
 
 function info($info){

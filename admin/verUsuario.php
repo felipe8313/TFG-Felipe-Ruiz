@@ -9,10 +9,17 @@ session_start();
 include_once 'header.php';
 include_once 'menuLateral.php';
 include_once '../clases/bd.class.php';
+include_once '../controladores/funcionesComunes.php';
 error_reporting(0);
 
 if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
     header('Location: index.php');
+}
+
+// El usuario normal no tiene permisos para acceder aquí
+if ($_SESSION['Rol'] === 1){
+    error('No está autorizado a ver la página anterior', false);
+    header('Location: ../');
 }
 ?>
 <html>

@@ -15,6 +15,12 @@ error_reporting(0);
 if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
     header('Location: index.php');
 }
+
+// El usuario normal no tiene permisos para acceder aquí
+if ($_SESSION['Rol'] === 1){
+    error('No está autorizado a ver la página anterior', false);
+    header('Location: ../');
+}
 ?>
 <html>
     <head>

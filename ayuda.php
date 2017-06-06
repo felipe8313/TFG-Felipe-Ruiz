@@ -37,7 +37,7 @@ include 'clases/bd.class.php';
                         el alumno podrá comprobar la disponibilidad de asientos sin necesidad de desplazarse a la biblioteca, además de poder reservar un asiento desde casa.
                     </p>
                     <p class="parrafoAyuda">                        
-                        Cada asiento físico dispone un dispositivo en donde el alumnado tendrá que identificarse utilizando su carné universitario. 
+                        Cada asiento físico dispone un dispositivo en donde el alumnado tendrá que identificarse utilizando su carnet universitario. 
                     </p>
                     
                     <h3 class="tituloApartado">¿Cómo puedo reservar un asiento?</h3>
@@ -68,7 +68,7 @@ include 'clases/bd.class.php';
                     </p>
                     <h3 class="tituloApartado">¿Qué significan los colores de los mapas?</h3>
                     <p class="parrafoAyuda">
-                        El estado de casa asiento está representado por un color diferente. El color verde indica que el asiento está <b class="etiquetaLibre">libre</b>, azul si el 
+                        El estado de cada asiento está representado por un color diferente. El color verde indica que el asiento está <b class="etiquetaLibre">libre</b>, azul si el 
                         asiento está <b class="etiquetaReservado">reservado</b> y el rojo indicará que el asiento está <b class="etiquetaOcupado">ocupado</b>.
                     </p>
                 </div>    
