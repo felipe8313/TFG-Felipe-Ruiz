@@ -82,10 +82,12 @@
             <form method="POST" action="controladores/usuarioController.php">
                 <div class="modal-body">           
                     <input name="accion" type="hidden" value="cambiaContrasenia">
+                    <label>Contraseña antigua</label>
+                    <input required="true" name="antiguaPass" class="form-control" type="text"><br>
                     <label for="pass">Nueva contraseña</label>
-                    <input name="pass" id="nuevaPass" onkeyup="compruebaPass()" class="form-control" type="text"><br>
+                    <input required="true" name="pass" id="nuevaPass" onkeyup="compruebaPass()" class="form-control" type="text"><br>
                     <label for="repass">Repita contraseña</label>
-                    <input name="repass" id="nuevaRepass" onkeyup="compruebaPass()" class="form-control" type="text">
+                    <input required="true" name="repass" id="nuevaRepass" onkeyup="compruebaPass()" class="form-control" type="text">
                     <div id="mensajePass"><b style="color:red">Las contraseñas no coinciden</b></div>
                 </div>
                 <div class="modal-footer">

@@ -41,9 +41,11 @@ if (isset($_POST['accion'])) {
                 $_SESSION['Nombre'] = $datos[0]['Nombre'];
                 $_SESSION['NIU'] = $datos[0]['NIU'];
                 $_SESSION['DNI'] = $datos[0]['DNI'];
+                $_SESSION['Pass'] = $pass;
                 $_SESSION['Rol'] = (int) $datos[0]['Rol'];
                 $_SESSION['Biblioteca'] = $datos[0]['Biblioteca'];
                 $_SESSION['InicioSesion'] = true;
+                
 
                 // Login por la parte de admon
                 if ($modo === 'admin') {
