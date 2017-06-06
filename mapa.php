@@ -92,8 +92,10 @@ foreach ($mesas as $mesa) {
         $resultadoScript .= '$("#x' . $x . 'y' . $y . '").html("' . $mesaHtml . '");';
         $resultadoScript .= '$("#x' . $x . 'y' . $y . '").css(\'transform\', \'rotate('.$gradosRotacion.'deg)\');';
         $resultadoScript .= '$("#x' . $x . 'y' . $y . '").css(\'height\', $("#x' . $x . 'y' . $y . '").width() - 100);';
-        
+                
     }else{
+         // Evito que en una celda ya ocupada se pueda mover otra mesa o crear una
+        $resultadoScript .= '$("#x' . $x . 'y' . $y . '").removeClass("suelta");';
         $resultadoScript .= '$("#x' . $x . 'y' . $y . '").html("<center><p data-activa=\"'.$activa.'\"  data-rot=\"'.$gradosRotacion.'\" data-asientos=\"'.$numAsientos.'\" data-id=\"'.$idMesa.'\" class=\"numAsientos '.$claseMesaAct.'\">' . $numAsientos . '</p></center>");';
     }
 
