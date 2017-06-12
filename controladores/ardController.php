@@ -17,7 +17,7 @@ $bd = new bd();
 if ($usuario === "") {
 
     // Obtengo los datos del asiento
-    $datos = $bd->consulta("select Estado from Asiento where Id = '" . $idDispositivo . "'");
+    $datos = $bd->consulta("select Estado from Asientos where Id = '" . $idDispositivo . "'");
 
     $estado = (int) $datos[0]['Estado'];
 
@@ -26,11 +26,11 @@ if ($usuario === "") {
 } else {
         
     // Obtengo el DNI del usuario
-    $datos = $bd->consulta("select DNI from Usuario where NIU = '".$usuario."'");
+    $datos = $bd->consulta("select DNI from Usuarios where NIU = '".$usuario."'");
     $dniUsuario = $datos[0]['DNI'];
     
     // Obtengo los datos del asiento
-    $datos = $bd->consulta("select Estado, Usuario_reserva, Usuario_ocupacion from Asiento where Id = '" . $idDispositivo . "'");
+    $datos = $bd->consulta("select Estado, Usuario_reserva, Usuario_ocupacion from Asientos where Id = '" . $idDispositivo . "'");
 
     $estado = (int) $datos[0]['Estado'];
 
@@ -39,7 +39,7 @@ if ($usuario === "") {
 
         // Si el usuario pasa de nuevo la tarjeta libero el sitio
         if ($dniUsuario === $usuarioOcupacion) {
-            $bd->update("Asiento", "Estado = 1, Usuario_ocupacion = NULL, HoraOcupacion = NULL", "Id = '" . $idDispositivo . "'");
+            $bd->update("Asientos", "Estado = 1, Usuario_ocupacion = NULL, HoraOcupacion = NULL", "Id = '" . $idDispositivo . "'");
             echo "Respuesta:1";
         } else {
             echo "Respuesta:3";
@@ -69,7 +69,7 @@ if ($usuario === "") {
 function ocuparAsiento($bd, $usuario, $id) {
     
     // Ocupo el asiento
-    $bd->update("Asiento", "Estado = 0, Usuario_ocupacion = '" . $usuario . "', HoraOcupacion = now(), Usuario_reserva = NULL, HoraReserva = NULL", "Id = '" . $id . "'");
+    $bd->update("Asientos", "Estado = 0, Usuario_ocupacion = '" . $usuario . "', HoraOcupacion = now(), Usuario_reserva = NULL, HoraReserva = NULL", "Id = '" . $id . "'");
     echo "Respuesta:0";
 
     // Creo un trabajo programado para liberar al cabo de 3 horas
@@ -79,7 +79,7 @@ function ocuparAsiento($bd, $usuario, $id) {
     $bd->consulta($job);
 
     // Inserto un registro en el histórico
-    $bd->insertar('historico', 'Usuario, Asiento, Fecha', '\''.$usuario . '\',' . $id . ', now()');
+    $bd->insertar('historicos', 'Usuario, Asiento, Fecha', '\''.$usuario . '\',' . $id . ', now()');
 }
 
 

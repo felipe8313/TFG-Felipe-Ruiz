@@ -29,12 +29,12 @@ if (isset($_POST['accion'])){
             $arrayDatos = array();
             
             // Obtengo el nombre de la biblioteca
-            $datos = $bd->consulta("select nombre from biblioteca where id = ".$biblio);
+            $datos = $bd->consulta("select nombre from bibliotecas where id = ".$biblio);
             $nombreBiblio = $datos[0]['nombre'];
             
             for ($i = 1 ; $i<= 12; $i++){ // itero sobre los meses del anio
-                $datos = $bd->consulta("select count(*) as num from historico h join Asiento a on (h.Asiento = a.id) "
-                        . "join Mesa m on (m.id = a.Mesa_id) where Biblioteca_id = ".$biblio." and month(Fecha) = ".$i." and year(Fecha) = ".$anio);
+                $datos = $bd->consulta("select count(*) as num from historicos h join Asientos a on (h.Asiento = a.id) "
+                        . "join Mesas m on (m.id = a.Mesa_id) where Biblioteca_id = ".$biblio." and month(Fecha) = ".$i." and year(Fecha) = ".$anio);
                 $num = $datos[0]['num'];
                 
                 array_push($arrayDatos, $num);
@@ -64,10 +64,9 @@ if (isset($_POST['accion'])){
         $arrayColores = array();
         
         // Itero sobre todas las bibliotecas
-        $bibliotecas = $bd->consulta("select id, nombre from Biblioteca");
+        $bibliotecas = $bd->consulta("select id, nombre from Bibliotecas");
         
-        foreach ($bibliotecas as $biblio){
-            
+        foreach ($bibliotecas as $biblio){         
             
             $nombreBiblio = utf8_encode($biblio['nombre']);
             
@@ -75,7 +74,7 @@ if (isset($_POST['accion'])){
             array_push($arrayResultado['labels'], $nombreBiblio);           
             
             // Obtengo el número de ocupaciones en el rango de la biblioteca
-            $datos = $bd->consulta("select count(*) as num from historico h join Asiento a on (h.Asiento = a.id) join Mesa m on (m.id = a.Mesa_id) "
+            $datos = $bd->consulta("select count(*) as num from historicos h join Asientos a on (h.Asiento = a.id) join Mesas m on (m.id = a.Mesa_id) "
                     . "where Biblioteca_id = ".$biblio['id']." and cast(Fecha as date) between STR_TO_DATE('".$desde."', '%d-%m-%Y') and STR_TO_DATE('".$hasta."', '%d-%m-%Y')");
             
             // Añado el dato
@@ -101,13 +100,13 @@ if (isset($_POST['accion'])){
         $arrayColores = array();  
         
         // Obtengo los tipos de alumno
-        $datos = $bd->consulta("select distinct TipoUsuario from usuario");
+        $datos = $bd->consulta("select distinct TipoUsuario from usuarios");
         
         foreach ($datos as $tipo){
             array_push($arrayResultado['labels'], $tipo['TipoUsuario']);
             
             // Obtengo el número de ocupaciones en el rango de la biblioteca
-            $datos = $bd->consulta("select count(*) as num from historico h join Asiento a on (h.Asiento = a.id) join Mesa m on (m.id = a.Mesa_id) join Usuario on (Usuario = NIU or Usuario = DNI)"
+            $datos = $bd->consulta("select count(*) as num from historicos h join Asientos a on (h.Asiento = a.id) join Mesas m on (m.id = a.Mesa_id) join Usuarios on (Usuario = NIU or Usuario = DNI)"
                     . "where Biblioteca_id = ".$biblioteca." and cast(Fecha as date) between STR_TO_DATE('".$desde."', '%d-%m-%Y') and STR_TO_DATE('".$hasta."', '%d-%m-%Y') and TipoUsuario = '".$tipo['TipoUsuario']."'");
 
             // Añado el dato

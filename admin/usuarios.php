@@ -57,7 +57,7 @@ if ($_SESSION['Rol'] === 1){
         
         if ($nombre !== '' || $niuDni !== '') {
             $bd = new bd();
-            $consulta = "select * from Usuario where (ucase(nombre) like '%" . $nombre . "%' or ucase(apellidos) like '%" . $nombre . "%')  and (ucase(DNI) like '%" . $niuDni . "%' or ucase(NIU) like '%" . $niuDni . "%')".$condicionBibliotecario;
+            $consulta = "select * from Usuarios where (ucase(nombre) like '%" . $nombre . "%' or ucase(apellidos) like '%" . $nombre . "%')  and (ucase(DNI) like '%" . $niuDni . "%' or ucase(NIU) like '%" . $niuDni . "%')".$condicionBibliotecario;
             $datos = $bd->consulta($consulta);
             $cuerpoTabla = '';
 

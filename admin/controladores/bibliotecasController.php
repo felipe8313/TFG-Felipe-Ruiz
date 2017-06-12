@@ -38,7 +38,7 @@ if (isset($_POST['accion'])){
         move_uploaded_file($_FILES['fichero']['tmp_name'], utf8_decode($directorio));
         
         // Creo la biblioteca
-        $resultado = $bd->insertar('Biblioteca', 'Nombre, Direccion, DirectorioImagen, Plantas', '\''.$nombre.'\', \''.$direccion.'\', \'resources/imgs/'.$nombreArchivo.'\', '.$plantas);
+        $resultado = $bd->insertar('Bibliotecas', 'Nombre, Direccion, DirectorioImagen, Plantas', '\''.$nombre.'\', \''.$direccion.'\', \'resources/imgs/'.$nombreArchivo.'\', '.$plantas);
         
         if ($resultado){
             info("Biblioteca creada correctamente");
@@ -54,7 +54,7 @@ if (isset($_POST['accion'])){
         $id = $_POST['id'];        
         
         // Obtengo los datos de la biblioteca
-        $datos = $bd->consulta("select * from biblioteca where id = ".$id);
+        $datos = $bd->consulta("select * from bibliotecas where id = ".$id);
         
         $arrayResultado['nombre'] = utf8_encode($datos[0]['Nombre']);
         $arrayResultado['direccion'] = utf8_encode($datos[0]['Direccion']);
@@ -90,10 +90,10 @@ if (isset($_POST['accion'])){
             move_uploaded_file($_FILES['ficheroModi']['tmp_name'], utf8_decode($directorio));
 
             // Modifico la biblioteca
-            $resultado = $bd->update("Biblioteca", "Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas.", DirectorioImagen = 'resources/imgs/".$nombreArchivo."'", "id = ".$id);
+            $resultado = $bd->update("Bibliotecas", "Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas.", DirectorioImagen = 'resources/imgs/".$nombreArchivo."'", "id = ".$id);
             
         }else{
-            $resultado = $bd->update("Biblioteca", "Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas, "id = ".$id);
+            $resultado = $bd->update("Bibliotecas", "Nombre = '".$nombre."', Direccion = '".$direccion."', Plantas = ".$plantas, "id = ".$id);
         }
         
         if ($resultado){
@@ -114,7 +114,7 @@ if (isset($_GET['accion'])){
     $accion = $_GET['accion'];
     
     if ($accion === 'eliminarBiblio'){
-        $resultado = $bd->eliminar('biblioteca', 'id = '.$_GET['id']);
+        $resultado = $bd->eliminar('bibliotecas', 'id = '.$_GET['id']);
         
         if ($resultado){
             info("Biblioteca eliminada correctamente");
@@ -123,14 +123,14 @@ if (isset($_GET['accion'])){
         }
         
         //Obtengo las mesas de la biblioteca y los asientos para eliminarlas
-        $mesas = $bd->consulta("select id from Mesa where biblioteca_id = ".$_GET['id']);
+        $mesas = $bd->consulta("select id from Mesas where biblioteca_id = ".$_GET['id']);
         
         foreach ($mesas as $mesa){
-            $bd->eliminar('mesa', 'id = '.$mesa['id']);
-            $asientos = $bd->consulta("select id from Asiento where mesa_id = ".$mesa['id']);
+            $bd->eliminar('mesas', 'id = '.$mesa['id']);
+            $asientos = $bd->consulta("select id from Asientos where mesa_id = ".$mesa['id']);
             
             foreach ($asientos as $asiento){
-                $bd->eliminar('asiento', 'id = '.$asiento['id']);
+                $bd->eliminar('asientos', 'id = '.$asiento['id']);
             }
         }
         

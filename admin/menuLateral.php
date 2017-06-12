@@ -6,10 +6,10 @@ session_start();
 
 // El bibliotecario solo podrá ver las incidencias de sus bibliotecas
 if ($_SESSION['Rol'] === 2){
-    $datos = $bd->consulta("select count(*) as num from incidencia i join Asiento a on (a.id = i.asiento) join Mesa m on (a.Mesa_id = m.id) 
+    $datos = $bd->consulta("select count(*) as num from incidencias i join Asientos a on (a.id = i.asiento) join Mesas m on (a.Mesa_id = m.id) 
 where i.estado = 1 and m.biblioteca_id = ".$_SESSION['Biblioteca']);
 }else if ($_SESSION['Rol'] === 3){
-    $datos = $bd->consulta("select count(*) as num from incidencia where estado = 1");
+    $datos = $bd->consulta("select count(*) as num from incidencias where estado = 1");
 }
 
 $numIncidencias = (int)$datos[0]['num'];

@@ -23,7 +23,7 @@ if ($accion === 'cambiaContrasenia') {
         error("La contraseña antigua no es correcta");
     } else {
 
-        $resultado = $bd->update("Usuario", "contrasenia = '" . crypt($pass, $user) . "'", "DNI = '" . $user . "'");
+        $resultado = $bd->update("Usuarios", "contrasenia = '" . crypt($pass, $user) . "'", "DNI = '" . $user . "'");
 
         if ($resultado) {
             info("Contraseña actualizada correctamente");

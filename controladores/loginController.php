@@ -21,12 +21,12 @@ if (isset($_POST['accion'])) {
         $modo = $_POST['modo'];
 
         // Obtengo el DNI del usuario, comprobando primero si está registrado en el sistema        
-        $datos = $bd->consulta("select DNI from Usuario where DNI = '" . strtoupper($user) . "' or NIU = '" . $user . "'");
+        $datos = $bd->consulta("select DNI from Usuarios where DNI = '" . strtoupper($user) . "' or NIU = '" . $user . "'");
 
         if (is_array($datos) && count($datos) !== 0) {
 
             $dni = $datos[0]['DNI'];
-            $datos = $bd->consulta("select Nombre, Rol, Bloqueado, Biblioteca, NIU, DNI from Usuario where DNI = '" . $dni . "' and Contrasenia = '" . crypt($pass, $dni) . "'");
+            $datos = $bd->consulta("select Nombre, Rol, Bloqueado, Biblioteca, NIU, DNI from Usuarios where DNI = '" . $dni . "' and Contrasenia = '" . crypt($pass, $dni) . "'");
 
             if (is_array($datos) && count($datos) !== 0) {
 

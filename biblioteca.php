@@ -12,12 +12,12 @@ $asientoReservado = '';
 $bd = new bd();
 
 // Obtengo el nombre y el número de plantas de la biblioteca
-$datos = $bd->consulta('select Nombre, Plantas from Biblioteca where Id = ' . $biblioteca);
+$datos = $bd->consulta('select Nombre, Plantas from Bibliotecas where Id = ' . $biblioteca);
 $nombreBiblio = $datos[0]['Nombre'];
 $plantas = $datos[0]['Plantas'];
 
 // Obtengo el número de asientos libres de esta planta
-$datos = $bd->consulta('select count(*) as num from Asiento join Mesa m on (m.id = Mesa_id) where Estado = 1 and Biblioteca_Id = ' . $biblioteca . ' and Planta = ' . $planta);
+$datos = $bd->consulta('select count(*) as num from Asientos join Mesas m on (m.id = Mesa_id) where Estado = 1 and Biblioteca_Id = ' . $biblioteca . ' and Planta = ' . $planta);
 $numAsientosLibres = $datos[0]['num'];
 ?>
 <html>
@@ -76,7 +76,7 @@ $numAsientosLibres = $datos[0]['num'];
                                 if (isset($_SESSION['InicioSesion'])) {
 
                                     // compruebo si el usuario tiene reservado algún asiento y le muestro el id
-                                    $datos = $bd->consulta("select a.Id, date_add(HoraReserva, INTERVAL 1 HOUR) as Hora, Nombre, Planta from Asiento a join Mesa m on (m.id = a.Mesa_Id) join Biblioteca b on (b.id = m.Biblioteca_id) where Usuario_reserva = '" . $_SESSION['DNI'] . "'");
+                                    $datos = $bd->consulta("select a.Id, date_add(HoraReserva, INTERVAL 1 HOUR) as Hora, Nombre, Planta from Asientos a join Mesas m on (m.id = a.Mesa_Id) join Bibliotecas b on (b.id = m.Biblioteca_id) where Usuario_reserva = '" . $_SESSION['DNI'] . "'");
                                     if (is_array($datos)) {
                                         $asientoReservado = $datos[0]['Id'];
                                         $diaReserva = date('d-m-Y', strtotime($datos[0]['Hora']));
@@ -124,7 +124,7 @@ $numAsientosLibres = $datos[0]['num'];
                                 if (isset($_SESSION['InicioSesion'])) {
 
                                     // compruebo si el usuario tiene reservado algún asiento y le muestro el id
-                                    $datos = $bd->consulta("select a.Id, Nombre, Planta from Asiento a join Mesa m on (m.id = a.Mesa_Id) join Biblioteca b on (b.id = m.Biblioteca_id) where Usuario_ocupacion ='" . $_SESSION['DNI'] . "'");
+                                    $datos = $bd->consulta("select a.Id, Nombre, Planta from Asientos a join Mesas m on (m.id = a.Mesa_Id) join Bibliotecas b on (b.id = m.Biblioteca_id) where Usuario_ocupacion ='" . $_SESSION['DNI'] . "'");
                                     if (is_array($datos)) {
                                         $asientoOcupado = $datos[0]['Id'];
                                         $bibliotecaOcu = $datos[0]['Nombre'];

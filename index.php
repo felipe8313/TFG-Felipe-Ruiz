@@ -35,8 +35,8 @@ session_start();
                         <div class="row">
                             <?php
                             $bd = new bd();
-                            $datos = $bd->consulta("select b.*, count(a.id) as numLibres from Biblioteca b join Mesa m on (b.Id = m.Biblioteca_Id) 
-                                                    join Asiento a on (a.Mesa_Id = m.id)
+                            $datos = $bd->consulta("select b.*, count(a.id) as numLibres from Bibliotecas b join Mesas m on (b.Id = m.Biblioteca_Id) 
+                                                    join Asientos a on (a.Mesa_Id = m.id)
                                                     where estado = 1
                                                     group by b.id");
                             $cont = 0;

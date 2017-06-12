@@ -56,8 +56,7 @@ if (isset($_POST['accion'])){
         }
         
         // Obtengo la extensión del fichero subido
-        $nombreArchivo = basename($_FILES['fichero']['name']);
-               
+        $nombreArchivo = basename($_FILES['fichero']['name']);               
         
         if ($nombreArchivo !== ''){
             $extension = end(explode(".", $nombreArchivo));
@@ -71,7 +70,7 @@ if (isset($_POST['accion'])){
         }
         
         // Inserto al usuario en la base de datos
-        $tabla = 'usuario';
+        $tabla = 'usuarios';
         $columnas = 'NIU, DNI, Nombre, Apellidos, Rol, Bloqueado, Contrasenia, TipoUsuario, Email, Imagen, Biblioteca';
         $valores = "'".$niu."', '".$dni."', '".$nombre."', '".$apellidos."', ".$rol.", ".$bloqueado.", '".$passCodificada."','".$tipo."','".$email."', '".$nombreFinal."', ".$biblioteca;
         
@@ -147,7 +146,7 @@ if (isset($_POST['accion'])){
         
         $set = "NIU = '".$niu."', DNI = '".$dniNuevo."', Nombre = '".$nombre."', Apellidos = '".$apellidos."', "
                 . "Rol = ".$rol.", Bloqueado = ".$bloqueado.", TipoUsuario = '".$tipo."', Email = '".$email."'".$updateImagen;
-        $resultado = $bd->update("Usuario", $set, "DNI = '".$dni."'");
+        $resultado = $bd->update("Usuarios", $set, "DNI = '".$dni."'");
         
         if ($resultado){
             info("Usuario actualizado correctamente");                 
@@ -167,7 +166,7 @@ if (isset($_POST['accion'])){
         }
         
         // Obtengo el NIU del usuario (si lo tiene)
-        $datos = $bd->consulta("select Nombre, NIU, Email from usuario where DNI = '".$dni."'");
+        $datos = $bd->consulta("select Nombre, NIU, Email from usuarios where DNI = '".$dni."'");
         $niu = $datos[0]['NIU'];
         $nombre = $datos[0]['Nombre'];
         $email = $datos[0]['Email'];
@@ -177,7 +176,7 @@ if (isset($_POST['accion'])){
         $passCodificada = crypt($pass, $dni);
         
         // Una vez generada la nueva contraseña la almaceno
-        $bd->update("Usuario", "Contrasenia = '".$passCodificada."'", "DNI = '".$dni."'");
+        $bd->update("Usuarios", "Contrasenia = '".$passCodificada."'", "DNI = '".$dni."'");
                 
         $usuario = $dni;        
         if ($niu !== ''){

@@ -43,7 +43,7 @@ function enviarCorreo($email, $cuerpo, $asunto) {
 
 function getBibliotecas($bd, $plantas = false, $biblioDefecto = 0){
     // Cargamos las opciones del select de biblioteca
-    $bibliotecas = $bd->consulta("select Id, Plantas, Nombre from biblioteca");
+    $bibliotecas = $bd->consulta("select Id, Plantas, Nombre from bibliotecas");
     $opcionesBibliotecas = '';
 
     foreach ($bibliotecas as $biblio) {

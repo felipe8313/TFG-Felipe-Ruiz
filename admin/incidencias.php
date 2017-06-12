@@ -80,12 +80,11 @@ if ($_SESSION['Rol'] === 1){
 
         $bd = new bd();
         $consulta = "select i.id, asiento, Fecha, fechaCierre, u.Nombre, Apellidos, descripcion, i.estado, m.Planta, b.nombre as biblio
-                    from incidencia i join usuario u on (usuario = DNI)
-                    join Asiento a on (a.id = asiento)
-                    join Mesa m on (m.id = a.Mesa_id)
-                    join Biblioteca b on (b.id = m.Biblioteca_Id)
+                    from incidencias i join usuarios u on (usuario = DNI)
+                    join Asientos a on (a.id = asiento)
+                    join Mesas m on (m.id = a.Mesa_id)
+                    join Bibliotecas b on (b.id = m.Biblioteca_Id)
                     where i.estado = ".$estado.$where;
-        echo $consulta;
         
         $datos = $bd->consulta($consulta);
         $cuerpoTabla = '';

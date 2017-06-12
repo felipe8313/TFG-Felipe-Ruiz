@@ -38,7 +38,7 @@ if ($_SESSION['Rol'] === 1){
     </head>
     <body>
         <?php
-        $consulta = "select * from Biblioteca";
+        $consulta = "select * from Bibliotecas";
         $datos = $bd->consulta($consulta);
         $cuerpoTabla = '';
 

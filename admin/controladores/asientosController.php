@@ -29,7 +29,7 @@ if (isset($_POST['accion'])){
         $celdaX = $_POST['celdaX'];
         $celdaY = $_POST['celdaY'];
         
-        $bd->update("mesa", "x = ".$celdaX. ", y = ".$celdaY, "Id = ".$mesaId);
+        $bd->update("mesas", "x = ".$celdaX. ", y = ".$celdaY, "Id = ".$mesaId);
         
     }else if ($accion === 'modiMesa'){
         
@@ -41,7 +41,7 @@ if (isset($_POST['accion'])){
         // Primero debo comprobar si hay que añadir o eliminar asientos
         
         // Obtengo los asientos anteriores de la mesa
-        $datos = $bd->consulta("select numAsientos from mesa where id = ".$mesaId);
+        $datos = $bd->consulta("select numAsientos from mesas where id = ".$mesaId);
         $numAsientosAnteriores = $datos[0]['numAsientos'];
         
         if ($numAsientosAnteriores > $asientos){ // Eliminamos los asientos sobrantes
@@ -56,7 +56,7 @@ if (isset($_POST['accion'])){
             
         }
         
-        $bd->update("mesa", "numAsientos = ".$asientos. ", gradosRotacion = ".$gradosRotacion. ", Activa = ".$activa, "Id = ".$mesaId);
+        $bd->update("mesas", "numAsientos = ".$asientos. ", gradosRotacion = ".$gradosRotacion. ", Activa = ".$activa, "Id = ".$mesaId);
                 
     }else if ($accion === 'crearMesa'){
         
@@ -68,10 +68,10 @@ if (isset($_POST['accion'])){
         $x = $_POST['x'];
         $y = $_POST['y'];
         
-        $consulta = $bd->insertar('mesa', 'Biblioteca_Id, gradosRotacion, x, y, Planta, numAsientos, Activa', $biblio.','.$gradosRotacion.','.$x.','.$y.','.$planta.','.$asientos.','.$activa);
+        $consulta = $bd->insertar('mesas', 'Biblioteca_Id, gradosRotacion, x, y, Planta, numAsientos, Activa', $biblio.','.$gradosRotacion.','.$x.','.$y.','.$planta.','.$asientos.','.$activa);
         
         // Obtengo el id de la última mesa insertada para crear sus asientos
-        $datos = $bd->consulta("select max(Id) as id from mesa");
+        $datos = $bd->consulta("select max(Id) as id from mesas");
         $ultimaMesa = $datos[0]['id'];        
         
         crearAsientos($bd, $asientos, $ultimaMesa);
@@ -82,7 +82,7 @@ if (isset($_POST['accion'])){
         $asientos = $_POST['asientos'];
         
         // Elimino la mesa
-        $bd->eliminar('mesa', 'id = '.$id);
+        $bd->eliminar('mesas', 'id = '.$id);
         
         // Elimino los asientos de la mesa
         eliminarAsientos($bd, $asientos, $id);
@@ -93,10 +93,10 @@ if (isset($_POST['accion'])){
 function eliminarAsientos($bd, $asientos, $mesa){
     
     // Obtengo dos ids de asientos de la mesa
-    $datos = $bd->consulta("select Id from asiento where Mesa_id = ".$mesa." LIMIT ".$asientos );
+    $datos = $bd->consulta("select Id from asientos where Mesa_id = ".$mesa." LIMIT ".$asientos );
     
     foreach ($datos as $idAsiento){
-        $bd->eliminar('Asiento', 'Id = '.$idAsiento['Id']);
+        $bd->eliminar('Asientos', 'Id = '.$idAsiento['Id']);
     }
     
     
@@ -105,7 +105,7 @@ function eliminarAsientos($bd, $asientos, $mesa){
 function crearAsientos($bd, $asientos, $mesa){
     
     for ($i = 1; $i <= $asientos; $i++){
-        $bd->insertar('asiento', 'Mesa_id', $mesa);
+        $bd->insertar('asientos', 'Mesa_id', $mesa);
     }
     
 }

@@ -39,7 +39,7 @@ if ($_SESSION['Rol'] === 1){
         // Obtengo los datos del usuario
         $bd = new bd();
 
-        $consulta = "select * from Usuario where DNI = '" . $dni . "'";
+        $consulta = "select * from Usuarios where DNI = '" . $dni . "'";
         $alumno = $bd->consulta($consulta);
         $niu = $alumno[0]['NIU'];
         $nombre = $alumno[0]['Nombre'];
