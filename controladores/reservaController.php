@@ -51,7 +51,6 @@ if ($accion === 'reservar'){
     
 }else if ($accion === 'liberar'){
     $bd->consulta('call liberarAsiento('.$_POST['asiento'].')');
-    header('Location: '.$_SERVER['HTTP_REFERER']);
 }
 
 header('Location: '.$_SERVER['HTTP_REFERER']);

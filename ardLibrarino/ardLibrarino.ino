@@ -196,7 +196,7 @@ void compruebaSitio(String barcode) {
   }
   
   delay(300);
-  client.stop();
+  //client.stop();
 }
 
 // Clase para controlador del USB
@@ -253,6 +253,7 @@ void setup(){
 }
 
 void loop(){
+
 
   // Cada 8 segundos compruebo el estado del asiento por si se ha reservado ya
   unsigned long currentMillis = millis();

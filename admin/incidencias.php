@@ -39,11 +39,16 @@ if ($_SESSION['Rol'] === 1){
         // Cargo en la tabla los usuarios que coinciden con el filtro
         $where = '';
         
-        if (isset($_GET['biblioteca']) && $_GET['biblioteca'] !== '') {
-            $biblio = $_GET['biblioteca'];
+        if ($_SESSION['Rol'] === 2){ // El bibliotecario solo podrá ver las incidencias de su biblioteca
+            $biblio = $_SESSION['Biblioteca'];
             $where .= ' and b.id = '.$biblio;
-        } else {
-            $biblio = '';
+        }else if ($_SESSION === 3){
+            if (isset($_GET['biblioteca']) && $_GET['biblioteca'] !== '') {
+                $biblio = $_GET['biblioteca'];
+                $where .= ' and b.id = '.$biblio;
+            } else {
+                $biblio = '';
+            }
         }
         
         if (isset($_GET['asiento']) && $_GET['asiento'] !== '') {
@@ -130,7 +135,7 @@ if ($_SESSION['Rol'] === 1){
                             <form method="GET" action="incidencias.php">
                                 <div class="col-md-3">
                                     <label>Biblioteca</label>
-                                    <select class="form-control" name="biblioteca">
+                                    <select id="biblioteca" class="form-control" name="biblioteca">
                                         <option value="">Seleccione una biblioteca</option>
                                         <?php echo getBibliotecas($bd, FALSE, $biblio)?>
                                     </select>
@@ -190,31 +195,39 @@ if ($_SESSION['Rol'] === 1){
     <script type="text/javascript" src="resources/datatables/dataTables.min.js"></script>
     <script type="text/javascript" src="resources/datatables/dataTables.bootstrap.min.js"></script>    
     <script>
-                                        $(document).ready(function () {
-                                            $("#incidencias").addClass("selectedItem");
-                                            $('#tablaIncidencias').DataTable({
-                                                "language": {
-                                                    "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
-                                                }
-                                            });
+        
+        <?php
+        if ($_SESSION['Rol'] === 2){
+            echo '$("#biblioteca").attr("disabled", true)';
+        }        
+        ?>
+        
+        
+        $(document).ready(function () {
+            $("#incidencias").addClass("selectedItem");
+            $('#tablaIncidencias').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
+                }
+            });
 
-                                            $(".datepicker").datepicker({
-                                                dateFormat: "dd-mm-yy",
-                                                dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                                                monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre",
-                                                    "Noviembre", "Diciembre"],
-                                                firstDay: 1
-                                            });
-                                            
-                                            $("#filtroEstado").val(<?php echo $estado?>);
-                                        });
+            $(".datepicker").datepicker({
+                dateFormat: "dd-mm-yy",
+                dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre",
+                    "Noviembre", "Diciembre"],
+                firstDay: 1
+            });
 
-                                        function limpiar() {
-                                            window.location.href = "incidencias.php";
-                                        }
-                                        
-                                        function incidencia (id, nuevoEstado){
-                                            window.location.href = "controladores/incidenciasController.php?accion=nuevoEstado&estado=" + nuevoEstado + "&id=" + id;
-                                        }
+            $("#filtroEstado").val(<?php echo $estado?>);
+        });
+
+        function limpiar() {
+            window.location.href = "incidencias.php";
+        }
+
+        function incidencia (id, nuevoEstado){
+            window.location.href = "controladores/incidenciasController.php?accion=nuevoEstado&estado=" + nuevoEstado + "&id=" + id;
+        }
     </script>
 </html>
