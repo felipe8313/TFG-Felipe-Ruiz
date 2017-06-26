@@ -7,6 +7,7 @@
  */
 
 include_once 'clases/bd.class.php';
+error_reporting(0);
 
 if (!isset($bd)){
     $bd = new bd();

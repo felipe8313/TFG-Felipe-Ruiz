@@ -186,6 +186,20 @@ body, html {
     background: #00979C !important;
 }
 
+@media screen and (max-width: 1365px) and (min-width: 1024px){
+
+    .nav-side-menu{
+        top: 18%;
+        width: 17%;
+    }
+    
+    .content{
+        top: 19.5%;
+        width: 85%;
+        left: 17%;
+    }
+}
+
 
 @media screen and (max-width: 1399px) and (min-width: 1366px){
 
@@ -198,6 +212,17 @@ body, html {
         width: 85%;
         left: 14%;
     }
+}
 
+@media screen and (max-width: 1440px) and (min-width: 1400px){
 
+    .nav-side-menu{
+        top: 17%;
+    }
+    
+    .content{
+        top: 19%;
+        width: 85%;
+        left: 14%;
+    }
 }

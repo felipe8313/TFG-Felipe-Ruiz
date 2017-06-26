@@ -17,7 +17,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
 }
 
 // El usuario normal no tiene permisos para acceder aquí
-if ($_SESSION['Rol'] === 1){
+if ($_SESSION['Rol'] === 1) {
     error('No está autorizado a ver la página anterior', false);
     header('Location: ../');
 }
@@ -38,42 +38,42 @@ if ($_SESSION['Rol'] === 1){
         <?php
         // Cargo en la tabla los usuarios que coinciden con el filtro
         $where = '';
-        
-        if ($_SESSION['Rol'] === 2){ // El bibliotecario solo podrá ver las incidencias de su biblioteca
+
+        if ($_SESSION['Rol'] === 2) { // El bibliotecario solo podrá ver las incidencias de su biblioteca
             $biblio = $_SESSION['Biblioteca'];
-            $where .= ' and b.id = '.$biblio;
-        }else if ($_SESSION === 3){
+            $where .= ' and b.id = ' . $biblio;
+        } else if ($_SESSION === 3) {
             if (isset($_GET['biblioteca']) && $_GET['biblioteca'] !== '') {
                 $biblio = $_GET['biblioteca'];
-                $where .= ' and b.id = '.$biblio;
+                $where .= ' and b.id = ' . $biblio;
             } else {
                 $biblio = '';
             }
         }
-        
+
         if (isset($_GET['asiento']) && $_GET['asiento'] !== '') {
             $asiento = $_GET['asiento'];
-            $where .= ' and Asiento = '.$asiento;
+            $where .= ' and Asiento = ' . $asiento;
         } else {
             $asiento = '';
         }
-        
+
         if (isset($_GET['filtroEstado']) && $_GET['filtroEstado'] !== '') {
-            $estado = (int)$_GET['filtroEstado'];
+            $estado = (int) $_GET['filtroEstado'];
         } else {
             $estado = 1;
         }
 
         if (isset($_GET['desde']) && $_GET['desde'] !== '') {
             $desde = $_GET['desde'];
-            $where .= " and cast(Fecha as date) >= STR_TO_DATE('".$desde."', '%d-%m-%Y')";
+            $where .= " and cast(Fecha as date) >= STR_TO_DATE('" . $desde . "', '%d-%m-%Y')";
         } else {
             $desde = '';
         }
 
         if (isset($_GET['hasta']) && $_GET['hasta'] !== '') {
             $hasta = $_GET['hasta'];
-            $where .= " and cast(Fecha as date) <= STR_TO_DATE('".$hasta."', '%d-%m-%Y')";
+            $where .= " and cast(Fecha as date) <= STR_TO_DATE('" . $hasta . "', '%d-%m-%Y')";
         } else {
             $hasta = '';
         }
@@ -84,33 +84,33 @@ if ($_SESSION['Rol'] === 1){
                     join Asientos a on (a.id = asiento)
                     join Mesas m on (m.id = a.Mesa_id)
                     join Bibliotecas b on (b.id = m.Biblioteca_Id)
-                    where i.estado = ".$estado.$where;
-        
+                    where i.estado = " . $estado . $where;
+
         $datos = $bd->consulta($consulta);
         $cuerpoTabla = '';
         $estados = array('CERRADA', 'ABIERTA');
 
         foreach ($datos as $incidencia) {
-            
+
             $fecha = new Datetime($incidencia['Fecha']);
-            
-            if (isset($incidencia['fechaCierre']) && $incidencia['fechaCierre'] !== ''){
+
+            if (isset($incidencia['fechaCierre']) && $incidencia['fechaCierre'] !== '') {
                 $fechaCierre = new Datetime($incidencia['fechaCierre']);
                 $fechaCierre = $fechaCierre->format('d-m-Y');
-            }else{
+            } else {
                 $fechaCierre = '';
             }
-            
-            $estado = (int)$incidencia['estado'];
-            
-            if ($estado === 1){
+
+            $estado = (int) $incidencia['estado'];
+
+            if ($estado === 1) {
                 $colorEstado = 'tomato';
                 $operaciones = '<button type="button" class="btn btn-success" onclick="incidencia(\'' . $incidencia['id'] . '\', 0)">Cerrar</button>';
-            }else{
+            } else {
                 $colorEstado = 'green';
                 $operaciones = '<button type="button" class="btn btn-danger" onclick="incidencia(\'' . $incidencia['id'] . '\', 1)">Abrir</button>';
             }
-            
+
             $cuerpoTabla .= '<tr>';
             $cuerpoTabla .= '<td>' . $incidencia['id'] . '</td>';
             $cuerpoTabla .= '<td>' . $incidencia['asiento'] . '</td>';
@@ -119,9 +119,9 @@ if ($_SESSION['Rol'] === 1){
             $cuerpoTabla .= '<td>' . utf8_encode($incidencia['Nombre'] . ' ' . $incidencia['Apellidos']) . '</td>';
             $cuerpoTabla .= '<td>' . $fecha->format('d-m-Y') . '</td>';
             $cuerpoTabla .= '<td>' . $incidencia['descripcion'] . '</td>';
-            $cuerpoTabla .= '<td style="color:'.$colorEstado.'">' . $estados[$estado] . '</td>';
+            $cuerpoTabla .= '<td style="color:' . $colorEstado . '">' . $estados[$estado] . '</td>';
             $cuerpoTabla .= '<td>' . $fechaCierre . '</td>';
-            $cuerpoTabla .= '<td>'.$operaciones.'</td>';      
+            $cuerpoTabla .= '<td>' . $operaciones . '</td>';
             $cuerpoTabla .= '</tr>';
         }
         ?>
@@ -131,38 +131,40 @@ if ($_SESSION['Rol'] === 1){
                     <div class="panel panel-default">
                         <div class="panel-heading">Filtro</div>
                         <div class="panel-body">
-                            <form method="GET" action="incidencias.php">
-                                <div class="col-md-3">
-                                    <label>Biblioteca</label>
-                                    <select id="biblioteca" class="form-control" name="biblioteca">
-                                        <option value="">Seleccione una biblioteca</option>
-                                        <?php echo getBibliotecas($bd, FALSE, $biblio)?>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <label>Asiento</label>
-                                    <input value="<?php echo $asiento ?>" type="text" class="form-control" name="asiento">  
-                                </div>
-                                <div class="col-md-2">
-                                    <label>Estado</label>
-                                    <select name="filtroEstado" id="filtroEstado" class="form-control">
-                                        <option value="1">Abierta</option>
-                                        <option value="0">Cerrada</option>
-                                    </select> 
-                                </div>
-                                <div class="col-md-2">
-                                    <label>Desde</label>
-                                    <input value="<?php echo $desde ?>" type="text" class="datepicker form-control" name="desde">  
-                                </div>
-                                <div class="col-md-2">
-                                    <label>Hasta</label>
-                                    <input value="<?php echo $hasta ?>" type="text" class="datepicker form-control" name="hasta">  
-                                </div>
-                                <div class="col-md-1">
-                                    <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&ensp; Buscar</button><br><br>
-                                    <button type="button" onclick="limpiar()" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span>&ensp; Limpiar</button>
-                                </div>                                
-                            </form>                        
+                            <div class="col-md-12 col-lg-12 col-xs-12">
+                                <form method="GET" action="incidencias.php">
+                                    <div class="col-md-2 col-lg-2 col-xs-2">
+                                        <label>Biblioteca</label>
+                                        <select id="biblioteca" class="form-control" name="biblioteca">
+                                            <option value="">Seleccione una biblioteca</option>
+                                            <?php echo getBibliotecas($bd, FALSE, $biblio) ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 col-lg-2 col-xs-2">
+                                        <label>Asiento</label>
+                                        <input value="<?php echo $asiento ?>" type="text" class="form-control" name="asiento">  
+                                    </div>
+                                    <div class="col-md-2 col-lg-2 col-xs-2">
+                                        <label>Estado</label>
+                                        <select name="filtroEstado" id="filtroEstado" class="form-control">
+                                            <option value="1">Abierta</option>
+                                            <option value="0">Cerrada</option>
+                                        </select> 
+                                    </div>
+                                    <div class="col-md-2 col-lg-2 col-xs-2">
+                                        <label>Desde</label>
+                                        <input value="<?php echo $desde ?>" type="text" class="datepicker form-control" name="desde">  
+                                    </div>
+                                    <div class="col-md-2 col-lg-2 col-xs-2">
+                                        <label>Hasta</label>
+                                        <input value="<?php echo $hasta ?>" type="text" class="datepicker form-control" name="hasta">  
+                                    </div>
+                                    <div class="col-md-2 col-lg-2 col-xs-2">
+                                        <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&ensp; Buscar</button><br><br>
+                                        <button type="button" onclick="limpiar()" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span>&ensp; Limpiar</button>
+                                    </div>                                
+                                </form> 
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -194,39 +196,39 @@ if ($_SESSION['Rol'] === 1){
     <script type="text/javascript" src="resources/datatables/dataTables.min.js"></script>
     <script type="text/javascript" src="resources/datatables/dataTables.bootstrap.min.js"></script>    
     <script>
-        
-        <?php
-        if ($_SESSION['Rol'] === 2){
-            echo '$("#biblioteca").attr("disabled", true)';
-        }        
-        ?>
-        
-        
-        $(document).ready(function () {
-            $("#incidencias").addClass("selectedItem");
-            $('#tablaIncidencias').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
-                }
-            });
 
-            $(".datepicker").datepicker({
-                dateFormat: "dd-mm-yy",
-                dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre",
-                    "Noviembre", "Diciembre"],
-                firstDay: 1
-            });
+<?php
+if ($_SESSION['Rol'] === 2) {
+    echo '$("#biblioteca").attr("disabled", true)';
+}
+?>
 
-            $("#filtroEstado").val(<?php echo $estado?>);
-        });
 
-        function limpiar() {
-            window.location.href = "incidencias.php";
-        }
+                                            $(document).ready(function () {
+                                                $("#incidencias").addClass("selectedItem");
+                                                $('#tablaIncidencias').DataTable({
+                                                    "language": {
+                                                        "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
+                                                    }
+                                                });
 
-        function incidencia (id, nuevoEstado){
-            window.location.href = "controladores/incidenciasController.php?accion=nuevoEstado&estado=" + nuevoEstado + "&id=" + id;
-        }
+                                                $(".datepicker").datepicker({
+                                                    dateFormat: "dd-mm-yy",
+                                                    dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                                                    monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre",
+                                                        "Noviembre", "Diciembre"],
+                                                    firstDay: 1
+                                                });
+
+                                                $("#filtroEstado").val(<?php echo $estado ?>);
+                                            });
+
+                                            function limpiar() {
+                                                window.location.href = "incidencias.php";
+                                            }
+
+                                            function incidencia(id, nuevoEstado) {
+                                                window.location.href = "controladores/incidenciasController.php?accion=nuevoEstado&estado=" + nuevoEstado + "&id=" + id;
+                                            }
     </script>
 </html>

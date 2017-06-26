@@ -17,7 +17,7 @@ if (!isset($_SESSION['InicioSesion']) && !$_SESSION['InicioSesion']) {
 }
 
 // El usuario normal no tiene permisos para acceder aquí
-if ($_SESSION['Rol'] === 1){
+if ($_SESSION['Rol'] === 1) {
     error('No está autorizado a ver la página anterior', false);
     header('Location: ../');
 }
@@ -38,7 +38,6 @@ if ($_SESSION['Rol'] === 1){
     <body>
         <?php
         $bd = new bd();
-        //error_reporting(0);
         ?>
         <div class="content">
             <div class="col-md-12">                
@@ -82,7 +81,7 @@ if ($_SESSION['Rol'] === 1){
                                 <input type="text" class="form-control datepicker" placeholder="Desde..." id="desde">
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control datepicker" placeholder="Desde..." id="hasta">
+                                <input type="text" class="form-control datepicker" placeholder="Hasta..." id="hasta">
                             </div>
                         </div>
                         <br><br>
@@ -90,7 +89,7 @@ if ($_SESSION['Rol'] === 1){
                             <button class="btn btn-default" onclick="cargaGraficoRango()"><span class="glyphicon glyphicon-search"></span>&ensp; Cargar gráfico</button>
                         </center>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-8 col-xs-8 col-lg-8">
                         <center id="contenedorGraficoRango">
                         </center>
                     </div>
@@ -110,7 +109,7 @@ if ($_SESSION['Rol'] === 1){
                                 <input type="text" class="form-control datepicker" placeholder="Desde..." id="desdeTipo">
                             </div>
                             <div class="col-md-6">
-                                <input type="text" class="form-control datepicker" placeholder="Desde..." id="hastaTipo">
+                                <input type="text" class="form-control datepicker" placeholder="Hasta..." id="hastaTipo">
                             </div>
                         </div>
                         <br><br>
@@ -162,7 +161,7 @@ if ($_SESSION['Rol'] === 1){
 
                                         // Reseteo el gráfico
                                         $("#graficaMensualTodasBiblios").remove();
-                                        $("#contenedorGraficoMensual").append('<canvas id="graficaMensualTodasBiblios"></canvas>');
+                                        $("#contenedorGraficoMensual").append('<canvas style=" margin: 0" id="graficaMensualTodasBiblios"></canvas>');
 
                                         $.ajax({
                                             type: 'POST',
@@ -194,7 +193,7 @@ if ($_SESSION['Rol'] === 1){
                                                                         labelString: 'Mes'
                                                                     }
                                                                 }]
-                                                        }
+                                                        }                                                      
                                                     }
                                                 });
                                             }
@@ -212,7 +211,7 @@ if ($_SESSION['Rol'] === 1){
 
                                         // Reseteo el gráfico
                                         $("#graficaRango").remove();
-                                        $("#contenedorGraficoRango").append('<canvas width="480" height="250" id="graficaRango"></canvas>');
+                                        $("#contenedorGraficoRango").append('<canvas style=" margin: 0" width="' + (screen.width * 0.2) + '" height="' + (screen.height * 0.2) + '" id="graficaRango"></canvas>');
 
                                         $.ajax({
                                             type: 'POST',
@@ -223,12 +222,24 @@ if ($_SESSION['Rol'] === 1){
                                                 var ctx = $("#graficaRango");
                                                 var myChart = new Chart(ctx, {
                                                     type: 'pie',
-                                                    data: response
+                                                    data: response,
+                                                    options: {
+                                                        legend: {
+                                                            position: 'bottom',
+                                                            fullWidth: false,
+                                                            labels: {
+                                                                boxWidth: 10,
+                                                                fontsize: 5
+                                                            }
+                                                        }
+                                                    }
                                                 });
                                             }
                                         });
                                     }
                                 }
+
+
 
                                 function cargaGraficoTipoUsuario() {
 
@@ -242,7 +253,7 @@ if ($_SESSION['Rol'] === 1){
 
                                         // Reseteo el gráfico
                                         $("#graficaTipo").remove();
-                                        $("#contenedorGraficoTipo").append('<canvas width="540" height="270" id="graficaTipo"></canvas>');
+                                        $("#contenedorGraficoTipo").append('<canvas style=" margin: 0" width="' + (screen.width * 0.2) + '" height="' + (screen.height * 0.2) + '" id="graficaTipo"></canvas>');
 
                                         $.ajax({
                                             type: 'POST',
@@ -253,7 +264,17 @@ if ($_SESSION['Rol'] === 1){
                                                 var ctx = $("#graficaTipo");
                                                 var myChart = new Chart(ctx, {
                                                     type: 'pie',
-                                                    data: response
+                                                    data: response,
+                                                    options: {
+                                                        legend: {
+                                                            position: 'bottom',
+                                                            fullWidth: false,
+                                                            labels: {
+                                                                boxWidth: 10,
+                                                                fontsize: 5
+                                                            }
+                                                        }
+                                                    }
                                                 });
                                             }
                                         });

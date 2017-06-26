@@ -1,3 +1,5 @@
+<?php error_reporting(0)?>
+
 <header class="cabecera">
     <div class="row">
         <div class="col-md-1 col-lg-1 col-xs-1 col-sm-1">

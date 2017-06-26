@@ -9,6 +9,68 @@ and open the template in the editor.
 */
 @import url(http://fonts.googleapis.com/css?family=Tenor+Sans);
 
+canvas {
+    width: 100% !important;
+    height: auto !important;
+    margin-left: -25%;
+}
+
+.chart {
+    border: 1px solid forestgreen;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.pie {
+    position: relative;
+    padding: 10px 0;
+    // adjust as necessary
+    padding-left: 10px;
+    padding-right: 0;
+}
+
+.legend {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 100%;
+    // adjust as necessary:
+    width: 48%;
+}
+
+@media (max-width: 480px) {
+    .legend {
+        position: relative;
+        width: 100%;
+    }
+    .pie {
+        margin: 0;
+    }
+}
+
+.pie-legend ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 300px;
+}
+
+.pie-legend span {
+    display: inline-block;
+    width: 14px;
+    height: 12px;
+    border-radius: 100%;
+    margin-right: 4px;
+    margin-bottom: -2px;
+}
+
+.pie-legend li {
+    margin-bottom: 4px;
+    display: inline-block;
+    margin-right: 4px;
+}
+
 .numAsientos{
     color: red;
     font-weight: bold;
@@ -132,7 +194,26 @@ html {
 }
 
 
-@media screen and (max-width: 1399px) and (min-width: 1366px){
+@media screen and (max-width: 1365px) and (min-width: 1024px){
+
+    .logoHeaderAdmin{
+        margin-top: 30%;
+        margin-left: 12%;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 1440px) and (min-width: 1366px){
+
+    .logoHeaderAdmin{
+        margin-top: 22%;
+        margin-left: 15%;
+        width: 75%;
+    }
+
+}
+
+@media screen and (max-width: 1440px) and (min-width: 1400px){
 
     .logoHeaderAdmin{
         margin-top: 22%;
